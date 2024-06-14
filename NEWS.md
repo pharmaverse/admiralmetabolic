@@ -1,4 +1,4 @@
-# admiraltemplate 0.1.0
+# admiralmetabolic 0.1.0
 
 - Initial package release focused on `<<ADD INITIAL SCOPE>>`
 
