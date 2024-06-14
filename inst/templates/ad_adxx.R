@@ -12,9 +12,9 @@ library(pharmaversesdtm) # Contains example datasets from the CDISC pilot projec
 # Save output ----
 
 # Change to whichever directory you want to save the dataset in
-dir <- tools::R_user_dir("admiraltemplate_templates_data", which = "cache")
+dir <- tools::R_user_dir("admiralophtha_templates_data", which = "cache")
 if (!file.exists(dir)) {
   # Create the folder
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(adxx, file = file.path(dir, "adxx.rda"), compress = "bzip2")
+#save(adxx, file = file.path(dir, "adxx.rda"), compress = "bzip2")
