@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r eval=FALSE}
-library(admiraltemplate)
+# library(admiralmetabolic)
 ```
 
 Introduction to how to use the package extension...

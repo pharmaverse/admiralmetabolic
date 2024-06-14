@@ -11,9 +11,9 @@
 ^man/dev_util_.+\.Rd$
 ^LICENSE\.md$
 ^\.github$
-^admiraltemplate\.Rcheck$
-^admiraltemplate.*\.tar\.gz$
-^admiraltemplate.*\.tgz$
+^admiralmetabolic\.Rcheck$
+^admiralmetabolic.*\.tar\.gz$
+^admiralmetabolic.*\.tgz$
 ^staged_dependencies.yaml$
 ^README.Rmd$
 ^\.devcontainer$

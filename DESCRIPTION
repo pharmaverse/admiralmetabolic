@@ -1,9 +1,9 @@
 Type: Package
-Package: `<<INSERT PACKAGE EXT NAME>>'
-Title: ADaM in R Asset Library - Extension Package for `<<INSERT TA>>`
+Package: admiralmetabolic
+Title: Metabolism Extension Package for ADaM in 'R' Asset Library
 Version: 0.1.0
 Authors@R: 
-    person("Open", "Source", , "admiraltemplate@pharmaverse.com", role = c("aut", "cre"))
+    person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = c("aut", "cre"))
 Description: A toolbox for programming Clinical Data Standards Interchange
     Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R.
     ADaM datasets are a mandatory part of any New Drug or Biologics
@@ -12,15 +12,16 @@ Description: A toolbox for programming Clinical Data Standards Interchange
     accordance with the "Analysis Data Model Implementation Guide" (CDISC
     Analysis Data Model Team, 2021,
     <https://www.cdisc.org/standards/foundational/adam>).  The package is
-    an extension package of the 'admiral' package.
+    an extension package of the 'admiral' package focusing on the 
+    metabolism therapeutic area.
 License: Apache License (>= 2)
 URL: https://pharmaverse.github.io/admiraltemplate,
     https://github.com/pharmaverse/admiraltemplate
 Depends: 
     R (>= 4.1)
 Imports:
-    admiral (>= 1.0.0),
-    admiraldev (>= 1.0.0),
+    admiral (>= 1.1.0),
+    admiraldev (>= 1.1.0),
     dplyr (>= 1.0.5),
     hms (>= 0.5.3),
     lifecycle (>= 0.1.0),
@@ -37,7 +38,7 @@ Suggests:
     htmltools,
     knitr,
     methods,
-    pharmaversesdtm (>= 0.2.0),
+    pharmaversesdtm (>= 1.0.0),
     reactable,
     readxl,
     rmarkdown,
