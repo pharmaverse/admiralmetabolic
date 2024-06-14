@@ -50,7 +50,7 @@ reference:
   - has_keyword('utils_fil')
 
 - title: Example Datasets
-  desc: You can run `admiral::use_ad_metabolic()` to produce additional datasets
+  desc: You can run `admiral::use_ad_template()` to produce additional datasets
 - contents:
   - has_keyword('datasets')
 

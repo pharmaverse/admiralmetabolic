@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralmetabolic
 Title: Metabolism Extension Package for ADaM in 'R' Asset Library
-Version: 0.1.0
+Version: 0.0.0
 Authors@R: 
     person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = c("aut", "cre"))
 Description: A toolbox for programming Clinical Data Standards Interchange
@@ -39,8 +39,6 @@ Suggests:
     knitr,
     methods,
     pharmaversesdtm (>= 1.0.0),
-    reactable,
-    readxl,
     rmarkdown,
     testthat (>= 3.0.0),
     tibble
