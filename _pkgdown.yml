@@ -1,4 +1,4 @@
-url: https://pharmaverse.github.io/admiraltemplate
+url: https://pharmaverse.github.io/admiralmetabolic
 
 template:
   bootstrap: 5
@@ -6,9 +6,9 @@ template:
     bootswatch: flatly
 repo:
   url:
-    home: https://github.com/pharmaverse/admiraltemplate
-    source: https://github.com/pharmaverse/admiraltemplate/blob/main/
-    issue: https://github.com/pharmaverse/admiraltemplate/issues/
+    home: https://github.com/pharmaverse/admiralmetabolic
+    source: https://github.com/pharmaverse/admiralmetabolic/blob/main/
+    issue: https://github.com/pharmaverse/admiralmetabolic/issues/
     user: https://github.com/
 news:
   cran_dates: true
@@ -32,7 +32,7 @@ reference:
 
 - title: Advanced Functions
 - subtitle: Pre-Defined Source Objects
-  desc: Source objects defined by {admiraltemplate}
+  desc: Source objects defined by {admiralmetabolic}
 - contents:
   - has_keyword("source_specifications")
 
@@ -61,7 +61,7 @@ navbar:
   components:
     getstarted:
       text: Get Started
-      href: articles/admiraltemplate.html
+      href: articles/admiralmetabolic.html
     reference:
       text: Reference
       href: reference/index.html
@@ -80,5 +80,5 @@ navbar:
       aria-label: Slack
     newissue:
       icon: fa-bug
-      href: https://github.com/pharmaverse/admiraltemplate/issues/new/choose
+      href: https://github.com/pharmaverse/admiralmetabolic/issues/new/choose
       aria-label: New Issue
