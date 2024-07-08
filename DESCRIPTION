@@ -20,7 +20,7 @@ URL: https://pharmaverse.github.io/admiraltemplate,
 Depends: 
     R (>= 4.1)
 Imports:
-    admiral (>= 1.1.0),
+    admiral (>= 1.1.1),
     admiraldev (>= 1.0.0),
     dplyr (>= 0.8.4),
     stringr (>= 1.4.0),
