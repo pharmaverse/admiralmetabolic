@@ -21,6 +21,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Edoardo Mancini \email{edoardo.mancini@roche.com}
 
+Authors:
+\itemize{
+  \item Anders Askeland \email{iakd@novonordisk.com}
+}
+
 }
 \concept{internal}
 \keyword{internal}
