@@ -1,4 +1,4 @@
-#' Demographic dataset for `{admiralmetabolic}`
+#' Example demographic dataset
 #'
 #' An example Demographic SDTM dataset for metabolic studies.
 #'

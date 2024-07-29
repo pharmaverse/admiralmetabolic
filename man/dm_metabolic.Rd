@@ -3,7 +3,7 @@
 \docType{data}
 \name{dm_metabolic}
 \alias{dm_metabolic}
-\title{Demographic dataset for \code{{admiralmetabolic}}}
+\title{Example demographic dataset}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 25 columns.
 }
