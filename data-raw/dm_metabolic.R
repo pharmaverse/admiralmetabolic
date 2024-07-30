@@ -1,4 +1,4 @@
-# Datasets: dm_metabolic
+# Dataset: dm_metabolic
 # Description: Demographics (DM) SDTM dataset for metabolic studies
 
 # Load libraries ----
