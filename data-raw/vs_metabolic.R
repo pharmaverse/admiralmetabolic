@@ -11,14 +11,10 @@ library(pharmaversesdtm)
 ## Read input data ----
 
 data("vs")
-data("dm")
-
-# data("dm_metabolic")
+data("dm_metabolic")
 
 # Convert blank to NA ----
 vs <- convert_blanks_to_na(vs)
-
-dm_metabolic <- dm %>% head(5)
 
 # Merge vs with dm_metabolic to use the req subjects ----
 
@@ -46,182 +42,182 @@ vs_mb <- vs_full %>%
       case_when(
         USUBJID == "01-701-1015" & # PLACEBO
           VSTESTCD == "WEIGHT" ~ case_when(
-            VISIT == "SCREENING 1" ~ 89.20,
-            VISIT == "BASELINE" ~ 89.10,
-            VISIT == "WEEK 2" ~ 90.20,
-            VISIT == "WEEK 4" ~ 90.42,
-            VISIT == "WEEK 6" ~ 90.54,
-            VISIT == "WEEK 8" ~ 90.81,
-            VISIT == "WEEK 12" ~ 91.20,
-            VISIT == "WEEK 16" ~ 90.31,
-            VISIT == "WEEK 20" ~ 91.37,
-            VISIT == "WEEK 24" ~ 91.55,
-            VISIT == "WEEK 26" ~ 93.10,
-          ),
+          VISIT == "SCREENING 1" ~ 89.20,
+          VISIT == "BASELINE" ~ 89.10,
+          VISIT == "WEEK 2" ~ 90.20,
+          VISIT == "WEEK 4" ~ 90.42,
+          VISIT == "WEEK 6" ~ 90.54,
+          VISIT == "WEEK 8" ~ 90.81,
+          VISIT == "WEEK 12" ~ 91.20,
+          VISIT == "WEEK 16" ~ 90.31,
+          VISIT == "WEEK 20" ~ 91.37,
+          VISIT == "WEEK 24" ~ 91.55,
+          VISIT == "WEEK 26" ~ 93.10,
+        ),
         USUBJID == "01-701-1015" & # PLACEBO
           VSTESTCD == "HEIGHT" ~ case_when(VISIT == "SCREENING 1" ~ 153),
         USUBJID == "01-701-1015" & # PLACEBO
           VSTESTCD == "WSTCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 99,
-            VISIT == "BASELINE" ~ 99,
-            VISIT == "WEEK 2" ~ 100,
-            VISIT == "WEEK 4" ~ 100.4,
-            VISIT == "WEEK 6" ~ 101,
-            VISIT == "WEEK 8" ~ 101,
-            VISIT == "WEEK 12" ~ 102,
-            VISIT == "WEEK 16" ~ 102.5,
-            VISIT == "WEEK 20" ~ 102.7,
-            VISIT == "WEEK 24" ~ 104,
-            VISIT == "WEEK 26" ~ 105,
-          ),
+          VISIT == "SCREENING 1" ~ 99,
+          VISIT == "BASELINE" ~ 99,
+          VISIT == "WEEK 2" ~ 100,
+          VISIT == "WEEK 4" ~ 100.4,
+          VISIT == "WEEK 6" ~ 101,
+          VISIT == "WEEK 8" ~ 101,
+          VISIT == "WEEK 12" ~ 102,
+          VISIT == "WEEK 16" ~ 102.5,
+          VISIT == "WEEK 20" ~ 102.7,
+          VISIT == "WEEK 24" ~ 104,
+          VISIT == "WEEK 26" ~ 105,
+        ),
         USUBJID == "01-701-1015" & # PLACEBO
           VSTESTCD == "HIPCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 102,
-            VISIT == "BASELINE" ~ 102,
-            VISIT == "WEEK 2" ~ 103,
-            VISIT == "WEEK 4" ~ 103,
-            VISIT == "WEEK 6" ~ 103,
-            VISIT == "WEEK 8" ~ 104,
-            VISIT == "WEEK 12" ~ 104.2,
-            VISIT == "WEEK 16" ~ 104.7,
-            VISIT == "WEEK 20" ~ 105,
-            VISIT == "WEEK 24" ~ 105.1,
-            VISIT == "WEEK 26" ~ 105.2,
-          ),
+          VISIT == "SCREENING 1" ~ 102,
+          VISIT == "BASELINE" ~ 102,
+          VISIT == "WEEK 2" ~ 103,
+          VISIT == "WEEK 4" ~ 103,
+          VISIT == "WEEK 6" ~ 103,
+          VISIT == "WEEK 8" ~ 104,
+          VISIT == "WEEK 12" ~ 104.2,
+          VISIT == "WEEK 16" ~ 104.7,
+          VISIT == "WEEK 20" ~ 105,
+          VISIT == "WEEK 24" ~ 105.1,
+          VISIT == "WEEK 26" ~ 105.2,
+        ),
         USUBJID == "01-701-1023" & # PLACEBO
           VSTESTCD == "WEIGHT" ~ case_when(
-            VISIT == "SCREENING 1" ~ 110.11,
-            VISIT == "BASELINE" ~ 110.02,
-            VISIT == "WEEK 2" ~ 111.31,
-            VISIT == "WEEK 4" ~ 112.21
-          ),
+          VISIT == "SCREENING 1" ~ 110.11,
+          VISIT == "BASELINE" ~ 110.02,
+          VISIT == "WEEK 2" ~ 111.31,
+          VISIT == "WEEK 4" ~ 112.21
+        ),
         USUBJID == "01-701-1023" & # PLACEBO
           VSTESTCD == "HEIGHT" ~ case_when(VISIT == "SCREENING 1" ~ 169),
         USUBJID == "01-701-1023" & # PLACEBO
           VSTESTCD == "WSTCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 106,
-            VISIT == "BASELINE" ~ 107,
-            VISIT == "WEEK 2" ~ 107.8,
-            VISIT == "WEEK 4" ~ 109
-          ),
+          VISIT == "SCREENING 1" ~ 106,
+          VISIT == "BASELINE" ~ 107,
+          VISIT == "WEEK 2" ~ 107.8,
+          VISIT == "WEEK 4" ~ 109
+        ),
         USUBJID == "01-701-1023" & # PLACEBO
           VSTESTCD == "HIPCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 110,
-            VISIT == "BASELINE" ~ 110,
-            VISIT == "WEEK 2" ~ 111.4,
-            VISIT == "WEEK 4" ~ 112
-          ),
-        USUBJID == "01-701-1028" & # XANHI
+          VISIT == "SCREENING 1" ~ 110,
+          VISIT == "BASELINE" ~ 110,
+          VISIT == "WEEK 2" ~ 111.4,
+          VISIT == "WEEK 4" ~ 112
+        ),
+        USUBJID == "01-701-1028" & # Insulin
           VSTESTCD == "WEIGHT" ~ case_when(
-            VISIT == "SCREENING 1" ~ 95.14,
-            VISIT == "BASELINE" ~ 95.11,
-            VISIT == "WEEK 2" ~ 94.23,
-            VISIT == "WEEK 4" ~ 92.11,
-            VISIT == "WEEK 6" ~ 91.55,
-            VISIT == "WEEK 8" ~ 90.24,
-            VISIT == "WEEK 12" ~ 89.33,
-            VISIT == "WEEK 16" ~ 88.82,
-            VISIT == "WEEK 20" ~ 88.15,
-            VISIT == "WEEK 24" ~ 87.06,
-            VISIT == "WEEK 26" ~ 86.12
-          ),
-        USUBJID == "01-701-1028" & # XANHI
+          VISIT == "SCREENING 1" ~ 95.14,
+          VISIT == "BASELINE" ~ 95.11,
+          VISIT == "WEEK 2" ~ 94.23,
+          VISIT == "WEEK 4" ~ 92.11,
+          VISIT == "WEEK 6" ~ 91.55,
+          VISIT == "WEEK 8" ~ 90.24,
+          VISIT == "WEEK 12" ~ 89.33,
+          VISIT == "WEEK 16" ~ 88.82,
+          VISIT == "WEEK 20" ~ 88.15,
+          VISIT == "WEEK 24" ~ 87.06,
+          VISIT == "WEEK 26" ~ 86.12
+        ),
+        USUBJID == "01-701-1028" & # Insulin
           VSTESTCD == "HEIGHT" ~ case_when(VISIT == "SCREENING 1" ~ 159),
-        USUBJID == "01-701-1028" & # XANHI
+        USUBJID == "01-701-1028" & # Insulin
           VSTESTCD == "WSTCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 105,
-            VISIT == "BASELINE" ~ 105,
-            VISIT == "WEEK 2" ~ 104,
-            VISIT == "WEEK 4" ~ 102,
-            VISIT == "WEEK 6" ~ 101,
-            VISIT == "WEEK 8" ~ 100,
-            VISIT == "WEEK 12" ~ 99.4,
-            VISIT == "WEEK 16" ~ 99,
-            VISIT == "WEEK 20" ~ 97,
-            VISIT == "WEEK 24" ~ 96,
-            VISIT == "WEEK 26" ~ 95
-          ),
-        USUBJID == "01-701-1028" & # XANHI
+          VISIT == "SCREENING 1" ~ 105,
+          VISIT == "BASELINE" ~ 105,
+          VISIT == "WEEK 2" ~ 104,
+          VISIT == "WEEK 4" ~ 102,
+          VISIT == "WEEK 6" ~ 101,
+          VISIT == "WEEK 8" ~ 100,
+          VISIT == "WEEK 12" ~ 99.4,
+          VISIT == "WEEK 16" ~ 99,
+          VISIT == "WEEK 20" ~ 97,
+          VISIT == "WEEK 24" ~ 96,
+          VISIT == "WEEK 26" ~ 95
+        ),
+        USUBJID == "01-701-1028" & # Insulin
           VSTESTCD == "HIPCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 111,
-            VISIT == "BASELINE" ~ 111,
-            VISIT == "WEEK 2" ~ 110,
-            VISIT == "WEEK 4" ~ 112,
-            VISIT == "WEEK 6" ~ 109,
-            VISIT == "WEEK 8" ~ 108,
-            VISIT == "WEEK 12" ~ 107.5,
-            VISIT == "WEEK 16" ~ 106.2,
-            VISIT == "WEEK 20" ~ 104,
-            VISIT == "WEEK 24" ~ 103,
-            VISIT == "WEEK 26" ~ 102
-          ),
-        USUBJID == "01-701-1033" & # XANLO
+          VISIT == "SCREENING 1" ~ 111,
+          VISIT == "BASELINE" ~ 111,
+          VISIT == "WEEK 2" ~ 110,
+          VISIT == "WEEK 4" ~ 112,
+          VISIT == "WEEK 6" ~ 109,
+          VISIT == "WEEK 8" ~ 108,
+          VISIT == "WEEK 12" ~ 107.5,
+          VISIT == "WEEK 16" ~ 106.2,
+          VISIT == "WEEK 20" ~ 104,
+          VISIT == "WEEK 24" ~ 103,
+          VISIT == "WEEK 26" ~ 102
+        ),
+        USUBJID == "01-701-1033" & # Insulin
           VSTESTCD == "WEIGHT" ~ case_when(
-            VISIT == "SCREENING 1" ~ 101.82,
-            VISIT == "BASELINE" ~ 101.61,
-            VISIT == "WEEK 2" ~ 100.64,
-            VISIT == "WEEK 4" ~ 99.91
-          ),
-        USUBJID == "01-701-1033" & # XANLO
+          VISIT == "SCREENING 1" ~ 101.82,
+          VISIT == "BASELINE" ~ 101.61,
+          VISIT == "WEEK 2" ~ 100.64,
+          VISIT == "WEEK 4" ~ 99.91
+        ),
+        USUBJID == "01-701-1033" & # Insulin
           VSTESTCD == "HEIGHT" ~ case_when(VISIT == "SCREENING 1" ~ 158),
-        USUBJID == "01-701-1033" & # XANLO
+        USUBJID == "01-701-1033" & # Insulin
           VSTESTCD == "WSTCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 108,
-            VISIT == "BASELINE" ~ 107,
-            VISIT == "WEEK 2" ~ 107,
-            VISIT == "WEEK 4" ~ 106
-          ),
-        USUBJID == "01-701-1033" & # XANLO
+          VISIT == "SCREENING 1" ~ 108,
+          VISIT == "BASELINE" ~ 107,
+          VISIT == "WEEK 2" ~ 107,
+          VISIT == "WEEK 4" ~ 106
+        ),
+        USUBJID == "01-701-1033" & # Insulin
           VSTESTCD == "HIPCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 110,
-            VISIT == "BASELINE" ~ 110,
-            VISIT == "WEEK 2" ~ 108,
-            VISIT == "WEEK 4" ~ 107
-          ),
-        USUBJID == "01-701-1034" & # XANHI
+          VISIT == "SCREENING 1" ~ 110,
+          VISIT == "BASELINE" ~ 110,
+          VISIT == "WEEK 2" ~ 108,
+          VISIT == "WEEK 4" ~ 107
+        ),
+        USUBJID == "01-701-1034" & # Insulin
           VSTESTCD == "WEIGHT" ~ case_when(
-            VISIT == "SCREENING 1" ~ 108.12,
-            VISIT == "BASELINE" ~ 107.43,
-            VISIT == "WEEK 2" ~ 105.41,
-            VISIT == "WEEK 4" ~ 104.92,
-            VISIT == "WEEK 6" ~ 103.65,
-            VISIT == "WEEK 8" ~ 103.12,
-            VISIT == "WEEK 12" ~ 100.11,
-            VISIT == "WEEK 16" ~ 97.42,
-            VISIT == "WEEK 20" ~ 96.95,
-            VISIT == "WEEK 24" ~ 94.86,
-            VISIT == "WEEK 26" ~ 94.11
-          ),
-        USUBJID == "01-701-1034" & # XANHI
+          VISIT == "SCREENING 1" ~ 108.12,
+          VISIT == "BASELINE" ~ 107.43,
+          VISIT == "WEEK 2" ~ 105.41,
+          VISIT == "WEEK 4" ~ 104.92,
+          VISIT == "WEEK 6" ~ 103.65,
+          VISIT == "WEEK 8" ~ 103.12,
+          VISIT == "WEEK 12" ~ 100.11,
+          VISIT == "WEEK 16" ~ 97.42,
+          VISIT == "WEEK 20" ~ 96.95,
+          VISIT == "WEEK 24" ~ 94.86,
+          VISIT == "WEEK 26" ~ 94.11
+        ),
+        USUBJID == "01-701-1034" & # Insulin
           VSTESTCD == "HEIGHT" ~ case_when(VISIT == "SCREENING 1" ~ 163),
-        USUBJID == "01-701-1034" & # XANHI
+        USUBJID == "01-701-1034" & # Insulin
           VSTESTCD == "WSTCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 115,
-            VISIT == "BASELINE" ~ 115,
-            VISIT == "WEEK 2" ~ 114,
-            VISIT == "WEEK 4" ~ 113,
-            VISIT == "WEEK 6" ~ 112,
-            VISIT == "WEEK 8" ~ 113,
-            VISIT == "WEEK 12" ~ 110,
-            VISIT == "WEEK 16" ~ 109.2,
-            VISIT == "WEEK 20" ~ 109,
-            VISIT == "WEEK 24" ~ 108,
-            VISIT == "WEEK 26" ~ 107
-          ),
-        USUBJID == "01-701-1034" & # XANHI
+          VISIT == "SCREENING 1" ~ 115,
+          VISIT == "BASELINE" ~ 115,
+          VISIT == "WEEK 2" ~ 114,
+          VISIT == "WEEK 4" ~ 113,
+          VISIT == "WEEK 6" ~ 112,
+          VISIT == "WEEK 8" ~ 113,
+          VISIT == "WEEK 12" ~ 110,
+          VISIT == "WEEK 16" ~ 109.2,
+          VISIT == "WEEK 20" ~ 109,
+          VISIT == "WEEK 24" ~ 108,
+          VISIT == "WEEK 26" ~ 107
+        ),
+        USUBJID == "01-701-1034" & # Insulin
           VSTESTCD == "HIPCIR" ~ case_when(
-            VISIT == "SCREENING 1" ~ 120,
-            VISIT == "BASELINE" ~ 119.7,
-            VISIT == "WEEK 2" ~ 119.1,
-            VISIT == "WEEK 4" ~ 118.3,
-            VISIT == "WEEK 6" ~ 117.7,
-            VISIT == "WEEK 8" ~ 117,
-            VISIT == "WEEK 12" ~ 116.4,
-            VISIT == "WEEK 16" ~ 115,
-            VISIT == "WEEK 20" ~ 114,
-            VISIT == "WEEK 24" ~ 113,
-            VISIT == "WEEK 26" ~ 113
-          ),
+          VISIT == "SCREENING 1" ~ 120,
+          VISIT == "BASELINE" ~ 119.7,
+          VISIT == "WEEK 2" ~ 119.1,
+          VISIT == "WEEK 4" ~ 118.3,
+          VISIT == "WEEK 6" ~ 117.7,
+          VISIT == "WEEK 8" ~ 117,
+          VISIT == "WEEK 12" ~ 116.4,
+          VISIT == "WEEK 16" ~ 115,
+          VISIT == "WEEK 20" ~ 114,
+          VISIT == "WEEK 24" ~ 113,
+          VISIT == "WEEK 26" ~ 113
+        ),
         TRUE ~ VSSTRESN
       )
   )
@@ -251,7 +247,7 @@ vs_mb_bmi <- vs_mb |>
   ) |>
   # calculate bmi
   mutate(
-    VSSTRESN = as.numeric(BODYWEIGHT / (HEIGHT ^ 2)),
+    VSSTRESN = as.numeric(BODYWEIGHT / (HEIGHT^2)),
     VSTESTCD = "BMI",
     VSTEST = "Body Mass Index",
   ) |>
