@@ -3,15 +3,15 @@
 \docType{data}
 \name{vs_metabolic}
 \alias{vs_metabolic}
-\title{Vital signs Dataset-metabolic}
+\title{Example Vital Signs dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 678 rows and 24 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 719 rows and 24 columns.
 }
 \usage{
 vs_metabolic
 }
 \description{
-An updated SDTM VS dataset for obese patients
+An example Vital Signs SDTM dataset for metabolic studies
 }
 \concept{datasets}
 \keyword{datasets}
