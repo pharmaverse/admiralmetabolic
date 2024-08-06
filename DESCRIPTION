@@ -40,7 +40,8 @@ Suggests:
     pharmaversesdtm (>= 1.0.0),
     rmarkdown,
     testthat (>= 3.0.0),
-    tibble
+    tibble,
+    usethis ( >= 2.2.3)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
