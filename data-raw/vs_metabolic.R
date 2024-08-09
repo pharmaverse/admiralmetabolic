@@ -6,14 +6,12 @@
 library(tibble)
 library(dplyr)
 library(pharmaversesdtm)
+library(purrr)
 
 ## Read input data ----
 
 data("vs")
 data("dm_metabolic")
-
-# Convert blank to NA ----
-vs <- convert_blanks_to_na(vs)
 
 # Merge vs with dm_metabolic to use the req subjects ----
 
@@ -34,7 +32,7 @@ vs1_hipcir <- vs1 %>%
 vs_full <- bind_rows(vs1, vs1_wstcir, vs1_hipcir) %>%
   arrange(USUBJID, VSTESTCD, VISITNUM, VSDY)
 
-# Updating each parameters values for each subjects to make them obese
+# Updating each parameter values for each subject to make them obese
 vs_mb <- vs_full %>%
   mutate(
     VSSTRESN =
@@ -282,9 +280,9 @@ common_cols <- intersect(names(vs_mb), names(vs))
 
 walk(common_cols, \(x) attr(vs_mb[[x]], "label") <<- attr(vs[[x]], "label"))
 
-## No labels to add
+# Ordering columns as per vs dataset
 
-vs_metabolic <- vs_mb
+vs_metabolic <- vs_mb[, colnames(vs)]
 
 # Label VS dataset ----
 
