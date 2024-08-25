@@ -1,0 +1,313 @@
+---
+title: "Creating a Metabolic ADVS ADaM"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating a Metabolic ADVS ADaM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(admiraldev)
+```
+
+# Introduction
+
+This article describes creating a vital signs ADaM for metabolic clinical trials.
+
+We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+The programming workflow around creating the general set-up of an ADVS using
+`{admiral}` functions is the same. We focus on the most common endpoints and their derivations mainly found in metabolic trials to avoid repeating information and maintaining the same content in two places.
+
+# Programming Workflow
+
+* [Initial ADVS Set-up](#advs_start)
+* [Derive Additional Parameters (e.g. `BMI` for `ADVS`)](#derive_param)
+* [Derive Categorization Variables (`AVALCATx`, `BASECATx`)](#cat)
+* [Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`)](#crit_vars)
+* [Remaining ADVS Set-up](#advs_end)
+
+## Initial ADVS Set-up {#advs_start}
+
+The following steps are to merge ADSL variables with the source data and derive 
+the usual ADVS analysis variables. The `{admiral}` [Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html)
+gives detailed guidance on all these steps.
+
+The only difference here would be the the additional parameters collected in 
+metabolic trials - for example:
+
+`VSTESTCD` | `PARAMCD` | `PARAM` | `PARAMN` | `PARCAT1` | `PARCAT1N`
+--------- | --------- | -------- | ------- | --------- | ----------
+BMI | BMI | Body Mass Index (kg/m^2) | 1 | Subject Characteristic | 1
+HIPCIR | HIPCIR | Hip Circumference (cm) | 3 | Subject Characteristic | 1
+WSTCIR | WSTCIR | Waist Circumference (cm) | 5 | Subject Characteristic | 1
+
+```{r, message=FALSE, include=FALSE}
+library(admiral)
+library(admiralmetabolic)
+library(pharmaversesdtm)
+library(dplyr, warn.conflicts = FALSE)
+library(lubridate)
+library(stringr)
+
+data("dm_metabolic")
+data("vs_metabolic")
+
+dm <- convert_blanks_to_na(dm_metabolic)
+vs <- convert_blanks_to_na(vs_metabolic)
+
+data("admiral_adsl")
+
+dm <- dm %>%
+  left_join(admiral_adsl %>% select(USUBJID, TRTSDT, TRTEDT), by = "USUBJID")
+
+adsl <- dm %>%
+  select(-DOMAIN)
+
+adsl <- adsl %>%
+  mutate(
+    TRT01P = ARM,
+    TRT01A = ACTARM
+  )
+
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
+
+advs <- derive_vars_merged(
+  vs,
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = exprs(STUDYID, USUBJID)
+)
+
+advs <- derive_vars_dt(advs, new_vars_prefix = "A", dtc = VSDTC)
+
+advs <-
+  derive_vars_dy(advs, reference_date = TRTSDT, source_vars = exprs(ADT))
+
+param_lookup <- tribble(
+  ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN,
+  "HEIGHT", "HEIGHT", "Height (cm)", 2,
+  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 3,
+  "WEIGHT", "WEIGHT", "Weight (kg)", 4,
+  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5
+)
+attr(param_lookup$VSTESTCD, "label") <- "Vital Signs Test Short Name"
+
+advs <- derive_vars_merged_lookup(
+  advs,
+  dataset_add = param_lookup,
+  new_vars = exprs(PARAMCD),
+  by_vars = exprs(VSTESTCD)
+)
+
+advs <- mutate(
+  advs,
+  AVAL = VSSTRESN
+)
+```
+
+## Derive Additional Parameters (e.g. `BMI` for `ADVS`) {#derive_param}
+
+In metabolic trials, `BMI` is often calculated at source using collected height and weight for screening purposes. But while creating the `ADVS` dataset, we re-derive `BMI` from the collected height and weight values. This is done to ensure that the `BMI` is calculated consistently across all subjects and visits. 
+
+In this step, we create parameter `Body Mass Index` (BMI) for `ADVS` domain using the `derive_param_bmi()` function.
+Note that only variables specified in the `by_vars` argument will be populated in the newly 
+created records. Also note that if height is collected only once use `constant_by_vars` to specify the subject-level variable to merge on.  Otherwise BMI is only calculated for visits where both are collected.
+
+
+```{r eval=TRUE}
+# Removing BMI collected at source from the dataset
+advs <- advs %>% filter(!VSTESTCD == "BMI")
+
+advs <- derive_param_bmi(
+  advs,
+  by_vars = exprs(STUDYID, USUBJID, !!!adsl_vars, VISIT, VISITNUM, ADT, ADY, VSTPT, VSTPTNUM),
+  set_values_to = exprs(
+    PARAMCD = "BMI",
+    PARAM = "Body Mass Index (kg/m^2)",
+    PARAMN = 1
+  ),
+  get_unit_expr = VSSTRESU,
+  filter = VSSTAT != "NOT DONE" | is.na(VSSTAT),
+  constant_by_vars = exprs(USUBJID)
+)
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  arrange(advs, USUBJID, VISITNUM, VSTPTNUM, ADT, PARAMCD),
+  display_vars = exprs(USUBJID, VSTESTCD, PARAMCD, PARAM, VISIT, AVAL),
+  filter = PARAMCD %in% c("BMI")
+)
+```
+
+```{r eval=TRUE, include=FALSE}
+advs <- restrict_derivation(
+  advs,
+  derivation = derive_var_extreme_flag,
+  args = params(
+    by_vars = exprs(STUDYID, USUBJID, PARAMCD),
+    order = exprs(ADT, VSTPTNUM, VISITNUM),
+    new_var = ABLFL,
+    mode = "last"
+  ),
+  filter = (!is.na(AVAL) & ADT <= TRTSDT)
+)
+
+advs <- derive_var_base(
+  advs,
+  by_vars = exprs(STUDYID, USUBJID, PARAMCD),
+  source_var = AVAL,
+  new_var = BASE
+)
+
+advs <- derive_var_chg(advs)
+
+advs <- derive_var_pchg(advs)
+```
+
+## Derive Categorization Variables (`AVALCATx`, `BASECATx`) {#cat}
+
+Admiral does not currently have a generic function to aid in assigning `AVALCATy`/
+`AVALCAvN` and `BASECATy`/ `BASECAvN`  values. 
+Below is a simple example of how these values may be assigned:
+
+```{r eval=TRUE}
+avalcat_lookup <- tibble::tribble(
+  ~PARAMCD, ~AVALCA1N, ~AVALCAT1,
+  "BMI", 1, "Underweight",
+  "BMI", 2, "Normal weight",
+  "BMI", 3, "Overweight",
+  "BMI", 4, "Obesity class I",
+  "BMI", 5, "Obesity class II",
+  "BMI", 6, "Obesity class III",
+  "BMI", NA, NA_character_
+)
+
+format_avalcat1n <- function(param, aval) {
+  case_when(
+    param == "BMI" & aval < 18.5 ~ 1,
+    param == "BMI" & aval >= 18.5 & aval < 25 ~ 2,
+    param == "BMI" & aval >= 25 & aval < 30 ~ 3,
+    param == "BMI" & aval >= 30 & aval < 35 ~ 4,
+    param == "BMI" & aval >= 35 & aval < 40 ~ 5,
+    param == "BMI" & aval >= 40 ~ 6,
+    TRUE ~ NA_real_
+  )
+}
+
+advs <- advs %>%
+  mutate(AVALCA1N = format_avalcat1n(param = PARAMCD, aval = AVAL)) %>%
+  derive_vars_merged(
+    avalcat_lookup,
+    by = exprs(PARAMCD, AVALCA1N)
+  )
+```
+
+```{r eval=TRUE, echo=FALSE}
+dataset_vignette(
+  advs,
+  display_vars = exprs(USUBJID, PARAMCD, VISIT, AVAL, AVALCA1N, AVALCAT1),
+  filter = PARAMCD == "BMI"
+)
+```
+
+In the similar way, we will create `BASECATy`/ `BASECAvN` variables.
+
+```{r eval=TRUE}
+basecat_lookup <- tibble::tribble(
+  ~PARAMCD, ~BASECA1N, ~BASECAT1,
+  "BMI", 1, "Underweight",
+  "BMI", 2, "Normal weight",
+  "BMI", 3, "Overweight",
+  "BMI", 4, "Obesity class I",
+  "BMI", 5, "Obesity class II",
+  "BMI", 6, "Obesity class III",
+  "BMI", NA, NA_character_
+)
+
+format_basecat1n <- function(param, base) {
+  case_when(
+    param == "BMI" & base < 18.5 ~ 1,
+    param == "BMI" & base >= 18.5 & base < 25 ~ 2,
+    param == "BMI" & base >= 25 & base < 30 ~ 3,
+    param == "BMI" & base >= 30 & base < 35 ~ 4,
+    param == "BMI" & base >= 35 & base < 40 ~ 5,
+    param == "BMI" & base >= 40 ~ 6,
+    TRUE ~ NA_real_
+  )
+}
+advs <- advs %>%
+  mutate(BASECA1N = format_basecat1n(param = PARAMCD, base = BASE)) %>%
+  derive_vars_merged(
+    basecat_lookup,
+    by = exprs(PARAMCD, BASECA1N)
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  advs,
+  display_vars = exprs(USUBJID, PARAMCD, VISIT, AVAL, BASE, ABLFL, BASECA1N, BASECAT1),
+  filter = PARAMCD == "BMI"
+)
+```
+
+## Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`) {#crit_vars}
+
+For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFLN`) `{admiral}`
+provides `derive_vars_crit_flag()`. It ensures that they are derived in an
+ADaM-compliant way (see documentation of the function for details).
+
+In most cases the criterion depends on the parameter. In the
+following example, the criterion flags for weight based on percentage change in 
+weight reduction is derived. Additional criterion flags can be added as needed.
+
+
+```{r eval=TRUE}
+advs <- advs %>%
+  derive_vars_crit_flag(
+    condition = PCHG <= -5 & PARAMCD == "WEIGHT",
+    description = "Achievement of ≥ 5% weight reduction",
+    crit_nr = 1,
+    values_yn = TRUE,
+    create_numeric_flag = FALSE
+  ) %>%
+  derive_vars_crit_flag(
+    condition = PCHG <= -10 & PARAMCD == "WEIGHT",
+    description = "Achievement of ≥ 10% weight reduction",
+    crit_nr = 2,
+    values_yn = TRUE,
+    create_numeric_flag = FALSE
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  arrange(advs, USUBJID, VISITNUM, VSTPTNUM, PARAMCD),
+  display_vars = exprs(USUBJID, PARAMCD, PCHG, CRIT1, CRIT1FL, CRIT2, CRIT2FL),
+  filter = PARAMCD %in% c("WEIGHT")
+)
+```
+
+## Remaining ADVS Set-up {#advs_end}
+
+The `{admiral}`
+[Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html) 
+covers all the steps that are not shown here, such as merging the parameter-level values, 
+timing variables, and analysis flags.
+
+# Example Scripts {#example}
+
+| ADaM | Sourcing Command                                            |
+|------|-------------------------------------------------------------|
+| ADVS | `admiral::use_ad_template("ADVS", package = "admiralmetabolic")` |
