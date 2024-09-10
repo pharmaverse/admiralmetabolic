@@ -38,9 +38,9 @@ places.
 -   [Read in Data](#readdata)
 -   [Initial ADVS Set-up](#advs_start)
 -   [Derive Additional Parameters (e.g. `BMI` for `ADVS`)](#derive_param)
--   [Derive Categorization Variables (`AVALCATx`, `BASECATx`)](#cat)
--   [Derive Criterion Variables (`CRITy`, `CRITyFL`,
-    `CRITyFLN`)](#crit_vars)
+-   [Common Metabolic Endpoints](#common_endpoints)
+    -   [Derive Categorization Variables (`AVALCATx`, `BASECATx`)](#cat)
+    -   [Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`)](#crit_vars)
 -   [Remaining ADVS Set-up](#advs_end)
 
 ## Read in Data {#readdata}
@@ -71,25 +71,19 @@ dm <- dm %>%
   left_join(admiral_adsl %>% select(USUBJID, TRTSDT, TRTEDT), by = "USUBJID")
 ```
 
-The `DM` domain is used as the basis for `ADSL`:
+Within this vignette, the `DM` domain is used as the basis for `ADSL`:
 
 ```{r eval=TRUE}
 adsl <- dm %>%
   select(-DOMAIN)
 ```
 
-```{r, eval=TRUE, echo=FALSE}
-dataset_vignette(
-  adsl,
-  display_vars = exprs(USUBJID, RFSTDTC, COUNTRY, AGE, SEX, RACE, ETHNIC, ARM, ACTARM)
-)
-```
-
 ## Initial ADVS Set-up {#advs_start}
 
 The following steps are to merge ADSL variables with the source data and
 derive the usual ADVS analysis variables. The `{admiral}` [Creating a
-BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html)
+BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html)
 gives detailed guidance on all these steps.
 
 ```{r, include=FALSE}
@@ -133,7 +127,7 @@ param_lookup <- tribble(
   ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
   "HEIGHT", "HEIGHT", "Height (cm)", 1, "Subject Characteristic", 1,
   "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Subject Characteristic", 1,
-  "BMI", "Body Mass Index", "Body Mass Index(kg/m^2)", 3, "Subject Characteristic", 1,
+  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Subject Characteristic", 1,
   "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Subject Characteristic", 1,
   "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Subject Characteristic", 1,
   "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
@@ -144,18 +138,15 @@ param_lookup <- tribble(
 attr(param_lookup$VSTESTCD, "label") <- "Vital Signs Test Short Name"
 ```
 
-This lookup may now be joined to the source data and this is how the parameters will look like.
-```{r, eval=TRUE, include=FALSE}
+This lookup may now be joined to the source data and this is how the
+parameters will look like:
+
+```{r, eval=TRUE, include=TRUE, message=FALSE}
 advs <- derive_vars_merged_lookup(
   advs,
   dataset_add = param_lookup,
   new_vars = exprs(PARAMCD, PARAM, PARCAT1, PARCAT1N),
   by_vars = exprs(VSTESTCD)
-)
-
-advs <- mutate(
-  advs,
-  AVAL = VSSTRESN
 )
 ```
 
@@ -163,6 +154,13 @@ advs <- mutate(
 advs_param <- distinct(advs, USUBJID, PARAMCD, VSTESTCD, PARAM, PARCAT1, PARCAT1N)
 
 dataset_vignette(advs_param, display_vars = exprs(USUBJID, VSTESTCD, PARAMCD, PARAM, PARCAT1, PARCAT1N))
+```
+
+```{r, eval=TRUE, include=FALSE}
+advs <- mutate(
+  advs,
+  AVAL = VSSTRESN
+)
 ```
 
 ## Derive Additional Parameters (e.g. `BMI` for `ADVS`) {#derive_param}
@@ -173,12 +171,12 @@ dataset, we re-derive `BMI` from the collected height and weight values.
 This is done to ensure that the `BMI` is calculated consistently across
 all subjects and visits.
 
-In this step, we create parameter `Body Mass Index` (BMI) for `ADVS`
+In this step, we create parameter `Body Mass Index` (BMI) for the `ADVS`
 domain using the `derive_param_bmi()` function. Note that only variables
 specified in the `by_vars` argument will be populated in the newly
-created records. "Also note that if height is collected only once for a
+created records. Also note that if height is collected only once for a
 subject use `constant_by_vars` to specify the function to merge by the
-subject-level variable" Otherwise BMI is only calculated for visits
+subject-level variable - otherwise BMI is only calculated for visits
 where both are collected.
 
 ```{r eval=TRUE}
@@ -237,6 +235,8 @@ advs <- derive_var_chg(advs)
 advs <- derive_var_pchg(advs)
 ```
 
+## Common Metabolic Endpoints {#common_endpoints}
+
 In the following sections, we will explore some of the most common
 endpoints typically observed in metabolic trials.
 
@@ -247,12 +247,12 @@ and `BASECATy`, as detailed in the subsequent section.
 
 Additionally, the achievement of weight reduction thresholds, such as ≥
 5%, ≥ 10%, or ≥ 15% from baseline to end of treatment or certain visit,
-is a common endpoint in obesity trials. To accommodate these criteria,
+is a common endpoint in metabolic trials. To accommodate these criteria,
 we will derive relevant criterion variables such as `CRITy`, `CRITyFL`,
 and `CRITyFLN`, with the necessary functions provided by `{admiral}`
 outlined below.
 
-## Derive Categorization Variables (`AVALCATx`, `BASECATx`) {#cat}
+#### Derive Categorization Variables (`AVALCATx`, `BASECATx`) {#cat}
 
 `{admiral}` does not currently have a generic function to aid in
 assigning `AVALCATy`/ `AVALCAvN` and `BASECATy`/ `BASECAvN` values.
@@ -261,13 +261,13 @@ Below is a simple example of how these values may be assigned:
 ```{r eval=TRUE}
 avalcat_lookup <- tibble::tribble(
   ~PARAMCD, ~AVALCA1N, ~AVALCAT1,
-  "BMI", 1, "Underweight",
-  "BMI", 2, "Normal weight",
-  "BMI", 3, "Overweight",
-  "BMI", 4, "Obesity class I",
-  "BMI", 5, "Obesity class II",
-  "BMI", 6, "Obesity class III",
-  "BMI", NA, NA_character_
+  "BMI",    1,         "Underweight",
+  "BMI",    2,         "Normal weight",
+  "BMI",    3,         "Overweight",
+  "BMI",    4,         "Obesity class I",
+  "BMI",    5,         "Obesity class II",
+  "BMI",    6,         "Obesity class III",
+  "BMI",    NA,        NA_character_
 )
 
 format_avalcat1n <- function(param, aval) {
@@ -303,13 +303,13 @@ In the similar way, we will create `BASECATy`/ `BASECAvN` variables.
 ```{r eval=TRUE}
 basecat_lookup <- tibble::tribble(
   ~PARAMCD, ~BASECA1N, ~BASECAT1,
-  "BMI", 1, "Underweight",
-  "BMI", 2, "Normal weight",
-  "BMI", 3, "Overweight",
-  "BMI", 4, "Obesity class I",
-  "BMI", 5, "Obesity class II",
-  "BMI", 6, "Obesity class III",
-  "BMI", NA, NA_character_
+  "BMI",    1,         "Underweight",
+  "BMI",    2,         "Normal weight",
+  "BMI",    3,         "Overweight",
+  "BMI",    4,         "Obesity class I",
+  "BMI",    5,         "Obesity class II",
+  "BMI",    6,         "Obesity class III",
+  "BMI",    NA,        NA_character_
 )
 
 format_basecat1n <- function(param, base) {
@@ -339,7 +339,7 @@ dataset_vignette(
 )
 ```
 
-## Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`) {#crit_vars}
+#### Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`) {#crit_vars}
 
 For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFLN`)
 `{admiral}` provides
