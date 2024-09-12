@@ -246,13 +246,13 @@ the end of treatment, which is often assessed using Body Mass Index
 and `BASECATy`, as detailed in the subsequent section.
 
 Additionally, the achievement of weight reduction thresholds, such as ≥
-5%, ≥ 10%, or ≥ 15% from baseline to end of treatment or certain visit,
+5%, ≥ 10%, or ≥ 15% from baseline to end of treatment or a certain visit,
 is a common endpoint in metabolic trials. To accommodate these criteria,
 we will derive relevant criterion variables such as `CRITy`, `CRITyFL`,
 and `CRITyFLN`, with the necessary functions provided by `{admiral}`
 outlined below.
 
-#### Derive Categorization Variables (`AVALCATx`, `BASECATx`) {#cat}
+### Derive Categorization Variables (`AVALCATx`, `BASECATx`) {#cat}
 
 `{admiral}` does not currently have a generic function to aid in
 assigning `AVALCATy`/ `AVALCAvN` and `BASECATy`/ `BASECAvN` values.
@@ -339,7 +339,7 @@ dataset_vignette(
 )
 ```
 
-#### Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`) {#crit_vars}
+### Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`) {#crit_vars}
 
 For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFLN`)
 `{admiral}` provides
