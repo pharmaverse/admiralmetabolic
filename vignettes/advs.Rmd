@@ -170,11 +170,7 @@ dataset, we re-derive `BMI` from the collected height and weight values.
 This is done to ensure that the `BMI` is calculated consistently across
 all subjects and visits.
 
-<<<<<<< HEAD
-In this step, we create parameter Body Mass Index (BMI) for the `ADVS`
-=======
 In this step, we create parameter Body Mass Index (`BMI`) for the `ADVS`
->>>>>>> 4b1c85d (#22 : Resolved comments and no hidden codes)
 domain using the `derive_param_bmi()` function. Note that only variables
 specified in the `by_vars` argument will be populated in the newly
 created records. Also note that if height is collected only once for a
