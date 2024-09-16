@@ -142,7 +142,7 @@ parameters will look like:
 advs <- derive_vars_merged_lookup(
   advs,
   dataset_add = param_lookup,
-  new_vars = exprs(PARAMCD, PARAM, PARCAT1, PARCAT1N),
+  new_vars = exprs(PARAMCD, PARAM, PARAMN, PARCAT1, PARCAT1N),
   by_vars = exprs(VSTESTCD)
 )
 ```
