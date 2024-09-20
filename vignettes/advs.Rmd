@@ -41,7 +41,7 @@ The examples of this vignette require the following packages.
 library(admiral)
 library(admiralmetabolic)
 library(pharmaversesdtm)
-library(dplyr, warn.conflicts = FALSE)
+library(dplyr)
 ```
 
 # Programming Workflow
@@ -57,8 +57,7 @@ library(dplyr, warn.conflicts = FALSE)
 ## Read in Data {#readdata}
 
 To start, all data frames needed for the creation of `ADVS` should be
-loaded into the global environment. This will be a company specific process. Some
-of the data frames needed may be `VS` and `ADSL`.
+loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiral}`. We will utilize `DM`, `VS` and `ADSL` for the basis of `ADVS`.
 
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- admiralmetabolic::dm_metabolic
@@ -83,8 +82,7 @@ adsl <- dm %>%
 The following steps are to merge `ADSL` variables with the source data and
 derive the usual `ADVS` analysis variables. Note that only the sections required for this vignette are covered in the following steps. To get a detailed guidance on all the steps, refer the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 
-Join `ADSL` to your `VS` domain. Only the `ADSL` variables used for derivations are selected at this step.
-```{r, eval=TRUE}
+```{r, eval=TRUE, include=FALSE}
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 
 advs <- derive_vars_merged(
@@ -93,17 +91,9 @@ advs <- derive_vars_merged(
   new_vars = adsl_vars,
   by_vars = exprs(STUDYID, USUBJID)
 )
-```
 
-The function `derive_vars_dt()` can be used to derive `ADT`.
-
-```{r, eval=TRUE}
 advs <- derive_vars_dt(advs, new_vars_prefix = "A", dtc = VSDTC)
-```
 
-Once `ADT` is derived, the function `derive_vars_dy()` can be used to derive `ADY`
-
-```{r, eval=TRUE}
 advs <-
   derive_vars_dy(advs, reference_date = TRTSDT, source_vars = exprs(ADT))
 ```
@@ -113,8 +103,7 @@ advs <-
 The next step is to assign parameter level values such as `PARAMCD`, `PARAM`,
 `PARAMN`, `PARCAT1`, etc. For this, a lookup can be created based on
 the SDTM `--TESTCD` value to join to the source data.
-The only difference here would be the the additional parameters
-collected in metabolic trials - `BMI`, `HIPCIR` and `WSTCIR`.
+One key addition in metabolic trials are vital sign parameters associated to body measurements, such as `BMI`, `HIPCIR`, and `WSTCIR`.
 
 ```{r, echo=TRUE, message=FALSE}
 param_lookup <- tribble(
@@ -129,8 +118,6 @@ param_lookup <- tribble(
   "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 8, "Vital Sign", 2,
   "TEMP", "TEMP", "Temperature (C)", 9, "Vital Sign", 2
 )
-
-attr(param_lookup$VSTESTCD, "label") <- "Vital Signs Test Short Name"
 ```
 
 This lookup may now be joined to the source data and this is how the
@@ -151,9 +138,8 @@ advs_param <- distinct(advs, USUBJID, PARAMCD, VSTESTCD, PARAM, PARCAT1, PARCAT1
 dataset_vignette(advs_param, display_vars = exprs(USUBJID, VSTESTCD, PARAMCD, PARAM, PARCAT1, PARCAT1N))
 ```
 
-The mapping of `AVAL` is left to the ADaM programmer. An example mapping may be:
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, include=FALSE}
 advs <- mutate(
   advs,
   AVAL = VSSTRESN
@@ -206,11 +192,7 @@ dataset_vignette(
 )
 ```
 
-Next step is to derive the analysis baseline flag `ABLFL` using the `{admiral}`
-function `derive_var_extreme_flag()`.  For example, if baseline is defined as the last 
-non-missing `AVAL` prior or on `TRTSDT`, the function call for `ABLFL` would be:
-
-```{r eval=TRUE}
+```{r eval=TRUE, include=FALSE}
 advs <- restrict_derivation(
   advs,
   derivation = derive_var_extreme_flag,
@@ -222,26 +204,14 @@ advs <- restrict_derivation(
   ),
   filter = (!is.na(AVAL) & ADT <= TRTSDT)
 )
-```
 
-Lastly, the `BASE` can be derived using the `{admiral}` function
-`derive_var_base()`. Example:
-
-```{r eval=TRUE}
 advs <- derive_var_base(
   advs,
   by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
   source_var = AVAL,
   new_var = BASE
 )
-```
 
-In this step, we derive change and percent change from baseline using the `{admiral}` 
-functions `derive_var_chg()` and `derive_var_pchg()`.  These functions expect `AVAL` 
-and `BASE` to exist in the data frame.  The `CHG` is simply `AVAL - BASE` and the
-`PCHG` is `(AVAL - BASE) / absolute value (BASE) * 100`.  Example calls are:
-
-```{r eval=TRUE}
 advs <- derive_var_chg(advs)
 
 advs <- derive_var_pchg(advs)
