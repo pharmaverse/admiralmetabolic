@@ -28,10 +28,10 @@ clinical trials.
 We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM
 vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 The programming workflow around creating the general set-up of an `ADVS`
-using `{admiral}` functions is the same. We focus on the most common
+using `{admiral}` functions is the same. In this vignette, we focus on the most common
 endpoints and their derivations mainly found in metabolic trials to
 avoid repeating information and maintaining the same content in two
-places.
+places. As such, the code in this vignette is not completely executable; we recommend consulting the ADVS template script to view the full workflow.
 
 ## Required Packages
 
