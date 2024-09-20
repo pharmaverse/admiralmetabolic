@@ -50,3 +50,5 @@ admiraltemplate*.tgz
 
 # Docs
 docs/
+/doc/
+/Meta/

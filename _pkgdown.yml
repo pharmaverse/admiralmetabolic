@@ -68,8 +68,8 @@ navbar:
     articles:
       text: User Guides
       menu:
-      - text: Creating ADXX
-        href: articles/adxx.html
+      - text: Creating a Metabolic ADVS
+        href: articles/advs.html
     history:
       icon: fa-history
       href: articles/website-versions.html
