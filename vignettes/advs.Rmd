@@ -42,8 +42,6 @@ library(admiral)
 library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr, warn.conflicts = FALSE)
-library(lubridate)
-library(stringr)
 ```
 
 # Programming Workflow
@@ -59,7 +57,7 @@ library(stringr)
 ## Read in Data {#readdata}
 
 To start, all data frames needed for the creation of `ADVS` should be
-read into the environment. This will be a company specific process. Some
+loaded into the global environment. This will be a company specific process. Some
 of the data frames needed may be `VS` and `ADSL`.
 
 ```{r, message=FALSE, warning=FALSE}
@@ -72,7 +70,7 @@ vs <- convert_blanks_to_na(vs_metabolic)
 admiral_adsl <- convert_blanks_to_na(admiral_adsl)
 ```
 
-Within this vignette, the `DM` is used as the basis for `ADSL`:
+Within this vignette, `DM` is used as the basis for `ADSL`:
 
 ```{r eval=TRUE}
 # Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset
@@ -112,8 +110,8 @@ advs <-
 
 ## Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` {#paramcd}
 
-Next step is to assign parameter level values such as `PARAMCD`, `PARAM`,
-`PARAMN`, `PARCAT1`, etc.,and for this a lookup can be created based on
+The next step is to assign parameter level values such as `PARAMCD`, `PARAM`,
+`PARAMN`, `PARCAT1`, etc. For this, a lookup can be created based on
 the SDTM `--TESTCD` value to join to the source data.
 The only difference here would be the the additional parameters
 collected in metabolic trials - `BMI`, `HIPCIR` and `WSTCIR`.
@@ -164,8 +162,7 @@ advs <- mutate(
 
 ## Derive Additional Parameters (e.g. `BMI` for `ADVS`) {#derive_param}
 
-In metabolic trials, `BMI` is often calculated at source using collected
-height and weight for screening purposes. But while creating the `ADVS`
+In metabolic trials, `BMI` is often calculated at source. But while creating the `ADVS`
 dataset, we re-derive `BMI` from the collected height and weight values.
 This is done to ensure that the `BMI` is calculated consistently across
 all subjects and visits.
@@ -261,7 +258,7 @@ the end of treatment, which is often assessed using Body Mass Index
 and `BASECATy`, as detailed in the subsequent section.
 
 Additionally, the achievement of weight reduction thresholds, such as ≥
-5%, ≥ 10%, or ≥ 15% from baseline to end of treatment or a certain visit,
+5%, ≥ 10%, or ≥ 15% from baseline to end of treatment or at a certain visit,
 is a common endpoint in metabolic trials. To accommodate these criteria,
 we will derive relevant criterion variables such as `CRITy`, `CRITyFL`,
 and `CRITyFLN`, with the necessary functions provided by `{admiral}`
@@ -313,7 +310,7 @@ dataset_vignette(
 )
 ```
 
-In the similar way, we will create `BASECATy`/ `BASECAvN` variables.
+In a similar way, we will create `BASECATy`/ `BASECAvN` variables.
 
 ```{r eval=TRUE}
 basecat_lookup <- tibble::tribble(
