@@ -1,42 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/404.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/articles/admiralmetabolic.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/articles/adxx.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/reference/admiralmetabolic-package.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/reference/dm_metabolic.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/reference/hello_admiral.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralmetabolic/reference/vs_metabolic.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/404.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/LICENSE.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/articles/admiralmetabolic.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/articles/advs.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/articles/index.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/authors.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/index.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/news/index.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/reference/admiralmetabolic-package.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/reference/dm_metabolic.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/reference/hello_admiral.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/reference/index.html</loc></url>
+<url><loc>https://pharmaverse.github.io/admiralmetabolic/reference/vs_metabolic.html</loc></url>
 </urlset>
+
