@@ -49,15 +49,15 @@
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   125, "cm", "SCREENING",
-#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   124, "cm", "WEEK 2",
-#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   123, "cm", "WEEK 3",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 125, "cm", "SCREENING",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 124, "cm", "WEEK 2",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 123, "cm", "WEEK 3",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3",
-#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   135, "cm", "SCREENING",
-#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   133, "cm", "WEEK 2",
-#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   132, "cm", "WEEK 3"
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 135, "cm", "SCREENING",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 133, "cm", "WEEK 2",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 132, "cm", "WEEK 3"
 #' )
 #'
 #' derive_param_waisthip(
@@ -70,14 +70,12 @@
 #'     PARAM = "Waist-to-Hip Ratio"
 #'   )
 #' )
-
 derive_param_waisthip <- function(dataset,
                                   by_vars,
                                   wstcir_code = "WSTCIR",
                                   hipcir_code = "HIPCIR",
                                   set_values_to = exprs(PARAMCD = "WAISTHIP"),
                                   filter = NULL) {
-
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(wstcir_code)
@@ -159,11 +157,11 @@ derive_param_waisthip <- function(dataset,
 #'
 #' advs <- tribble(
 #'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-#'   "01-101-1001", "HEIGHT", "Height (cm)",              147, "cm", "SCREENING",
+#'   "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-#'   "01-101-1002", "HEIGHT", "Height (cm)",              163, "cm", "SCREENING",
+#'   "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3",
@@ -185,15 +183,15 @@ derive_param_waisthip <- function(dataset,
 #'
 #' advs <- tribble(
 #'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-#'   "01-101-1001", "HEIGHT", "Height (cm)",              147, "cm", "SCREENING",
-#'   "01-101-1001", "HEIGHT", "Height (cm)",              148, "cm", "WEEK 2",
-#'   "01-101-1001", "HEIGHT", "Height (cm)",              149, "cm", "WEEK 3",
+#'   "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
+#'   "01-101-1001", "HEIGHT", "Height (cm)", 148, "cm", "WEEK 2",
+#'   "01-101-1001", "HEIGHT", "Height (cm)", 149, "cm", "WEEK 3",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 100, "cm", "SCREENING",
-#'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 99,  "cm", "WEEK 2",
-#'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 98,  "cm", "WEEK 3",
-#'   "01-101-1002", "HEIGHT", "Height (cm)",              163, "cm", "SCREENING",
-#'   "01-101-1002", "HEIGHT", "Height (cm)",              164, "cm", "WEEK 2",
-#'   "01-101-1002", "HEIGHT", "Height (cm)",              165, "cm", "WEEK 3",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 99, "cm", "WEEK 2",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 98, "cm", "WEEK 3",
+#'   "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
+#'   "01-101-1002", "HEIGHT", "Height (cm)", 164, "cm", "WEEK 2",
+#'   "01-101-1002", "HEIGHT", "Height (cm)", 165, "cm", "WEEK 3",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 109, "cm", "WEEK 2",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 3"
@@ -209,7 +207,6 @@ derive_param_waisthip <- function(dataset,
 #'     PARAM = "Waist-to-Height Ratio"
 #'   )
 #' )
-
 derive_param_waisthgt <- function(dataset,
                                   by_vars,
                                   wstcir_code = "WSTCIR",
@@ -217,7 +214,6 @@ derive_param_waisthgt <- function(dataset,
                                   set_values_to = exprs(PARAMCD = "WAISTHGT"),
                                   filter = NULL,
                                   constant_by_vars = NULL) {
-
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(wstcir_code)

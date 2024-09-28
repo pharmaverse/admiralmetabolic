@@ -81,15 +81,15 @@
 #'
 #' advs <- tribble(
 #'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   125, "cm", "SCREENING",
-#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   124, "cm", "WEEK 2",
-#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   123, "cm", "WEEK 3",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 125, "cm", "SCREENING",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 124, "cm", "WEEK 2",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 123, "cm", "WEEK 3",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   135, "cm", "SCREENING",
-#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   133, "cm", "WEEK 2",
-#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   132, "cm", "WEEK 3",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 135, "cm", "SCREENING",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 133, "cm", "WEEK 2",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 132, "cm", "WEEK 3",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3"
@@ -110,11 +110,11 @@
 #'
 #' advs <- tribble(
 #'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-#'   "01-101-1001", "HEIGHT", "Height (cm)",              147, "cm", "SCREENING",
+#'   "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
 #'   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-#'   "01-101-1002", "HEIGHT", "Height (cm)",              163, "cm", "SCREENING",
+#'   "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
 #'   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3",
@@ -132,7 +132,6 @@
 #'   constant_divisor = TRUE,
 #'   constant_by_vars = exprs(USUBJID)
 #' )
-
 derive_param_ratio <- function(dataset,
                                by_vars,
                                dividend_code,
@@ -142,7 +141,6 @@ derive_param_ratio <- function(dataset,
                                constant_divisor = FALSE,
                                filter = NULL,
                                constant_by_vars = NULL) {
-
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(dividend_code)
@@ -226,7 +224,6 @@ derive_param_ratio <- function(dataset,
 #' # and Height is 163 cm
 #'
 #' compute_ratio(x = 120, y = 163)
-
 compute_ratio <- function(x, y) {
   assert_numeric_vector(x)
   assert_numeric_vector(y)
