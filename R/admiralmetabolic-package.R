@@ -7,7 +7,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang := abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enquo eval_bare eval_tidy expr
-#'             expr_interp expr_label f_lhs f_rhs inform
+#'             exprs expr_interp expr_label f_lhs f_rhs inform
 #'             is_bare_formula is_call is_character is_formula is_integerish
 #'             is_logical is_quosure is_quosures is_symbol new_formula
 #'             parse_expr parse_exprs quo quo_get_expr quo_is_call
@@ -20,4 +20,9 @@
 #'             time_length %--% ymd ymd_hms weeks years hours minutes
 #' @importFrom tidyselect all_of contains vars_select
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
+#' @importFrom checkmate assert_true
+#' @importFrom admiraldev assert_numeric_vector assert_character_scalar assert_logical_scalar
+#'             assert_data_frame assert_vars assert_varval_list assert_filter_cond
+#'             assert_param_does_not_exist
+#' @importFrom admiral derive_param_computed
 "_PACKAGE"

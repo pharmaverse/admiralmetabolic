@@ -30,7 +30,8 @@ Imports:
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
     rlang (>= 0.4.4),
-    tidyselect (>= 1.0.0)
+    tidyselect (>= 1.0.0),
+    checkmate
 Suggests:
     diffdf,
     DT,
