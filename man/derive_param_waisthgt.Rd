@@ -68,10 +68,11 @@ into account.
 When Height is constant, the Height parameters (measured only once) are merged
 to the other parameters using the specified variables.
 
-If Height is constant (e.g. only measured once at screening or baseline) then
-use \code{constant_by_vars} to select the subject-level variable to merge on (e.g. \code{USUBJID}).
+If Height is constant (e.g. only measured once at screening or baseline) then use
+\code{constant_by_vars} to select the subject-level variable to merge on (e.g. \code{USUBJID}).
 This will produce Waist-to-Height Ratio at all visits where Waist Circumference is measured.
-Otherwise it will only be calculated at visits with both Height and Waist Circumference collected.
+Otherwise it will only be calculated at visits with both Height and Waist Circumference
+collected.
 
 \emph{Permitted Values}: list of variables created by \code{exprs()}
 e.g. \code{exprs(USUBJID, VISIT)}}
@@ -81,8 +82,8 @@ The input dataset with the new parameter added. Note, a variable will only
 be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
-Adds a record for Waist-to-Height Ratio using Waist Circumference and Height each by group
-(e.g., subject and visit) where the source parameters are available.
+Adds a record for Waist-to-Height Ratio using Waist Circumference and Height
+each by group (e.g., subject and visit) where the source parameters are available.
 
 \strong{Note:} This is a wrapper function for the more generic \code{derive_param_ratio()}.
 }
@@ -96,11 +97,11 @@ The analysis value of the new parameter is derived as
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-  "01-101-1001", "HEIGHT", "Height (cm)",              147, "cm", "SCREENING",
+  "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-  "01-101-1002", "HEIGHT", "Height (cm)",              163, "cm", "SCREENING",
+  "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3",
@@ -122,15 +123,15 @@ derive_param_waisthgt(
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-  "01-101-1001", "HEIGHT", "Height (cm)",              147, "cm", "SCREENING",
-  "01-101-1001", "HEIGHT", "Height (cm)",              148, "cm", "WEEK 2",
-  "01-101-1001", "HEIGHT", "Height (cm)",              149, "cm", "WEEK 3",
+  "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
+  "01-101-1001", "HEIGHT", "Height (cm)", 148, "cm", "WEEK 2",
+  "01-101-1001", "HEIGHT", "Height (cm)", 149, "cm", "WEEK 3",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 100, "cm", "SCREENING",
-  "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 99,  "cm", "WEEK 2",
-  "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 98,  "cm", "WEEK 3",
-  "01-101-1002", "HEIGHT", "Height (cm)",              163, "cm", "SCREENING",
-  "01-101-1002", "HEIGHT", "Height (cm)",              164, "cm", "WEEK 2",
-  "01-101-1002", "HEIGHT", "Height (cm)",              165, "cm", "WEEK 3",
+  "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 99, "cm", "WEEK 2",
+  "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 98, "cm", "WEEK 3",
+  "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
+  "01-101-1002", "HEIGHT", "Height (cm)", 164, "cm", "WEEK 2",
+  "01-101-1002", "HEIGHT", "Height (cm)", 165, "cm", "WEEK 3",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 109, "cm", "WEEK 2",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 3"
@@ -148,5 +149,6 @@ derive_param_waisthgt(
 )
 }
 \seealso{
-\code{\link[=derive_param_ratio]{derive_param_ratio()}}, \code{\link[=compute_ratio]{compute_ratio()}}
+\code{\link[=derive_param_ratio]{derive_param_ratio()}},
+\code{\link[=compute_ratio]{compute_ratio()}}
 }

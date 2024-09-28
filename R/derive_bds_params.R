@@ -1,9 +1,10 @@
 #' Adds a Ratio Parameter Computed from the Analysis Value of Other Parameters
 #'
 #' @description Adds a record for a generic Ratio parameter using two existing parameter
-#' (dividend and divisor) each by group (e.g., subject and visit) where the source parameters are available.
+#' (dividend and divisor) each by group (e.g., subject and visit) where the source parameters
+#' are available.
 #'
-#' **Note:** This is a wrapper function for the more generic \code{admiral::derive_param_computed()}.
+#' **Note:** This is a wrapper function for the more generic \code{admiral::derive_param_computed()}
 #'
 #' @param dataset Input dataset
 #'
@@ -53,10 +54,11 @@
 #'   When dividend and/or divisor is constant, the parameters (measured only once) are merged
 #'   to the other parameters using the specified variables.
 #'
-#'   If dividend and/or divisor is constant (e.g. only measured once at screening or baseline) then
-#'   use \code{constant_by_vars} to select the subject-level variable to merge on (e.g. \code{USUBJID}).
-#'   This will produce a generic Ratio parameter at all visits where dividend and/or divisor is measured.
-#'   Otherwise it will only be calculated at visits with both dividend and divisor parameters collected.
+#'   If dividend and/or divisor is constant (e.g. only measured once at screening or baseline)
+#'   then use \code{constant_by_vars} to select the subject-level variable to merge on
+#'   (e.g. \code{USUBJID}). This will produce a generic Ratio parameter at all visits where dividend
+#'   and/or divisor is measured. Otherwise it will only be calculated at visits with both dividend
+#'   and divisor parameters collected.
 #'
 #'   *Permitted Values*: list of variables created by \code{exprs()}
 #'   e.g. \code{exprs(USUBJID, VISIT)}
@@ -215,7 +217,9 @@ derive_param_ratio <- function(dataset,
 #'
 #' @export
 #'
-#' @seealso \code{\link[=derive_param_ratio]{derive_param_ratio()}}, \code{\link[=derive_param_waisthip]{derive_param_waisthip()}}, \code{\link[=derive_param_waisthgt]{derive_param_waisthgt()}}
+#' @seealso \code{\link[=derive_param_ratio]{derive_param_ratio()}},
+#'          \code{\link[=derive_param_waisthip]{derive_param_waisthip()}},
+#'          \code{\link[=derive_param_waisthgt]{derive_param_waisthgt()}}
 #'
 #' @examples
 #'

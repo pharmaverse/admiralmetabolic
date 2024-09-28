@@ -90,10 +90,11 @@ into account.
 When dividend and/or divisor is constant, the parameters (measured only once) are merged
 to the other parameters using the specified variables.
 
-If dividend and/or divisor is constant (e.g. only measured once at screening or baseline) then
-use \code{constant_by_vars} to select the subject-level variable to merge on (e.g. \code{USUBJID}).
-This will produce a generic Ratio parameter at all visits where dividend and/or divisor is measured.
-Otherwise it will only be calculated at visits with both dividend and divisor parameters collected.
+If dividend and/or divisor is constant (e.g. only measured once at screening or baseline)
+then use \code{constant_by_vars} to select the subject-level variable to merge on
+(e.g. \code{USUBJID}). This will produce a generic Ratio parameter at all visits where dividend
+and/or divisor is measured. Otherwise it will only be calculated at visits with both dividend
+and divisor parameters collected.
 
 \emph{Permitted Values}: list of variables created by \code{exprs()}
 e.g. \code{exprs(USUBJID, VISIT)}}
@@ -104,9 +105,10 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
 Adds a record for a generic Ratio parameter using two existing parameter
-(dividend and divisor) each by group (e.g., subject and visit) where the source parameters are available.
+(dividend and divisor) each by group (e.g., subject and visit) where the source parameters
+are available.
 
-\strong{Note:} This is a wrapper function for the more generic \code{admiral::derive_param_computed()}.
+\strong{Note:} This is a wrapper function for the more generic \code{admiral::derive_param_computed()}
 }
 \details{
 The analysis value of the new parameter is derived as
@@ -118,15 +120,15 @@ The analysis value of the new parameter is derived as
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-  "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   125, "cm", "SCREENING",
-  "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   124, "cm", "WEEK 2",
-  "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   123, "cm", "WEEK 3",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 125, "cm", "SCREENING",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 124, "cm", "WEEK 2",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 123, "cm", "WEEK 3",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-  "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   135, "cm", "SCREENING",
-  "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   133, "cm", "WEEK 2",
-  "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   132, "cm", "WEEK 3",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 135, "cm", "SCREENING",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 133, "cm", "WEEK 2",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 132, "cm", "WEEK 3",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3"
@@ -147,11 +149,11 @@ derive_param_ratio(
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
-  "01-101-1001", "HEIGHT", "Height (cm)",              147, "cm", "SCREENING",
+  "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-  "01-101-1002", "HEIGHT", "Height (cm)",              163, "cm", "SCREENING",
+  "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3",

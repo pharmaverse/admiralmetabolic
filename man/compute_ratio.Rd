@@ -37,5 +37,7 @@ Usually this computation function can not be used with \code{\%>\%}.
 compute_ratio(x = 120, y = 163)
 }
 \seealso{
-\code{\link[=derive_param_ratio]{derive_param_ratio()}}, \code{\link[=derive_param_waisthip]{derive_param_waisthip()}}, \code{\link[=derive_param_waisthgt]{derive_param_waisthgt()}}
+\code{\link[=derive_param_ratio]{derive_param_ratio()}},
+\code{\link[=derive_param_waisthip]{derive_param_waisthip()}},
+\code{\link[=derive_param_waisthgt]{derive_param_waisthgt()}}
 }

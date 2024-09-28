@@ -67,8 +67,8 @@ The input dataset with the new parameter added. Note, a variable will only
 be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
-Adds a record for Waist-to-Hip Ratio using Waist Circumference and Hip Circumference each by group
-(e.g., subject and visit) where the source parameters are available.
+Adds a record for Waist-to-Hip Ratio using Waist Circumference and Hip Circumference
+each by group (e.g., subject and visit) where the source parameters are available.
 
 \strong{Note:} This is a wrapper function for the more generic \code{derive_param_ratio()}.
 }
@@ -83,15 +83,15 @@ advs <- tribble(
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 108, "cm", "WEEK 2",
   "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 107, "cm", "WEEK 3",
-  "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   125, "cm", "SCREENING",
-  "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   124, "cm", "WEEK 2",
-  "01-101-1001", "HIPCIR", "Hip Circumference (cm)",   123, "cm", "WEEK 3",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 125, "cm", "SCREENING",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 124, "cm", "WEEK 2",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 123, "cm", "WEEK 3",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 118, "cm", "WEEK 2",
   "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 117, "cm", "WEEK 3",
-  "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   135, "cm", "SCREENING",
-  "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   133, "cm", "WEEK 2",
-  "01-101-1002", "HIPCIR", "Hip Circumference (cm)",   132, "cm", "WEEK 3"
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 135, "cm", "SCREENING",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 133, "cm", "WEEK 2",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 132, "cm", "WEEK 3"
 )
 
 derive_param_waisthip(
@@ -106,5 +106,6 @@ derive_param_waisthip(
 )
 }
 \seealso{
-\code{\link[=derive_param_ratio]{derive_param_ratio()}}, \code{\link[=compute_ratio]{compute_ratio()}}
+\code{\link[=derive_param_ratio]{derive_param_ratio()}},
+\code{\link[=compute_ratio]{compute_ratio()}}
 }
