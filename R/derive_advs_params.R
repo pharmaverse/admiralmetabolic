@@ -3,7 +3,7 @@
 #' @description Adds a record for Waist-to-Hip Ratio using Waist Circumference and Hip Circumference
 #' each by group (e.g., subject and visit) where the source parameters are available.
 #'
-#' **Note:** This is a wrapper function for the more generic \code{derive_param_ratio()}.
+#' **Note:** This is a wrapper function for the more generic \code{admiral::derive_param_ratio()}.
 #'
 #' @param dataset Input dataset
 #'
@@ -28,7 +28,7 @@
 #'
 #'   *Permitted Values:* character value
 #'
-#' @inheritParams derive_param_ratio
+#' @inheritParams admiral::derive_param_ratio
 #'
 #' @details
 #' The analysis value of the new parameter is derived as
@@ -40,10 +40,12 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link[=derive_param_ratio]{derive_param_ratio()}},
-#'          \code{\link[=compute_ratio]{compute_ratio()}}
+#' @seealso \code{\link[=admiral::derive_param_ratio]{admiral::derive_param_ratio()}},
+#'          \code{\link[=admiral::compute_ratio]{admiral::compute_ratio()}}
 #'
 #' @examples
+#'
+#' library(tibble)
 #'
 #' advs <- tribble(
 #'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
@@ -85,7 +87,7 @@ derive_param_waisthip <- function(dataset,
   assert_param_does_not_exist(dataset, set_values_to$PARAMCD)
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
 
-  derive_param_ratio(
+  admiral::derive_param_ratio(
     dataset,
     filter = !!filter,
     dividend_code = wstcir_code,
@@ -100,7 +102,7 @@ derive_param_waisthip <- function(dataset,
 #' @description Adds a record for Waist-to-Height Ratio using Waist Circumference and Height
 #' each by group (e.g., subject and visit) where the source parameters are available.
 #'
-#' **Note:** This is a wrapper function for the more generic \code{derive_param_ratio()}.
+#' **Note:** This is a wrapper function for the more generic \code{admiral::derive_param_ratio()}.
 #'
 #' @param dataset Input dataset
 #'
@@ -139,7 +141,7 @@ derive_param_waisthip <- function(dataset,
 #'   *Permitted Values*: list of variables created by \code{exprs()}
 #'   e.g. \code{exprs(USUBJID, VISIT)}
 #'
-#' @inheritParams derive_param_ratio
+#' @inheritParams admiral::derive_param_ratio
 #'
 #' @details
 #' The analysis value of the new parameter is derived as
@@ -151,10 +153,12 @@ derive_param_waisthip <- function(dataset,
 #'
 #' @export
 #'
-#' @seealso \code{\link[=derive_param_ratio]{derive_param_ratio()}},
-#'          \code{\link[=compute_ratio]{compute_ratio()}}
+#' @seealso \code{\link[=admiral::derive_param_ratio]{admiral::derive_param_ratio()}},
+#'          \code{\link[=admiral::compute_ratio]{admiral::compute_ratio()}}
 #'
 #' @examples
+#'
+#' library(tibble)
 #'
 #' # Example 1: Derive Waist-to-Height Ratio where Height is measured only once
 #'
@@ -226,7 +230,7 @@ derive_param_waisthgt <- function(dataset,
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
   assert_vars(constant_by_vars, optional = TRUE)
 
-  derive_param_ratio(
+  admiral::derive_param_ratio(
     dataset,
     filter = !!filter,
     dividend_code = wstcir_code,

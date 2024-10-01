@@ -20,9 +20,8 @@
 #'             time_length %--% ymd ymd_hms weeks years hours minutes
 #' @importFrom tidyselect all_of contains vars_select
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
-#' @importFrom checkmate assert_true
 #' @importFrom admiraldev assert_numeric_vector assert_character_scalar assert_logical_scalar
 #'             assert_data_frame assert_vars assert_varval_list assert_filter_cond
 #'             assert_param_does_not_exist
-#' @importFrom admiral derive_param_computed
+#' @importFrom admiral derive_param_ratio
 "_PACKAGE"
