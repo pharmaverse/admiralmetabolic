@@ -1,6 +1,6 @@
 # Name: ADVS
 #
-# Label: Vital Signs Analysis Dataset
+# Label: Vital Signs Analysis dataset
 #
 # Input: adsl, vs
 
@@ -15,7 +15,7 @@ library(stringr)
 
 # Define look-up tables ----
 # See function documentation for `derive_vars_merged_lookup()` and
-# `derive_vars_cat` for information of how look-up tables are used
+# `derive_vars_cat()` for information of how look-up tables can be used:
 # (https://pharmaverse.github.io/admiral/reference/derive_vars_merged_lookup.html)
 # (https://pharmaverse.github.io/admiral/reference/derive_vars_cat.html)
 
@@ -68,8 +68,9 @@ advs <- advs |>
     by_vars = exprs(STUDYID, USUBJID)
   )
 
-# Add parameter info to enable later derivations. Parameter information will
-# be merged again, when all required AVDS derivations are made.
+# Add parameter (PARAMCD) info to enable later ADVS derivations. Additional
+# parameter information will be merged again, after all AVDS derivations are
+# completed.
 advs <- advs |>
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -159,7 +160,7 @@ advs <- advs |>
 
 
 # Derive Baseline variables ----
-# See the "Derive Baseline" and "Derive Change from Baseline " vignette section
+# See the "Derive Baseline" and "Derive Change from Baseline " vignette sections
 # for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#baseline)
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#bchange)
