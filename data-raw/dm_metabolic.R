@@ -8,7 +8,7 @@ library(dplyr)
 library(purrr)
 
 # Import DM data from `pharmaversesdtm` ----
-admiralmetabolic::dm
+pharmaversesdtm::dm
 
 # Subset to first 5 subjects ----
 dm_subset <- dm |>
