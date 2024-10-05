@@ -42,7 +42,8 @@ avalcat_lookup <- exprs(
   "BMI",    AVAL >= 30 & AVAL < 35,    "Obesity class I",   4,
   "BMI",    AVAL >= 35 & AVAL < 40,    "Obesity class II",  5,
   "BMI",    AVAL >= 40,                "Obesity class III", 6,
-  "BMI",    is.na(AVAL),               NA_character_,       NA_integer_)
+  "BMI",    is.na(AVAL),               NA_character_,       NA_integer_
+)
 
 # Read in data ----
 # See the "Read in Data" vignette section for more information:
@@ -107,7 +108,8 @@ advs <- advs |>
       VISIT == "BASELINE" ~ 0,
       str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
-    ))
+    )
+  )
 
 
 # Derive results ----
@@ -129,14 +131,18 @@ advs <- advs |>
 advs <- advs |>
   filter(VSTESTCD != "BMI") |>
   derive_param_bmi(
-    by_vars = exprs(STUDYID, USUBJID, TRTSDT, TRTEDT, TRT01P, TRT01A, VISIT,
-                    VISITNUM, ADT, ADY, VSTPT, VSTPTNUM),
-    set_values_to = exprs(PARAMCD = "BMI",
-                          DOMAIN = "VS"),
-  get_unit_expr = VSSTRESU,
-  filter = VSSTAT != "NOT DONE" | is.na(VSSTAT),
-  constant_by_vars = exprs(USUBJID)
-)
+    by_vars = exprs(
+      STUDYID, USUBJID, TRTSDT, TRTEDT, TRT01P, TRT01A, VISIT,
+      VISITNUM, ADT, ADY, VSTPT, VSTPTNUM
+    ),
+    set_values_to = exprs(
+      PARAMCD = "BMI",
+      DOMAIN = "VS"
+    ),
+    get_unit_expr = VSSTRESU,
+    filter = VSSTAT != "NOT DONE" | is.na(VSSTAT),
+    constant_by_vars = exprs(USUBJID)
+  )
 
 
 # Derive categorization variables ----
@@ -251,4 +257,3 @@ if (!file.exists(dir)) {
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
 save(advs, file = file.path(dir, "advs.rda"), compress = "bzip2")
-
