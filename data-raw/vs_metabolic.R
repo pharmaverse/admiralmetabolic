@@ -10,8 +10,8 @@ library(purrr)
 
 ## Read input data ----
 
-pharmaversesdtm::vs
-admiralmetabolic::dm_metabolic
+vs <- pharmaversesdtm::vs
+dm_metabolic <- admiralmetabolic::dm_metabolic
 
 # Merge vs with dm_metabolic to use the req subjects ----
 
