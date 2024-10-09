@@ -70,15 +70,17 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 Adds a record for Waist-to-Hip Ratio using Waist Circumference and Hip Circumference
 each by group (e.g., subject and visit) where the source parameters are available.
 
-\strong{Note:} This is a wrapper function for the more generic \code{admiral::derive_param_ratio()}.
+\strong{Note:} This is a wrapper function for the more generic
+\code{admiral::derive_param_computed()}.
 }
 \details{
 The analysis value of the new parameter is derived as
-\deqn{WAISTHIP = \frac{WSTCIR}{HIPCIR}}
+\deqn{WAISTHIP = \frac{WSTCIR}{HIPCIR}}{WAISTHIP = WSTCIR / HIPCIR}
 }
 \examples{
 
 library(tibble)
+library(rlang)
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
@@ -108,6 +110,10 @@ derive_param_waisthip(
 )
 }
 \seealso{
-\code{\link[=admiral::derive_param_ratio]{admiral::derive_param_ratio()}},
-\code{\link[=admiral::compute_ratio]{admiral::compute_ratio()}}
+\code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
+
+ADXX Functions for adding Parameters: 
+\code{\link{derive_param_waisthgt}()}
 }
+\concept{der_prm_adxx}
+\keyword{der_prm_adxx}

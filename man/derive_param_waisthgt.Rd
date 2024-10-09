@@ -8,7 +8,7 @@ derive_param_waisthgt(
   dataset,
   by_vars,
   wstcir_code = "WSTCIR",
-  height_code = "HGHT",
+  height_code = "HEIGHT",
   set_values_to = exprs(PARAMCD = "WAISTHGT"),
   filter = NULL,
   constant_by_vars = NULL
@@ -85,15 +85,17 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 Adds a record for Waist-to-Height Ratio using Waist Circumference and Height
 each by group (e.g., subject and visit) where the source parameters are available.
 
-\strong{Note:} This is a wrapper function for the more generic \code{admiral::derive_param_ratio()}.
+\strong{Note:} This is a wrapper function for the more generic
+\code{admiral::derive_param_computed()}.
 }
 \details{
 The analysis value of the new parameter is derived as
-\deqn{WAISTHGT = \frac{WSTCIR}{HEIGHT}}
+\deqn{WAISTHGT = \frac{WSTCIR}{HEIGHT}}{WAISTHGT = WSTCIR / HEIGHT}
 }
 \examples{
 
 library(tibble)
+library(rlang)
 
 # Example 1: Derive Waist-to-Height Ratio where Height is measured only once
 
@@ -151,6 +153,10 @@ derive_param_waisthgt(
 )
 }
 \seealso{
-\code{\link[=admiral::derive_param_ratio]{admiral::derive_param_ratio()}},
-\code{\link[=admiral::compute_ratio]{admiral::compute_ratio()}}
+\code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
+
+ADXX Functions for adding Parameters: 
+\code{\link{derive_param_waisthip}()}
 }
+\concept{der_prm_adxx}
+\keyword{der_prm_adxx}
