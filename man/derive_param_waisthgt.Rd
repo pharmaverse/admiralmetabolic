@@ -11,7 +11,8 @@ derive_param_waisthgt(
   height_code = "HEIGHT",
   set_values_to = exprs(PARAMCD = "WAISTHGT"),
   filter = NULL,
-  constant_by_vars = NULL
+  constant_by_vars = NULL,
+  get_unit_expr = NULL
 )
 }
 \arguments{
@@ -76,6 +77,17 @@ collected.
 
 \emph{Permitted Values}: list of variables created by \code{exprs()}
 e.g. \code{exprs(USUBJID, VISIT)}}
+
+\item{get_unit_expr}{An expression providing the unit of the parameter
+
+The result is used to check the units of the input parameters. If the units are not consistent
+within each parameter, an error will be thrown.
+
+Additionally, if the input parameters are measured in different units but are mutually
+convertible (e.g., centimeters for one parameter and inches for another), an automatic
+conversion will be performed in order to uniform the values before calculating the ratio.
+
+\emph{Permitted Values:} A variable of the input dataset or a function call}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only
@@ -150,6 +162,34 @@ derive_param_waisthgt(
     PARAMCD = "WAISTHGT",
     PARAM = "Waist-to-Height Ratio"
   )
+)
+
+# Example 3: Automatic conversion is performed when deriving the ratio
+# if parameters are provided in different units (e.g. centimeters and inches)
+
+advs <- tribble(
+  ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
+  "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
+  "01-101-1001", "WSTCIR", "Waist Circumference (in)", 39.37, "in", "SCREENING",
+  "01-101-1001", "WSTCIR", "Waist Circumference (in)", 38.98, "in", "WEEK 2",
+  "01-101-1001", "WSTCIR", "Waist Circumference (in)", 38.58, "in", "WEEK 3",
+  "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
+  "01-101-1002", "WSTCIR", "Waist Circumference (in)", 43.31, "in", "SCREENING",
+  "01-101-1002", "WSTCIR", "Waist Circumference (in)", 42.91, "in", "WEEK 2",
+  "01-101-1002", "WSTCIR", "Waist Circumference (in)", 42.52, "in", "WEEK 3"
+)
+
+derive_param_waisthgt(
+  advs,
+  by_vars = exprs(USUBJID, VISIT),
+  wstcir_code = "WSTCIR",
+  height_code = "HEIGHT",
+  set_values_to = exprs(
+    PARAMCD = "WAISTHGT",
+    PARAM = "Waist-to-Height Ratio"
+  ),
+  constant_by_vars = exprs(USUBJID),
+  get_unit_expr = AVALU
 )
 }
 \seealso{

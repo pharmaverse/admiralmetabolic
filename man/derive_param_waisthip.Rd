@@ -10,7 +10,8 @@ derive_param_waisthip(
   wstcir_code = "WSTCIR",
   hipcir_code = "HIPCIR",
   set_values_to = exprs(PARAMCD = "WAISTHIP"),
-  filter = NULL
+  filter = NULL,
+  get_unit_expr = NULL
 )
 }
 \arguments{
@@ -61,6 +62,17 @@ new parameter, i.e., only observations fulfilling the condition are taken
 into account.
 
 \emph{Permitted Values:} a condition}
+
+\item{get_unit_expr}{An expression providing the unit of the parameter
+
+The result is used to check the units of the input parameters. If the units are not consistent
+within each parameter, an error will be thrown.
+
+Additionally, if the input parameters are measured in different units but are mutually
+convertible (e.g., centimeters for one parameter and inches for another), an automatic
+conversion will be performed in order to uniform the values before calculating the ratio.
+
+\emph{Permitted Values:} A variable of the input dataset or a function call}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only
@@ -107,6 +119,37 @@ derive_param_waisthip(
     PARAMCD = "WAISTHIP",
     PARAM = "Waist-to-Hip Ratio"
   )
+)
+
+# Automatic conversion is performed when deriving the ratio
+# if parameters are provided in different units
+
+advs <- tribble(
+  ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 125, "cm", "SCREENING",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 124, "cm", "WEEK 2",
+  "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 123, "cm", "WEEK 3",
+  "01-101-1001", "WSTCIR", "Waist Circumference (in)", 43.31, "in", "SCREENING",
+  "01-101-1001", "WSTCIR", "Waist Circumference (in)", 42.52, "in", "WEEK 2",
+  "01-101-1001", "WSTCIR", "Waist Circumference (in)", 42.13, "in", "WEEK 3",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 135, "cm", "SCREENING",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 133, "cm", "WEEK 2",
+  "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 132, "cm", "WEEK 3",
+  "01-101-1002", "WSTCIR", "Waist Circumference (in)", 47.24, "in", "SCREENING",
+  "01-101-1002", "WSTCIR", "Waist Circumference (in)", 46.46, "in", "WEEK 2",
+  "01-101-1002", "WSTCIR", "Waist Circumference (in)", 46.06, "in", "WEEK 3"
+)
+
+derive_param_waisthip(
+  advs,
+  by_vars = exprs(USUBJID, VISIT),
+  wstcir_code = "WSTCIR",
+  hipcir_code = "HIPCIR",
+  set_values_to = exprs(
+    PARAMCD = "WAISTHIP",
+    PARAM = "Waist-to-Hip Ratio"
+  ),
+  get_unit_expr = admiral::extract_unit(PARAM)
 )
 }
 \seealso{

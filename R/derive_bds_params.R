@@ -63,6 +63,17 @@
 #'   *Permitted Values*: list of variables created by \code{exprs()}
 #'   e.g. \code{exprs(USUBJID, VISIT)}
 #'
+#' @param get_unit_expr An expression providing the unit of the parameter
+#'
+#'   The result is used to check the units of the input parameters. If the units are not consistent
+#'   within each parameter, an error will be thrown.
+#'
+#'   Additionally, if the input parameters are measured in different units but are mutually
+#'   convertible (e.g., centimeters for one parameter and inches for another), an automatic
+#'   conversion will be performed in order to uniform the values before calculating the ratio.
+#'
+#'   *Permitted Values:* A variable of the input dataset or a function call
+#'
 #' @inheritParams admiral::derive_param_bmi
 #'
 #' @details
@@ -83,17 +94,47 @@ derive_param_ratio <- function(dataset,
                                constant_dividend = FALSE,
                                constant_divisor = FALSE,
                                filter = NULL,
-                               constant_by_vars = NULL) {
+                               constant_by_vars = NULL,
+                               get_unit_expr = NULL) {
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(dividend_code)
   assert_character_scalar(divisor_code)
   assert_varval_list(set_values_to, required_elements = "PARAMCD")
   assert_param_does_not_exist(dataset, set_values_to$PARAMCD)
-  filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
   assert_logical_scalar(constant_dividend)
   assert_logical_scalar(constant_divisor)
+  filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
   assert_vars(constant_by_vars, optional = TRUE)
+  get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
+
+  if (!missing(get_unit_expr) && !is.null(get_unit_expr)) {
+    # Check if units are the same within each parameter
+    for (param in c(dividend_code, divisor_code)) {
+      units <- dataset %>%
+        mutate(`_unit` = !!get_unit_expr) %>%
+        filter(PARAMCD == param) %>%
+        pull(`_unit`) %>%
+        unique()
+
+      if (length(units) != 1L) {
+        cli_abort(
+          "Multiple units {.val {units}} found for {.val {param}}.
+          Please review and update the units."
+        )
+      }
+    }
+
+    # Set units in AVAL context to enable automatic conversion when used in formula
+    dataset <- dataset %>%
+      mutate(
+        AVAL = mixed_units(
+          AVAL,
+          !!get_unit_expr %>% if_else(is.na(.), "", .),
+          mode = "standard"
+        )
+      )
+  }
 
   ratio_formula <- expr(
     !!sym(paste0("AVAL.", dividend_code)) / !!sym(paste0("AVAL.", divisor_code))
@@ -117,16 +158,23 @@ derive_param_ratio <- function(dataset,
       ifelse(length(.) == 0, NULL, .)
   }
 
-  derive_param_computed(
-    dataset,
-    filter = !!filter,
-    parameters = parameters,
-    by_vars = by_vars,
-    set_values_to = exprs(
-      AVAL = !!ratio_formula,
-      !!!set_values_to
-    ),
-    constant_parameters = constant_parameters,
-    constant_by_vars = constant_by_vars
-  )
+  result <- dataset %>%
+    derive_param_computed(
+      filter = !!filter,
+      parameters = parameters,
+      by_vars = by_vars,
+      set_values_to = exprs(
+        AVAL = !!ratio_formula,
+        !!!set_values_to
+      ),
+      constant_parameters = constant_parameters,
+      constant_by_vars = constant_by_vars
+    )
+
+  if ("mixed_units" %in% class(result$AVAL)) {
+    # Drop units from AVAL context
+    result$AVAL <- drop_units(result$AVAL)
+  }
+
+  result
 }

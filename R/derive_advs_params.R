@@ -77,12 +77,44 @@
 #'     PARAM = "Waist-to-Hip Ratio"
 #'   )
 #' )
+#'
+#' # Automatic conversion is performed when deriving the ratio
+#' # if parameters are provided in different units
+#'
+#' advs <- tribble(
+#'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 125, "cm", "SCREENING",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 124, "cm", "WEEK 2",
+#'   "01-101-1001", "HIPCIR", "Hip Circumference (cm)", 123, "cm", "WEEK 3",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (in)", 43.31, "in", "SCREENING",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (in)", 42.52, "in", "WEEK 2",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (in)", 42.13, "in", "WEEK 3",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 135, "cm", "SCREENING",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 133, "cm", "WEEK 2",
+#'   "01-101-1002", "HIPCIR", "Hip Circumference (cm)", 132, "cm", "WEEK 3",
+#'   "01-101-1002", "WSTCIR", "Waist Circumference (in)", 47.24, "in", "SCREENING",
+#'   "01-101-1002", "WSTCIR", "Waist Circumference (in)", 46.46, "in", "WEEK 2",
+#'   "01-101-1002", "WSTCIR", "Waist Circumference (in)", 46.06, "in", "WEEK 3"
+#' )
+#'
+#' derive_param_waisthip(
+#'   advs,
+#'   by_vars = exprs(USUBJID, VISIT),
+#'   wstcir_code = "WSTCIR",
+#'   hipcir_code = "HIPCIR",
+#'   set_values_to = exprs(
+#'     PARAMCD = "WAISTHIP",
+#'     PARAM = "Waist-to-Hip Ratio"
+#'   ),
+#'   get_unit_expr = admiral::extract_unit(PARAM)
+#' )
 derive_param_waisthip <- function(dataset,
                                   by_vars,
                                   wstcir_code = "WSTCIR",
                                   hipcir_code = "HIPCIR",
                                   set_values_to = exprs(PARAMCD = "WAISTHIP"),
-                                  filter = NULL) {
+                                  filter = NULL,
+                                  get_unit_expr = NULL) {
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(wstcir_code)
@@ -90,6 +122,7 @@ derive_param_waisthip <- function(dataset,
   assert_varval_list(set_values_to, required_elements = "PARAMCD")
   assert_param_does_not_exist(dataset, set_values_to$PARAMCD)
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
+  get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
 
   derive_param_ratio(
     dataset,
@@ -97,7 +130,8 @@ derive_param_waisthip <- function(dataset,
     dividend_code = wstcir_code,
     divisor_code = hipcir_code,
     by_vars = by_vars,
-    set_values_to = set_values_to
+    set_values_to = set_values_to,
+    get_unit_expr = !!get_unit_expr
   )
 }
 
@@ -222,13 +256,42 @@ derive_param_waisthip <- function(dataset,
 #'     PARAM = "Waist-to-Height Ratio"
 #'   )
 #' )
+#'
+#' # Example 3: Automatic conversion is performed when deriving the ratio
+#' # if parameters are provided in different units (e.g. centimeters and inches)
+#'
+#' advs <- tribble(
+#'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
+#'   "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (in)", 39.37, "in", "SCREENING",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (in)", 38.98, "in", "WEEK 2",
+#'   "01-101-1001", "WSTCIR", "Waist Circumference (in)", 38.58, "in", "WEEK 3",
+#'   "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
+#'   "01-101-1002", "WSTCIR", "Waist Circumference (in)", 43.31, "in", "SCREENING",
+#'   "01-101-1002", "WSTCIR", "Waist Circumference (in)", 42.91, "in", "WEEK 2",
+#'   "01-101-1002", "WSTCIR", "Waist Circumference (in)", 42.52, "in", "WEEK 3"
+#' )
+#'
+#' derive_param_waisthgt(
+#'   advs,
+#'   by_vars = exprs(USUBJID, VISIT),
+#'   wstcir_code = "WSTCIR",
+#'   height_code = "HEIGHT",
+#'   set_values_to = exprs(
+#'     PARAMCD = "WAISTHGT",
+#'     PARAM = "Waist-to-Height Ratio"
+#'   ),
+#'   constant_by_vars = exprs(USUBJID),
+#'   get_unit_expr = AVALU
+#' )
 derive_param_waisthgt <- function(dataset,
                                   by_vars,
                                   wstcir_code = "WSTCIR",
                                   height_code = "HEIGHT",
                                   set_values_to = exprs(PARAMCD = "WAISTHGT"),
                                   filter = NULL,
-                                  constant_by_vars = NULL) {
+                                  constant_by_vars = NULL,
+                                  get_unit_expr = NULL) {
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(wstcir_code)
@@ -237,6 +300,7 @@ derive_param_waisthgt <- function(dataset,
   assert_param_does_not_exist(dataset, set_values_to$PARAMCD)
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
   assert_vars(constant_by_vars, optional = TRUE)
+  get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
 
   derive_param_ratio(
     dataset,
@@ -247,6 +311,7 @@ derive_param_waisthgt <- function(dataset,
     set_values_to = set_values_to,
     constant_dividend = FALSE,
     constant_divisor = !is.null(constant_by_vars),
-    constant_by_vars = constant_by_vars
+    constant_by_vars = constant_by_vars,
+    get_unit_expr = !!get_unit_expr
   )
 }

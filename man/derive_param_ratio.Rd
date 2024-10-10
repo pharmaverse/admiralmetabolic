@@ -13,7 +13,8 @@ derive_param_ratio(
   constant_dividend = FALSE,
   constant_divisor = FALSE,
   filter = NULL,
-  constant_by_vars = NULL
+  constant_by_vars = NULL,
+  get_unit_expr = NULL
 )
 }
 \arguments{
@@ -98,6 +99,17 @@ and divisor parameters collected.
 
 \emph{Permitted Values}: list of variables created by \code{exprs()}
 e.g. \code{exprs(USUBJID, VISIT)}}
+
+\item{get_unit_expr}{An expression providing the unit of the parameter
+
+The result is used to check the units of the input parameters. If the units are not consistent
+within each parameter, an error will be thrown.
+
+Additionally, if the input parameters are measured in different units but are mutually
+convertible (e.g., centimeters for one parameter and inches for another), an automatic
+conversion will be performed in order to uniform the values before calculating the ratio.
+
+\emph{Permitted Values:} A variable of the input dataset or a function call}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only
