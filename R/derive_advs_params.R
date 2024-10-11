@@ -1,6 +1,6 @@
-#' Adds a Parameter for Waist-to-Hip Ratio
+#' Adds a Parameter for Waist to Hip Ratio
 #'
-#' @description Adds a record for Waist-to-Hip Ratio using Waist Circumference and Hip Circumference
+#' @description Adds a record for Waist to Hip Ratio using Waist Circumference and Hip Circumference
 #' each by group (e.g., subject and visit) where the source parameters are available.
 #'
 #' **Note:** This is a wrapper function for the more generic
@@ -74,7 +74,7 @@
 #'   hipcir_code = "HIPCIR",
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHIP",
-#'     PARAM = "Waist-to-Hip Ratio"
+#'     PARAM = "Waist to Hip Ratio"
 #'   )
 #' )
 #'
@@ -104,7 +104,7 @@
 #'   hipcir_code = "HIPCIR",
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHIP",
-#'     PARAM = "Waist-to-Hip Ratio"
+#'     PARAM = "Waist to Hip Ratio"
 #'   ),
 #'   get_unit_expr = admiral::extract_unit(PARAM)
 #' )
@@ -135,9 +135,9 @@ derive_param_waisthip <- function(dataset,
   )
 }
 
-#' Adds a Parameter for Waist-to-Height Ratio
+#' Adds a Parameter for Waist to Height Ratio
 #'
-#' @description Adds a record for Waist-to-Height Ratio using Waist Circumference and Height
+#' @description Adds a record for Waist to Height Ratio using Waist Circumference and Height
 #' each by group (e.g., subject and visit) where the source parameters are available.
 #'
 #' **Note:** This is a wrapper function for the more generic
@@ -173,7 +173,7 @@ derive_param_waisthip <- function(dataset,
 #'
 #'   If Height is constant (e.g. only measured once at screening or baseline) then use
 #'   \code{constant_by_vars} to select the subject-level variable to merge on (e.g. \code{USUBJID}).
-#'   This will produce Waist-to-Height Ratio at all visits where Waist Circumference is measured.
+#'   This will produce Waist to Height Ratio at all visits where Waist Circumference is measured.
 #'   Otherwise it will only be calculated at visits with both Height and Waist Circumference
 #'   collected.
 #'
@@ -202,7 +202,7 @@ derive_param_waisthip <- function(dataset,
 #' library(tibble)
 #' library(rlang)
 #'
-#' # Example 1: Derive Waist-to-Height Ratio where Height is measured only once
+#' # Example 1: Derive Waist to Height Ratio where Height is measured only once
 #'
 #' advs <- tribble(
 #'   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
@@ -223,7 +223,7 @@ derive_param_waisthip <- function(dataset,
 #'   height_code = "HEIGHT",
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHGT",
-#'     PARAM = "Waist-to-Height Ratio"
+#'     PARAM = "Waist to Height Ratio"
 #'   ),
 #'   constant_by_vars = exprs(USUBJID)
 #' )
@@ -253,7 +253,7 @@ derive_param_waisthip <- function(dataset,
 #'   height_code = "HEIGHT",
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHGT",
-#'     PARAM = "Waist-to-Height Ratio"
+#'     PARAM = "Waist to Height Ratio"
 #'   )
 #' )
 #'
@@ -279,7 +279,7 @@ derive_param_waisthip <- function(dataset,
 #'   height_code = "HEIGHT",
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHGT",
-#'     PARAM = "Waist-to-Height Ratio"
+#'     PARAM = "Waist to Height Ratio"
 #'   ),
 #'   constant_by_vars = exprs(USUBJID),
 #'   get_unit_expr = AVALU

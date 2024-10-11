@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_advs_params.R
 \name{derive_param_waisthip}
 \alias{derive_param_waisthip}
-\title{Adds a Parameter for Waist-to-Hip Ratio}
+\title{Adds a Parameter for Waist to Hip Ratio}
 \usage{
 derive_param_waisthip(
   dataset,
@@ -79,7 +79,7 @@ The input dataset with the new parameter added. Note, a variable will only
 be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
-Adds a record for Waist-to-Hip Ratio using Waist Circumference and Hip Circumference
+Adds a record for Waist to Hip Ratio using Waist Circumference and Hip Circumference
 each by group (e.g., subject and visit) where the source parameters are available.
 
 \strong{Note:} This is a wrapper function for the more generic
@@ -117,7 +117,7 @@ derive_param_waisthip(
   hipcir_code = "HIPCIR",
   set_values_to = exprs(
     PARAMCD = "WAISTHIP",
-    PARAM = "Waist-to-Hip Ratio"
+    PARAM = "Waist to Hip Ratio"
   )
 )
 
@@ -147,7 +147,7 @@ derive_param_waisthip(
   hipcir_code = "HIPCIR",
   set_values_to = exprs(
     PARAMCD = "WAISTHIP",
-    PARAM = "Waist-to-Hip Ratio"
+    PARAM = "Waist to Hip Ratio"
   ),
   get_unit_expr = admiral::extract_unit(PARAM)
 )
