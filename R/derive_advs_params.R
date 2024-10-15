@@ -12,8 +12,8 @@
 #'   \code{PARAMCD}, and \code{AVAL} are expected as well.
 #'
 #'   The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of
-#'   the input dataset after restricting it by the filter condition (\code{filter}
-#'   parameter) and to the parameters specified by \code{wstcir_code} and \code{hipcir_code}.
+#'   the input dataset after restricting it by the filter condition (\code{filter} argument)
+#'   and to the parameters specified by \code{wstcir_code} and \code{hipcir_code}.
 #'
 #' @param wstcir_code Waist Circumference parameter code
 #'
@@ -127,8 +127,8 @@ derive_param_waisthip <- function(dataset,
   derive_param_ratio(
     dataset,
     filter = !!filter,
-    dividend_code = wstcir_code,
-    divisor_code = hipcir_code,
+    numerator_code = wstcir_code,
+    denominator_code = hipcir_code,
     by_vars = by_vars,
     set_values_to = set_values_to,
     get_unit_expr = !!get_unit_expr
@@ -149,8 +149,8 @@ derive_param_waisthip <- function(dataset,
 #'   \code{PARAMCD}, and \code{AVAL} are expected as well.
 #'
 #'   The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of
-#'   the input dataset after restricting it by the filter condition (\code{filter}
-#'   parameter) and to the parameters specified by \code{wstcir_code} and \code{height_code}.
+#'   the input dataset after restricting it by the filter condition (\code{filter} argument)
+#'   and to the parameters specified by \code{wstcir_code} and \code{height_code}.
 #'
 #' @param wstcir_code Waist Circumference parameter code
 #'
@@ -305,12 +305,12 @@ derive_param_waisthgt <- function(dataset,
   derive_param_ratio(
     dataset,
     filter = !!filter,
-    dividend_code = wstcir_code,
-    divisor_code = height_code,
+    numerator_code = wstcir_code,
+    denominator_code = height_code,
     by_vars = by_vars,
     set_values_to = set_values_to,
-    constant_dividend = FALSE,
-    constant_divisor = !is.null(constant_by_vars),
+    constant_numerator = FALSE,
+    constant_denominator = !is.null(constant_by_vars),
     constant_by_vars = constant_by_vars,
     get_unit_expr = !!get_unit_expr
   )

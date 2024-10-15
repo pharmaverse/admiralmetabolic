@@ -7,11 +7,11 @@
 derive_param_ratio(
   dataset,
   by_vars,
-  dividend_code,
-  divisor_code,
+  numerator_code,
+  denominator_code,
   set_values_to,
-  constant_dividend = FALSE,
-  constant_divisor = FALSE,
+  constant_numerator = FALSE,
+  constant_denominator = FALSE,
   filter = NULL,
   constant_by_vars = NULL,
   get_unit_expr = NULL
@@ -24,8 +24,8 @@ The variables specified by the \code{by_vars} argument are expected to be in the
 \code{PARAMCD}, and \code{AVAL} are expected as well.
 
 The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of
-the input dataset after restricting it by the filter condition (\code{filter}
-parameter) and to the parameters specified by \code{dividend_code} and \code{divisor_code}.}
+the input dataset after restricting it by the filter condition (\code{filter} argument)
+and to the parameters specified by \code{numerator_code} and \code{denominator_code}.}
 
 \item{by_vars}{Grouping variables
 
@@ -36,17 +36,17 @@ in the newly created records.
 \emph{Permitted Values}: list of variables created by \code{exprs()}
 e.g. \code{exprs(USUBJID, VISIT)}}
 
-\item{dividend_code}{Dividend parameter code
+\item{numerator_code}{Numerator parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
-as the dividend
+as the numerator
 
 \emph{Permitted Values:} character value}
 
-\item{divisor_code}{Divisor parameter code
+\item{denominator_code}{Denominator parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
-as the divisor
+as the denominator
 
 \emph{Permitted Values:} character value}
 
@@ -58,23 +58,23 @@ for the new parameter.
 
 \emph{Permitted Values}: List of variable-value pairs}
 
-\item{constant_dividend}{Is dividend parameter constant?
+\item{constant_numerator}{Is numerator parameter constant?
 
-It is expected that the parameter code (PARAMCD) specified in \code{dividend_code}
+It is expected that the parameter code (PARAMCD) specified in \code{numerator_code}
 which is required to derive the new parameter is measured only once. For example,
-if Height-to-Weight Ratio should be derived and height is measured only once
-while Weight is measured at each visit. Height could be specified
-in the \code{dividend_code} argument and \code{constant_dividend} is to be set to \code{TRUE}.
+if Height to Weight Ratio should be derived and height is measured only once
+while Weight is measured at each visit. Height could be specified in the
+\code{numerator_code} argument and \code{constant_numerator} is to be set to \code{TRUE}.
 
 \emph{Permitted Values:} logical scalar}
 
-\item{constant_divisor}{Is divisor parameter constant?
+\item{constant_denominator}{Is denominator parameter constant?
 
-It is expected that the parameter code (PARAMCD) specified in \code{dividend_code}
+It is expected that the parameter code (PARAMCD) specified in \code{numerator_code}
 which is required to derive the new parameter is measured only once. For example,
-if Waist-to-Height Ratio should be derived and height is measured only once
-while Waist Circumference is measured at each visit. Height could be specified
-in the \code{divisor_code} argument and \code{constant_divisor} is to be set to \code{TRUE}.
+if Waist to Height Ratio should be derived and height is measured only once
+while Waist Circumference is measured at each visit. Height could be specified in the
+\code{denominator_code} argument and \code{constant_denominator} is to be set to \code{TRUE}.
 
 \emph{Permitted Values:} logical scalar}
 
@@ -86,16 +86,16 @@ into account.
 
 \emph{Permitted Values:} a condition}
 
-\item{constant_by_vars}{By variables for when dividend and/or divisor is constant
+\item{constant_by_vars}{By variables for when numerator and/or denominator is constant
 
-When dividend and/or divisor is constant, the parameters (measured only once) are merged
+When numerator and/or denominator is constant, the parameters (measured only once) are merged
 to the other parameters using the specified variables.
 
-If dividend and/or divisor is constant (e.g. only measured once at screening or baseline)
-then use \code{constant_by_vars} to select the subject-level variable to merge on
-(e.g. \code{USUBJID}). This will produce a generic Ratio parameter at all visits where dividend
-and/or divisor is measured. Otherwise it will only be calculated at visits with both dividend
-and divisor parameters collected.
+If numerator and/or denominator is constant (e.g. only measured once at screening or baseline)
+then use \code{constant_by_vars} to select the subject-level variable to merge on (e.g.
+\code{USUBJID}). This will produce a generic Ratio parameter at all visits where numerator
+and/or denominator is measured. Otherwise it will only be calculated at visits with both
+numerator and denominator parameters collected.
 
 \emph{Permitted Values}: list of variables created by \code{exprs()}
 e.g. \code{exprs(USUBJID, VISIT)}}
@@ -117,14 +117,14 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
 Adds a record for a generic Ratio parameter using two existing parameter
-(dividend and divisor) each by group (e.g., subject and visit) where the source parameters
+(numerator and denominator) each by group (e.g., subject and visit) where the source parameters
 are available.
 
 \strong{Note:} This is a wrapper function for the more generic \code{derive_param_computed()}
 }
 \details{
 The analysis value of the new parameter is derived as
-\deqn{RATIO = \frac{DIVIDENT}{DIVISOR}}
+\deqn{RATIO = \frac{NUMERATOR}{DENOMINATOR}}
 }
 \seealso{
 Other internal: 

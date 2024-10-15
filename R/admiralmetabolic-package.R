@@ -4,7 +4,7 @@
 #'             assert_data_frame assert_vars assert_varval_list assert_filter_cond
 #'             assert_param_does_not_exist assert_expr expect_dfs_equal
 #' @importFrom admiral derive_param_computed
-#' @importFrom cli cli_abort
+#' @importFrom cli cli_abort cli_alert_info
 #' @importFrom dplyr arrange bind_rows case_when desc ends_with filter full_join group_by
 #'             if_else mutate mutate_at mutate_if n pull rename rename_at row_number select slice
 #'             starts_with transmute ungroup vars n_distinct union distinct
@@ -25,5 +25,4 @@
 #'             time_length %--% ymd ymd_hms weeks years hours minutes
 #' @importFrom tidyselect all_of contains vars_select
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
-#' @importFrom units mixed_units drop_units
 "_PACKAGE"

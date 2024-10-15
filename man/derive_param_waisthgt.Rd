@@ -22,8 +22,8 @@ The variables specified by the \code{by_vars} argument are expected to be in the
 \code{PARAMCD}, and \code{AVAL} are expected as well.
 
 The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of
-the input dataset after restricting it by the filter condition (\code{filter}
-parameter) and to the parameters specified by \code{wstcir_code} and \code{height_code}.}
+the input dataset after restricting it by the filter condition (\code{filter} argument)
+and to the parameters specified by \code{wstcir_code} and \code{height_code}.}
 
 \item{by_vars}{Grouping variables
 
