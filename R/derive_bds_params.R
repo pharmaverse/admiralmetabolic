@@ -202,6 +202,18 @@ derive_param_ratio <- function(dataset,
   )
 }
 
+#' Unit conversion
+#'
+#' @name unit-conversion
+#' @keywords internal
+NULL
+#> NULL
+
+#' @description `get_conv_factor()` extracts a conversion factor for a pair of units.
+#' Returns `NA` if units are not supported/convertible.
+#'
+#' @rdname unit-conversion
+#' @keywords internal
 get_conv_factor <- function(from_unit, to_unit) {
   # Get all conversion factors supported
   conv_factors_all <- get_conv_factors_all()
@@ -220,6 +232,10 @@ get_conv_factor <- function(from_unit, to_unit) {
   return(NA_real_)
 }
 
+#' @description `get_conv_factors_all()` returns all conversion factors supported.
+#'
+#' @rdname unit-conversion
+#' @keywords internal
 get_conv_factors_all <- function() {
   list(
     # Conversion factors for length relative to centimeters

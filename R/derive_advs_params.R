@@ -39,8 +39,8 @@
 #' @return The input dataset with the new parameter added. Note, a variable will only
 #'    be populated in the new parameter rows if it is specified in \code{by_vars}.
 #'
-#' @family der_prm_adxx
-#' @keywords der_prm_adxx
+#' @family der_prm_advs
+#' @keywords der_prm_advs
 #'
 #' @export
 #'
@@ -190,8 +190,8 @@ derive_param_waisthip <- function(dataset,
 #' @return The input dataset with the new parameter added. Note, a variable will only
 #'    be populated in the new parameter rows if it is specified in \code{by_vars}.
 #'
-#' @family der_prm_adxx
-#' @keywords der_prm_adxx
+#' @family der_prm_advs
+#' @keywords der_prm_advs
 #'
 #' @export
 #'

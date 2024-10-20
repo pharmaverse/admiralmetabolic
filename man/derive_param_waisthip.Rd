@@ -155,8 +155,8 @@ derive_param_waisthip(
 \seealso{
 \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
 
-ADXX Functions for adding Parameters: 
+Other der_prm_advs: 
 \code{\link{derive_param_waisthgt}()}
 }
-\concept{der_prm_adxx}
-\keyword{der_prm_adxx}
+\concept{der_prm_advs}
+\keyword{der_prm_advs}
