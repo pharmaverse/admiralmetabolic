@@ -13,11 +13,14 @@ library(dplyr)
 library(stringr)
 
 
-# Set subject keys ----
+# Define project options/variables ----
 # Use the admiral option functionality to store subject key variables in one
 # place
-
 set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
+
+# Store ADSL join variables as an R object, enabling simplified usage throughout
+# the program
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 
 
 # Read in data ----
@@ -34,12 +37,12 @@ advs <- vs_metabolic %>%
 adsl <- adsl %>%
   convert_blanks_to_na()
 
-# Merge ADSL variables (TRTSDT, TRTEDT, TRT01P, TRT01A) needed for ADVS
+# Merge ADSL variables (stored in `adsl_vars`) needed for ADVS
 # derivations
 advs <- advs %>%
   derive_vars_merged(
     dataset_add = adsl,
-    new_vars = exprs(TRTSDT, TRTEDT, TRT01P, TRT01A),
+    new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   )
 
@@ -120,7 +123,7 @@ advs <- advs %>%
   filter(VSTESTCD != "BMI") %>%
   derive_param_bmi(
     by_vars = exprs(
-      STUDYID, USUBJID, TRTSDT, TRTEDT, TRT01P, TRT01A, AVISIT,
+      STUDYID, USUBJID, !!!adsl_vars,
       AVISITN, ADT, ADY, ATPT, ATPTN
     ),
     set_values_to = exprs(
@@ -238,16 +241,17 @@ advs <- advs %>%
 # See the "Add ADSL variables" vignette section for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#adsl_vars)
 
-# Add all ADSL variables besides TRTSDT, TRTEDT, TRT01P, TRT01A
+# Add all ADSL variables besides TRTSDT, TRTEDT, TRT01P, TRT01A (stored in
+# `adsl_vars`)
 advs <- advs %>%
   derive_vars_merged(
-    dataset_add = select(adsl, !!!negate_vars(exprs(TRTSDT, TRTEDT, TRT01P, TRT01A))),
+    dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
     by_vars = get_admiral_option("subject_keys")
   )
 
 
 # Add Labels and Attributes ----
-# This process is commonly based on your metadata. As such, no specific example
+# This process is usually based on one's metadata. As such, no specific example
 # will be given. See the "Add Labels and Attributes" vignette section for
 # description of several open source R packages which can be used to handle
 # metadata.
