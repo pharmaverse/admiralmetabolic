@@ -2,7 +2,6 @@
 
 export(derive_param_waisthgt)
 export(derive_param_waisthip)
-export(hello_admiral)
 importFrom(admiral,derive_param_computed)
 importFrom(admiraldev,assert_character_scalar)
 importFrom(admiraldev,assert_data_frame)
