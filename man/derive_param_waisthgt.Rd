@@ -37,14 +37,14 @@ e.g. \code{exprs(USUBJID, VISIT)}}
 \item{wstcir_code}{Waist Circumference parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
-as the Waist Circumference
+as the Waist Circumference.
 
 \emph{Permitted Values:} character value}
 
 \item{height_code}{Height parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
-as the Height. It is expected that Height is measured in cm
+as the Height.
 
 \emph{Permitted Values:} character value}
 
@@ -87,6 +87,8 @@ Additionally, if the input parameters are measured in different units but are mu
 convertible (e.g., centimeters for one parameter and inches for another), an automatic
 conversion will be performed in order to uniform the values before calculating the ratio.
 
+\strong{Note:} Conversion factors comes from unit definitions as per the NCI Thesaurus
+
 \emph{Permitted Values:} A variable of the input dataset or a function call}
 }
 \value{
@@ -95,7 +97,7 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
 Adds a record for Waist to Height Ratio using Waist Circumference and Height
-each by group (e.g., subject and visit) where the source parameters are available.
+for each by group (e.g., subject and visit) where the source parameters are available.
 
 \strong{Note:} This is a wrapper function for the more generic
 \code{admiral::derive_param_computed()}.
@@ -105,7 +107,6 @@ The analysis value of the new parameter is derived as
 \deqn{WAISTHGT = \frac{WSTCIR}{HEIGHT}}{WAISTHGT = WSTCIR / HEIGHT}
 }
 \examples{
-
 library(tibble)
 library(rlang)
 
@@ -135,7 +136,22 @@ derive_param_waisthgt(
   constant_by_vars = exprs(USUBJID)
 )
 
-# Example 2: Pediatric study where Height and Waist Circumference are measured multiple times
+# Example 2: Same as above but only adding Waist to Height Ratio at certain visits
+
+derive_param_waisthgt(
+  advs,
+  by_vars = exprs(USUBJID, VISIT),
+  wstcir_code = "WSTCIR",
+  height_code = "HEIGHT",
+  set_values_to = exprs(
+    PARAMCD = "WAISTHGT",
+    PARAM = "Waist to Height Ratio"
+  ),
+  constant_by_vars = exprs(USUBJID),
+  filter = VISIT \%in\% c("SCREENING", "WEEK 3")
+)
+
+# Example 3: Pediatric study where Height and Waist Circumference are measured multiple times
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
@@ -164,7 +180,7 @@ derive_param_waisthgt(
   )
 )
 
-# Example 3: Automatic conversion is performed when deriving the ratio
+# Example 4: Automatic conversion is performed when deriving the ratio
 # if parameters are provided in different units (e.g. centimeters and inches)
 
 advs <- tribble(
@@ -195,7 +211,7 @@ derive_param_waisthgt(
 \seealso{
 \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
 
-Other der_prm_advs: 
+ADVS Functions for adding Parameters: 
 \code{\link{derive_param_waisthip}()}
 }
 \concept{der_prm_advs}

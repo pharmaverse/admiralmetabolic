@@ -36,7 +36,7 @@ e.g. \code{exprs(USUBJID, VISIT)}}
 \item{wstcir_code}{Waist Circumference parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
-as the Waist Circumference
+as the Waist Circumference.
 
 \emph{Permitted Values:} character value}
 
@@ -72,6 +72,8 @@ Additionally, if the input parameters are measured in different units but are mu
 convertible (e.g., centimeters for one parameter and inches for another), an automatic
 conversion will be performed in order to uniform the values before calculating the ratio.
 
+\strong{Note:} Conversion factors comes from unit definitions as per the NCI Thesaurus
+
 \emph{Permitted Values:} A variable of the input dataset or a function call}
 }
 \value{
@@ -80,7 +82,7 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
 Adds a record for Waist to Hip Ratio using Waist Circumference and Hip Circumference
-each by group (e.g., subject and visit) where the source parameters are available.
+for each by group (e.g., subject and visit) where the source parameters are available.
 
 \strong{Note:} This is a wrapper function for the more generic
 \code{admiral::derive_param_computed()}.
@@ -90,7 +92,6 @@ The analysis value of the new parameter is derived as
 \deqn{WAISTHIP = \frac{WSTCIR}{HIPCIR}}{WAISTHIP = WSTCIR / HIPCIR}
 }
 \examples{
-
 library(tibble)
 library(rlang)
 
@@ -119,6 +120,20 @@ derive_param_waisthip(
     PARAMCD = "WAISTHIP",
     PARAM = "Waist to Hip Ratio"
   )
+)
+
+# Only adding Waist to Hip Ratio at certain visits
+
+derive_param_waisthip(
+  advs,
+  by_vars = exprs(USUBJID, VISIT),
+  wstcir_code = "WSTCIR",
+  hipcir_code = "HIPCIR",
+  set_values_to = exprs(
+    PARAMCD = "WAISTHIP",
+    PARAM = "Waist to Hip Ratio"
+  ),
+  filter = VISIT \%in\% c("SCREENING", "WEEK 3")
 )
 
 # Automatic conversion is performed when deriving the ratio
@@ -155,7 +170,7 @@ derive_param_waisthip(
 \seealso{
 \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
 
-Other der_prm_advs: 
+ADVS Functions for adding Parameters: 
 \code{\link{derive_param_waisthgt}()}
 }
 \concept{der_prm_advs}
