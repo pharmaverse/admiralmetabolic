@@ -1,7 +1,7 @@
 #' Adds a Parameter for Waist to Hip Ratio
 #'
 #' @description Adds a record for Waist to Hip Ratio using Waist Circumference and Hip Circumference
-#' each by group (e.g., subject and visit) where the source parameters are available.
+#' for each by group (e.g., subject and visit) where the source parameters are available.
 #'
 #' **Note:** This is a wrapper function for the more generic
 #' \code{admiral::derive_param_computed()}.
