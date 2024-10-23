@@ -13,37 +13,12 @@ library(dplyr)
 library(stringr)
 
 
-# Define look-up tables ----
-# See function documentation for `derive_vars_merged_lookup()` and
-# `derive_vars_cat()` for information of how look-up tables can be used:
-# (https://pharmaverse.github.io/admiral/reference/derive_vars_merged_lookup.html)
-# (https://pharmaverse.github.io/admiral/reference/derive_vars_cat.html)
+# Set subject keys ----
+# Use the admiral option functionality to store subject key variables in one
+# place
 
-# Parameter look-up
-param_lookup <- tribble(
-  ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
-  "HEIGHT", "HEIGHT", "Height (cm)", 1, "Subject Characteristic", 1,
-  "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Subject Characteristic", 1,
-  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Subject Characteristic", 1,
-  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Subject Characteristic", 1,
-  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Subject Characteristic", 1,
-  "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
-  "PULSE", "PULSE", "Pulse Rate (beats/min)", 7, "Vital Sign", 2,
-  "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 8, "Vital Sign", 2,
-  "TEMP", "TEMP", "Temperature (C)", 9, "Vital Sign", 2
-)
+set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
-# Analysis categories look-up (conditional look-up)
-avalcat_lookup <- exprs(
-  ~PARAMCD, ~condition,                ~AVALCAT1,           ~AVALCA1N,
-  "BMI",    AVAL < 18.5,               "Underweight",       1,
-  "BMI",    AVAL >= 18.5 & AVAL < 25,  "Normal weight",     2,
-  "BMI",    AVAL >= 25 & AVAL < 30,    "Overweight",        3,
-  "BMI",    AVAL >= 30 & AVAL < 35,    "Obesity class I",   4,
-  "BMI",    AVAL >= 35 & AVAL < 40,    "Obesity class II",  5,
-  "BMI",    AVAL >= 40,                "Obesity class III", 6,
-  "BMI",    is.na(AVAL),               NA_character_,       NA_integer_
-)
 
 # Read in data ----
 # See the "Read in Data" vignette section for more information:
@@ -54,24 +29,38 @@ vs_metabolic <- admiralmetabolic::vs_metabolic
 adsl <- admiral::admiral_adsl
 
 # Convert SAS empty values to NA
-advs <- vs_metabolic |>
+advs <- vs_metabolic %>%
   convert_blanks_to_na()
-adsl <- adsl |>
+adsl <- adsl %>%
   convert_blanks_to_na()
 
 # Merge ADSL variables (TRTSDT, TRTEDT, TRT01P, TRT01A) needed for ADVS
 # derivations
-advs <- advs |>
+advs <- advs %>%
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = exprs(TRTSDT, TRTEDT, TRT01P, TRT01A),
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   )
+
+# Define parameter look-up table used for merging parameter codes to ADVS
+param_lookup <- tribble(
+  ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
+  "HEIGHT", "HEIGHT", "Height (cm)", 1, "Anthropometric measurements", 1,
+  "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Anthropometric measurements", 1,
+  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Anthropometric measurements", 1,
+  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric measurements", 1,
+  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric measurements", 1,
+  "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
+  "PULSE", "PULSE", "Pulse Rate (beats/min)", 7, "Vital Sign", 2,
+  "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 8, "Vital Sign", 2,
+  "TEMP", "TEMP", "Temperature (C)", 9, "Vital Sign", 2
+)
 
 # Add parameter (PARAMCD) info to enable later ADVS derivations. Additional
 # parameter information will be merged again, after all AVDS derivations are
 # completed.
-advs <- advs |>
+advs <- advs %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD),
@@ -85,9 +74,9 @@ advs <- advs |>
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#datetime)
 
 # Add vital sign analysis date (ADT) and treatment start date (TRTSDT)
-advs <- advs |>
+advs <- advs %>%
   derive_vars_dt(new_vars_prefix = "A", dtc = VSDTC)
-advs <- advs |>
+advs <- advs %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 
@@ -96,7 +85,7 @@ advs <- advs |>
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html)
 
 # Derive analysis time point (ATPT, ATPTN) and analysis visit (AVISIT, AVISITN)
-advs <- advs |>
+advs <- advs %>%
   mutate(
     ATPT = VSTPT,
     ATPTN = VSTPTNUM,
@@ -118,10 +107,8 @@ advs <- advs |>
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#aval)
 
 # Derive analysis result (AVAL)
-advs <- advs |>
-  mutate(
-    AVAL = VSSTRESN
-  )
+advs <- advs %>%
+  mutate(AVAL = VSSTRESN)
 
 
 # Derive domain specific variables ----
@@ -129,20 +116,18 @@ advs <- advs |>
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#derive_param)
 
 # Derive BMI
-advs <- advs |>
-  filter(VSTESTCD != "BMI") |>
+advs <- advs %>%
+  filter(VSTESTCD != "BMI") %>%
   derive_param_bmi(
     by_vars = exprs(
-      STUDYID, USUBJID, TRTSDT, TRTEDT, TRT01P, TRT01A, VISIT,
-      VISITNUM, ADT, ADY, VSTPT, VSTPTNUM
+      STUDYID, USUBJID, TRTSDT, TRTEDT, TRT01P, TRT01A, AVISIT,
+      AVISITN, ADT, ADY, ATPT, ATPTN
     ),
     set_values_to = exprs(
-      PARAMCD = "BMI",
-      DOMAIN = "VS"
+      PARAMCD = "BMI"
     ),
     get_unit_expr = VSSTRESU,
-    filter = VSSTAT != "NOT DONE" | is.na(VSSTAT),
-    constant_by_vars = exprs(USUBJID)
+    constant_by_vars = get_admiral_option("subject_keys")
   )
 
 
@@ -151,8 +136,20 @@ advs <- advs |>
 # information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#cat)
 
+# Create analysis categories look-up (conditional look-up) table
+avalcat_lookup <- exprs(
+  ~PARAMCD, ~condition,                ~AVALCAT1,           ~AVALCA1N,
+  "BMI",    AVAL < 18.5,               "Underweight",       1,
+  "BMI",    AVAL >= 18.5 & AVAL < 25,  "Normal weight",     2,
+  "BMI",    AVAL >= 25 & AVAL < 30,    "Overweight",        3,
+  "BMI",    AVAL >= 30 & AVAL < 35,    "Obesity class I",   4,
+  "BMI",    AVAL >= 35 & AVAL < 40,    "Obesity class II",  5,
+  "BMI",    AVAL >= 40,                "Obesity class III", 6,
+  "BMI",    is.na(AVAL),               NA_character_,       NA_integer_
+)
+
 # Derive BMI class (AVALCAT1, AVALCA1N)
-advs <- advs |>
+advs <- advs %>%
   derive_vars_cat(
     definition = avalcat_lookup,
     by_vars = exprs(PARAMCD)
@@ -166,12 +163,12 @@ advs <- advs |>
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#bchange)
 
 # Add baseline flag (ABLFL)
-advs <- advs |>
+advs <- advs %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
       by_vars = exprs(STUDYID, USUBJID, PARAMCD),
-      order = exprs(ADT, VSTPTNUM, VISITNUM),
+      order = exprs(ADT, ATPTN, AVISITN),
       new_var = ABLFL,
       mode = "last"
     ),
@@ -179,17 +176,17 @@ advs <- advs |>
   )
 
 # Derive baseline analysis value (BASE)
-advs <- advs |>
+advs <- advs %>%
   derive_var_base(
-    by_vars = exprs(STUDYID, USUBJID, PARAMCD),
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
     source_var = AVAL,
     new_var = BASE
   )
 
 # Derive absolute (CHG) and relative (PCHG) change from baseline
-advs <- advs |>
+advs <- advs %>%
   derive_var_chg()
-advs <- advs |>
+advs <- advs %>%
   derive_var_pchg()
 
 
@@ -198,20 +195,28 @@ advs <- advs |>
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#crit_vars)
 
 # Set weight loss criterion flags (CRIT1, CRIT1FL)
-advs <- advs |>
-  derive_vars_crit_flag(
-    condition = PCHG <= -5 & PARAMCD == "WEIGHT",
-    description = "Achievement of ≥ 5% weight reduction from baseline",
-    crit_nr = 1,
-    values_yn = TRUE,
-    create_numeric_flag = FALSE
-  ) |>
-  derive_vars_crit_flag(
-    condition = PCHG <= -10 & PARAMCD == "WEIGHT",
-    description = "Achievement of ≥ 10% weight reduction from baseline",
-    crit_nr = 2,
-    values_yn = TRUE,
-    create_numeric_flag = FALSE
+advs <- advs %>%
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      condition = PCHG <= -5 & PARAMCD == "WEIGHT",
+      description = "Achievement of ≥ 5% weight reduction from baseline",
+      crit_nr = 1,
+      values_yn = TRUE,
+      create_numeric_flag = FALSE
+    ),
+    filter = AVISITN > 0 & PARAMCD == "WEIGHT"
+  ) %>%
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      condition = PCHG <= -10 & PARAMCD == "WEIGHT",
+      description = "Achievement of ≥ 10% weight reduction from baseline",
+      crit_nr = 2,
+      values_yn = TRUE,
+      create_numeric_flag = FALSE
+    ),
+    filter = AVISITN > 0 & PARAMCD == "WEIGHT"
   )
 
 
@@ -220,8 +225,8 @@ advs <- advs |>
 # information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#paramcd)
 
-# Add all parameter variables (PARAM, PARAMN, PARCAT1)
-advs <- advs |>
+# Add all parameter variables (PARAM, PARAMN, PARCAT1, PARCAT1N)
+advs <- advs %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN, PARCAT1, PARCAT1N),
@@ -236,8 +241,8 @@ advs <- advs |>
 # Add all ADSL variables besides TRTSDT, TRTEDT, TRT01P, TRT01A
 advs <- advs %>%
   derive_vars_merged(
-    dataset_add = select(adsl, !!!negate_vars(TRTSDT, TRTEDT, TRT01P, TRT01A)),
-    by_vars = exprs(STUDYID, USUBJID)
+    dataset_add = select(adsl, !!!negate_vars(exprs(TRTSDT, TRTEDT, TRT01P, TRT01A))),
+    by_vars = get_admiral_option("subject_keys")
   )
 
 
