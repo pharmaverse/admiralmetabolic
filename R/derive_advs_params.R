@@ -18,7 +18,7 @@
 #' @param wstcir_code Waist Circumference parameter code
 #'
 #'   The observations where \code{PARAMCD} equals the specified value are considered
-#'   as the Waist Circumference
+#'   as the Waist Circumference.
 #'
 #'   *Permitted Values:* character value
 #'
@@ -47,7 +47,6 @@
 #' @seealso \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
 #'
 #' @examples
-#'
 #' library(tibble)
 #' library(rlang)
 #'
@@ -138,7 +137,7 @@ derive_param_waisthip <- function(dataset,
 #' Adds a Parameter for Waist to Height Ratio
 #'
 #' @description Adds a record for Waist to Height Ratio using Waist Circumference and Height
-#' each by group (e.g., subject and visit) where the source parameters are available.
+#' for each by group (e.g., subject and visit) where the source parameters are available.
 #'
 #' **Note:** This is a wrapper function for the more generic
 #' \code{admiral::derive_param_computed()}.
@@ -155,7 +154,7 @@ derive_param_waisthip <- function(dataset,
 #' @param wstcir_code Waist Circumference parameter code
 #'
 #'   The observations where \code{PARAMCD} equals the specified value are considered
-#'   as the Waist Circumference
+#'   as the Waist Circumference.
 #'
 #'   *Permitted Values:* character value
 #'
@@ -198,7 +197,6 @@ derive_param_waisthip <- function(dataset,
 #' @seealso \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}
 #'
 #' @examples
-#'
 #' library(tibble)
 #' library(rlang)
 #'
