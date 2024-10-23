@@ -2,6 +2,7 @@ url: https://pharmaverse.github.io/admiralmetabolic
 
 template:
   bootstrap: 5
+  math-rendering: mathjax
   params:
     bootswatch: flatly
 repo:
@@ -25,10 +26,10 @@ reference:
   - has_keyword("der_adxx")
 
 - title: Derivations for Adding Parameters
-- subtitle: ADXX-specific
-  desc: Parameter Derivation Functions helpful for building the ADXX dataset
+- subtitle: ADVS-specific
+  desc: Parameter Derivation Functions helpful for building the ADVS dataset
 - contents:
-  - has_keyword("der_prm_adxx")
+  - has_keyword("der_prm_advs")
 
 - title: Advanced Functions
 - subtitle: Pre-Defined Source Objects

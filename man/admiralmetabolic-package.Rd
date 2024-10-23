@@ -17,6 +17,9 @@ Useful links:
   \item \url{https://github.com/pharmaverse/admiraltemplate}
 }
 
+
+Other internal: 
+\code{\link{derive_param_ratio}()}
 }
 \author{
 \strong{Maintainer}: Edoardo Mancini \email{edoardo.mancini@roche.com}
