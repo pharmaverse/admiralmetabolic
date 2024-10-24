@@ -1,9 +1,9 @@
 #' Dataset: qs_metabolic
 #' Description: Create QS test SDTM dataset for metabolic studies,
 #' containing COEQ data (Control of Eating Questionnaire)
-#' Note that University  of Leeds are the copyright holders of the CoEQ and the test data included within
-#' `{admiralmetabolic}`is for not-for-profit use only. Any persons  or companies wanting to use the CoEQ
-#' should request a license to do so from the following
+#' Note: the University of Leeds are the copyright holders of the CoEQ and the test data included within {admiralmetabolic}
+#' is for not-for-profit use only within `{admiralmetabolic}` and `pharmaverse`-related examples/documentation. Any persons
+#' or companies wanting to use the CoEQ should request a license to do so from the following
 #' [link](https://licensing.leeds.ac.uk/product/control-of-eating-questionnaire-coeq).
 
 # Load libraries ----
