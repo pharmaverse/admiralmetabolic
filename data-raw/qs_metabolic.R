@@ -25,7 +25,7 @@ coeq_structure <- tibble::tribble(
   ~QSCAT, ~QSSCAT, ~QSTESTCD, ~QSTEST,
   "COEQ", "EATING", "COEQ01", "How hungry have you felt?",
   "COEQ", "EATING", "COEQ02", "How full have you felt?",
-  "COEQ", "EATING", "COEQ03",  "How strong was your desire to eat sweet foods?",
+  "COEQ", "EATING", "COEQ03", "How strong was your desire to eat sweet foods?",
   "COEQ", "EATING", "COEQ04", "How strong was your desire to eat savoury foods?",
   "COEQ", "EMOTIONS", "COEQ05", "How happy have you felt?",
   "COEQ", "EMOTIONS", "COEQ06", "How anxious have you felt?",
@@ -50,7 +50,7 @@ coeq_structure <- tibble::tribble(
 visit_schedule <- vs_metabolic %>%
   select(STUDYID, USUBJID, VISIT, VISITNUM, VISITDY, VSDTC, VSDY) %>%
   filter(!grepl("AMBUL|RETRIEVAL", VISIT)) %>%
-  rename(QSDTC  = VSDTC, QSDY = VSDY) %>%
+  rename(QSDTC = VSDTC, QSDY = VSDY) %>%
   distinct()
 
 # Cross join to get questions at each visit ----
@@ -71,8 +71,10 @@ qs_metabolic_results <- qs_metabolic_shell %>%
 
 # Order variables, sort and add sequence number ----
 qs_metabolic_seq <- qs_metabolic_results %>%
-  select(STUDYID, USUBJID, DOMAIN, VISIT, VISITNUM, VISITDY, QSBLFL, QSDTC, QSDY,
-         QSCAT, QSSCAT, QSTEST, QSTESTCD, QSORRES, QSORRESU, QSSTRESC, QSSTRESN, QSSTRESU) %>%
+  select(
+    STUDYID, USUBJID, DOMAIN, VISIT, VISITNUM, VISITDY, QSBLFL, QSDTC, QSDY,
+    QSCAT, QSSCAT, QSTEST, QSTESTCD, QSORRES, QSORRESU, QSSTRESC, QSSTRESN, QSSTRESU
+  ) %>%
   arrange(STUDYID, USUBJID, VISITNUM, QSTESTCD) %>%
   group_by(USUBJID) %>%
   mutate(QSSEQ = row_number()) %>%
