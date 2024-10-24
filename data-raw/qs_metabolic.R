@@ -49,13 +49,13 @@ coeq_structure <- tibble::tribble(
 # Use visit schedule and days from VS ----
 visit_schedule <- vs_metabolic %>%
   select(STUDYID, USUBJID, VISIT, VISITNUM, VISITDY, VSDTC, VSDY) %>%
-  filter(!grepl("AMBUL|RETRIEVAL", VISIT)) %>%
+  filter(stringr::str_detect(VISIT, "AMBUL|RETRIEVAL", negate = TRUE)) %>%
   rename(QSDTC = VSDTC, QSDY = VSDY) %>%
   distinct()
 
 # Cross join to get questions at each visit ----
 qs_metabolic_shell <- visit_schedule %>%
-  dplyr::cross_join(coeq_structure)
+  cross_join(coeq_structure)
 
 # Simulate question answers ----
 qs_metabolic_results <- qs_metabolic_shell %>%
@@ -66,7 +66,7 @@ qs_metabolic_results <- qs_metabolic_shell %>%
     QSSTRESU = "cm",
     QSSTRESN = QSORRES,
     QSSTRESC = as.character(QSORRES),
-    QSBLFL = ifelse(VISIT == "BASELINE", "Y", NA_character_)
+    QSBLFL = if_else(VISIT == "BASELINE", "Y", NA_character_)
   )
 
 # Order variables, sort and add sequence number ----
