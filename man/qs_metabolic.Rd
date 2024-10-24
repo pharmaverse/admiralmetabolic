@@ -14,7 +14,7 @@ Constructed using \code{dm_metabolic} from \code{{admiralmetabolic}} package
 qs_metabolic
 }
 \description{
-An example questionnaire SDTM dataset (containing Control of Eating Questionnaire, COEQ, test data) for metabolic studies.
+An example questionnaire SDTM dataset (containing Control of Eating Questionnaire, CoEQ, test data) for metabolic studies.
 Note that University of Leeds are the copyright holders of the CoEQ and the test data included within {admiralmetabolic}
 is for not-for-profit use only within \code{{admiralmetabolic}} and \code{pharmaverse}-related examples/documentation. Any persons
 or companies wanting to use the CoEQ should request a license to do so from the following
