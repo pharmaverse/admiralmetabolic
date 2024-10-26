@@ -539,7 +539,8 @@ derive_param_ratio <- function(dataset,
 
     parameters <- parameters %>%
       setdiff(denominator_code) %>%
-      (\(x) if (length(x) == 0) NULL else x)() 
+      (\(x) if (length(x) == 0) NULL else x)()
+  }
 
   ### Call the core {admiral} function to derive Ratio parameter ----
 
