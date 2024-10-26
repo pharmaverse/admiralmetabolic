@@ -246,7 +246,6 @@ For deriving categorization variables (`AVALCATx`, `BASECATx`)
 documentation of the function for details).
 
 ```{r eval=TRUE}
-
 avalcat_lookup <- exprs(
   ~PARAMCD, ~condition,                ~AVALCAT1,           ~AVALCA1N,
   "BMI",    AVAL < 18.5,               "Underweight",       1,
@@ -264,8 +263,6 @@ advs <- advs %>%
     definition = avalcat_lookup,
     by_vars = exprs(PARAMCD)
   )
-
-
 ```
 
 ```{r eval=TRUE, echo=FALSE}
@@ -279,7 +276,6 @@ dataset_vignette(
 In a similar way, we will create `BASECATy`/ `BASECAvN` variables.
 
 ```{r eval=TRUE}
-
 basecat_lookup <- exprs(
   ~PARAMCD, ~condition,                ~BASECAT1,           ~BASECA1N,
   "BMI",    BASE < 18.5,               "Underweight",       1,
