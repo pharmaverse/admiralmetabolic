@@ -329,26 +329,32 @@ For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFLN`)
 It ensures that they are derived in an ADaM-compliant way (see
 documentation of the function for details).
 
-In most cases the criterion depends on the parameter. In the following
-example, the criterion flags for weight based on percentage change in
-weight reduction from baseline is derived. Additional criterion flags
-can be added as needed.
+In most cases the criterion depends on the parameter and in this case the higher order function [`restrict_derivation()`](https://pharmaverse.github.io/admiral/dev/reference/restrict_derivation.html) can be useful.
+In the following example, the criterion flags for weight based on percentage change in weight reduction from baseline is derived. Additional criterion flags can be added as needed.
 
 ```{r eval=TRUE}
 advs <- advs %>%
-  derive_vars_crit_flag(
-    condition = PCHG <= -5 & PARAMCD == "WEIGHT",
-    description = "Achievement of ≥ 5% weight reduction from baseline",
-    crit_nr = 1,
-    values_yn = TRUE,
-    create_numeric_flag = FALSE
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      condition = PCHG <= -5 & PARAMCD == "WEIGHT",
+      description = "Achievement of ≥ 5% weight reduction from baseline",
+      crit_nr = 1,
+      values_yn = TRUE,
+      create_numeric_flag = FALSE
+    ),
+    filter = VISITNUM > 0 & PARAMCD == "WEIGHT"
   ) %>%
-  derive_vars_crit_flag(
-    condition = PCHG <= -10 & PARAMCD == "WEIGHT",
-    description = "Achievement of ≥ 10% weight reduction from baseline",
-    crit_nr = 2,
-    values_yn = TRUE,
-    create_numeric_flag = FALSE
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      condition = PCHG <= -10 & PARAMCD == "WEIGHT",
+      description = "Achievement of ≥ 10% weight reduction from baseline",
+      crit_nr = 2,
+      values_yn = TRUE,
+      create_numeric_flag = FALSE
+    ),
+    filter = VISITNUM > 0 & PARAMCD == "WEIGHT"
   )
 ```
 
