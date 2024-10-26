@@ -309,7 +309,7 @@ derive_param_waisthip <- function(dataset,
 #'     PARAM = "Waist to Height Ratio"
 #'   ),
 #'   constant_by_vars = exprs(USUBJID),
-#'   get_unit_expr = AVALU
+#'   get_unit_expr = admiral::extract_unit(PARAM)
 #' )
 derive_param_waisthgt <- function(dataset,
                                   by_vars,
@@ -531,16 +531,15 @@ derive_param_ratio <- function(dataset,
     constant_parameters <- c(constant_parameters, numerator_code)
 
     parameters <- parameters %>%
-      .[!. == numerator_code]
+      setdiff(numenator_code)
   }
 
   if (constant_denominator) {
     constant_parameters <- c(constant_parameters, denominator_code)
 
     parameters <- parameters %>%
-      .[!. == denominator_code] %>%
-      ifelse(length(.) == 0, NULL, .)
-  }
+      setdiff(denominator_code) %>%
+      (\(x) if (length(x) == 0) NULL else x)() 
 
   ### Call the core {admiral} function to derive Ratio parameter ----
 
