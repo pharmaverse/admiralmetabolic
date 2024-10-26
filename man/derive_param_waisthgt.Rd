@@ -87,7 +87,7 @@ Additionally, if the input parameters are measured in different units but are mu
 convertible (e.g., centimeters for one parameter and inches for another), an automatic
 conversion will be performed in order to uniform the values before calculating the ratio.
 
-\strong{Note:} Conversion factors comes from unit definitions as per the NCI Thesaurus
+\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus
 
 \emph{Permitted Values:} A variable of the input dataset or a function call}
 }

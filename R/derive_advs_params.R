@@ -426,7 +426,7 @@ derive_param_waisthgt <- function(dataset,
 #'   convertible (e.g., centimeters for one parameter and inches for another), an automatic
 #'   conversion will be performed in order to uniform the values before calculating the ratio.
 #'
-#'   **Note:** Conversion factors comes from unit definitions as per the NCI Thesaurus
+#'   **Note:** Conversion factors come from unit definitions as per the NCI Thesaurus
 #'
 #'   *Permitted Values:* A variable of the input dataset or a function call
 #'
@@ -589,7 +589,7 @@ get_conv_factor <- function(from_unit, to_unit) {
 
 #' @description `get_conv_factors_all()` returns all conversion factors supported.
 #'
-#' **Note:** Conversion factor for inch comes from the NCI Thesaurus
+#' **Note:** Conversion factors come from unit definitions as per the NCI Thesaurus
 #'
 #' @rdname unit-conversion
 #' @keywords internal
