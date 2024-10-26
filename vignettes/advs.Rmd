@@ -175,7 +175,7 @@ advs <- derive_param_bmi(
     PARAMCD = "BMI",
     PARAM = "Body Mass Index (kg/m^2)",
     PARAMN = 3,
-    PARCAT1 = "Subject Characteristic",
+    PARCAT1 = "Anthropometric measurement",
     PARCAT1N = 1
   ),
   get_unit_expr = VSSTRESU,
@@ -240,36 +240,32 @@ outlined below.
 assigning `AVALCATy`/ `AVALCAvN` and `BASECATy`/ `BASECAvN` values.
 Below is a simple example of how these values may be assigned:
 
+For deriving categorization variables (`AVALCATx`, `BASECATx`)
+`{admiral}` provides
+[`derive_vars_cat()`](https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html) (see
+documentation of the function for details).
+
 ```{r eval=TRUE}
-avalcat_lookup <- tibble::tribble(
-  ~PARAMCD, ~AVALCA1N, ~AVALCAT1,
-  "BMI",    1,         "Underweight",
-  "BMI",    2,         "Normal weight",
-  "BMI",    3,         "Overweight",
-  "BMI",    4,         "Obesity class I",
-  "BMI",    5,         "Obesity class II",
-  "BMI",    6,         "Obesity class III",
-  "BMI",    NA,        NA_character_
+
+avalcat_lookup <- exprs(
+  ~PARAMCD, ~condition,                ~AVALCAT1,           ~AVALCA1N,
+  "BMI",    AVAL < 18.5,               "Underweight",       1,
+  "BMI",    AVAL >= 18.5 & AVAL < 25,  "Normal weight",     2,
+  "BMI",    AVAL >= 25 & AVAL < 30,    "Overweight",        3,
+  "BMI",    AVAL >= 30 & AVAL < 35,    "Obesity class I",   4,
+  "BMI",    AVAL >= 35 & AVAL < 40,    "Obesity class II",  5,
+  "BMI",    AVAL >= 40,                "Obesity class III", 6,
+  "BMI",    is.na(AVAL),               NA_character_,       NA_integer_
 )
 
-format_avalcat1n <- function(param, aval) {
-  case_when(
-    param == "BMI" & aval < 18.5 ~ 1,
-    param == "BMI" & aval >= 18.5 & aval < 25 ~ 2,
-    param == "BMI" & aval >= 25 & aval < 30 ~ 3,
-    param == "BMI" & aval >= 30 & aval < 35 ~ 4,
-    param == "BMI" & aval >= 35 & aval < 40 ~ 5,
-    param == "BMI" & aval >= 40 ~ 6,
-    TRUE ~ NA_real_
-  )
-}
-
+# Derive BMI class (AVALCAT1, AVALCA1N)
 advs <- advs %>%
-  mutate(AVALCA1N = format_avalcat1n(param = PARAMCD, aval = AVAL)) %>%
-  derive_vars_merged(
-    avalcat_lookup,
-    by = exprs(PARAMCD, AVALCA1N)
+  derive_vars_cat(
+    definition = avalcat_lookup,
+    by_vars = exprs(PARAMCD)
   )
+
+
 ```
 
 ```{r eval=TRUE, echo=FALSE}
@@ -283,33 +279,23 @@ dataset_vignette(
 In a similar way, we will create `BASECATy`/ `BASECAvN` variables.
 
 ```{r eval=TRUE}
-basecat_lookup <- tibble::tribble(
-  ~PARAMCD, ~BASECA1N, ~BASECAT1,
-  "BMI",    1,         "Underweight",
-  "BMI",    2,         "Normal weight",
-  "BMI",    3,         "Overweight",
-  "BMI",    4,         "Obesity class I",
-  "BMI",    5,         "Obesity class II",
-  "BMI",    6,         "Obesity class III",
-  "BMI",    NA,        NA_character_
+
+basecat_lookup <- exprs(
+  ~PARAMCD, ~condition,                ~BASECAT1,           ~BASECA1N,
+  "BMI",    BASE < 18.5,               "Underweight",       1,
+  "BMI",    BASE >= 18.5 & BASE < 25,  "Normal weight",     2,
+  "BMI",    BASE >= 25 & BASE < 30,    "Overweight",        3,
+  "BMI",    BASE >= 30 & BASE < 35,    "Obesity class I",   4,
+  "BMI",    BASE >= 35 & BASE < 40,    "Obesity class II",  5,
+  "BMI",    BASE >= 40,                "Obesity class III", 6,
+  "BMI",    is.na(BASE),               NA_character_,       NA_integer_
 )
 
-format_basecat1n <- function(param, base) {
-  case_when(
-    param == "BMI" & base < 18.5 ~ 1,
-    param == "BMI" & base >= 18.5 & base < 25 ~ 2,
-    param == "BMI" & base >= 25 & base < 30 ~ 3,
-    param == "BMI" & base >= 30 & base < 35 ~ 4,
-    param == "BMI" & base >= 35 & base < 40 ~ 5,
-    param == "BMI" & base >= 40 ~ 6,
-    TRUE ~ NA_real_
-  )
-}
+# Derive baseline BMI class (BASECAT1, BASECA1N)
 advs <- advs %>%
-  mutate(BASECA1N = format_basecat1n(param = PARAMCD, base = BASE)) %>%
-  derive_vars_merged(
-    basecat_lookup,
-    by = exprs(PARAMCD, BASECA1N)
+  derive_vars_cat(
+    definition = basecat_lookup,
+    by_vars = exprs(PARAMCD)
   )
 ```
 
