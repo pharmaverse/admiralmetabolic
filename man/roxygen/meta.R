@@ -1,7 +1,7 @@
 list(
   rd_family_title = list(
     der_adxx = "ADXX Functions that returns variable appended to dataset: ",
-    der_prm_adxx = "ADXX Functions for adding Parameters: ",
+    der_prm_advs = "ADVS Functions for adding Parameters: ",
     com_adxx = "ADXX Functions that returns a vector: ",
     utils_ds_chk = "Utilities for Dataset Checking: ",
     utils_fil = "Utilities for Filtering Observations: ",
