@@ -375,6 +375,14 @@ derive_param_waisthgt <- function(dataset,
 #'
 #'   *Permitted Values:* character value
 #'
+#' @param set_values_to Variables to be set
+#'
+#' The specified variables are set to the specified values for the new
+#' observations. For example `exprs(PARAMCD = "RATIO")` defines the parameter code
+#' for the new parameter.
+#'
+#' *Permitted Values*: List of variable-value pairs
+#'
 #' @param constant_numerator Is numerator parameter constant?
 #'
 #'   It is expected that the parameter code (PARAMCD) specified in \code{numerator_code}
@@ -422,7 +430,7 @@ derive_param_waisthgt <- function(dataset,
 #'
 #'   *Permitted Values:* A variable of the input dataset or a function call
 #'
-#' @inheritParams admiral::derive_param_bmi
+#' @inheritParams admiral::derive_param_computed
 #'
 #' @details
 #' The analysis value of the new parameter is derived as

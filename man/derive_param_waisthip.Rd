@@ -50,7 +50,7 @@ as the Hip Circumference
 \item{set_values_to}{Variables to be set
 
 The specified variables are set to the specified values for the new
-observations. For example \code{exprs(PARAMCD = "MAP")} defines the parameter code
+observations. For example \code{exprs(PARAMCD = "RATIO")} defines the parameter code
 for the new parameter.
 
 \emph{Permitted Values}: List of variable-value pairs}
