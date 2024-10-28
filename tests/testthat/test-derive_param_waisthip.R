@@ -23,7 +23,8 @@ test_that(
       set_values_to = exprs(
         PARAMCD = "WAISTHIP",
         PARAM = "Waist to Hip Ratio"
-      )
+      ),
+      get_unit_expr = admiral::extract_unit(PARAM)
     )
 
     expected_output <- derive_param_computed(
@@ -71,7 +72,7 @@ test_that(
         PARAMCD = "WAISTHIP",
         PARAM = "Waist to Hip Ratio"
       ),
-      get_unit_expr = AVALU
+      get_unit_expr = admiral::extract_unit(PARAM)
     ) %>%
       filter(PARAMCD == "WAISTHIP")
 
@@ -97,7 +98,8 @@ test_that(
       set_values_to = exprs(
         PARAMCD = "WAISTHIP",
         PARAM = "Waist to Hip Ratio"
-      )
+      ),
+      get_unit_expr = admiral::extract_unit(PARAM)
     ) %>%
       filter(PARAMCD == "WAISTHIP")
 

@@ -21,7 +21,8 @@ test_that(
         PARAMCD = "WAISTHGT",
         PARAM = "Waist to Height Ratio"
       ),
-      constant_by_vars = exprs(USUBJID)
+      constant_by_vars = exprs(USUBJID),
+      get_unit_expr = admiral::extract_unit(PARAM)
     )
 
     expected_output <- derive_param_computed(
@@ -71,7 +72,8 @@ test_that(
       set_values_to = exprs(
         PARAMCD = "WAISTHGT",
         PARAM = "Waist to Height Ratio"
-      )
+      ),
+      get_unit_expr = admiral::extract_unit(PARAM)
     )
 
     expected_output <- derive_param_computed(
@@ -116,7 +118,7 @@ test_that(
         PARAM = "Waist to Height Ratio"
       ),
       constant_by_vars = exprs(USUBJID),
-      get_unit_expr = AVALU
+      get_unit_expr = admiral::extract_unit(PARAM)
     ) %>%
       filter(PARAMCD == "WAISTHGT")
 
@@ -139,7 +141,8 @@ test_that(
         PARAMCD = "WAISTHGT",
         PARAM = "Waist to Height Ratio"
       ),
-      constant_by_vars = exprs(USUBJID)
+      constant_by_vars = exprs(USUBJID),
+      get_unit_expr = admiral::extract_unit(PARAM)
     ) %>%
       filter(PARAMCD == "WAISTHGT")
 

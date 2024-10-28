@@ -12,7 +12,7 @@ derive_param_waisthgt(
   set_values_to = exprs(PARAMCD = "WAISTHGT"),
   filter = NULL,
   constant_by_vars = NULL,
-  get_unit_expr = NULL
+  get_unit_expr
 )
 }
 \arguments{
@@ -133,7 +133,8 @@ derive_param_waisthgt(
     PARAMCD = "WAISTHGT",
     PARAM = "Waist to Height Ratio"
   ),
-  constant_by_vars = exprs(USUBJID)
+  constant_by_vars = exprs(USUBJID),
+  get_unit_expr = admiral::extract_unit(PARAM)
 )
 
 # Example 2: Same as above but only adding Waist to Height Ratio at certain visits
@@ -148,6 +149,7 @@ derive_param_waisthgt(
     PARAM = "Waist to Height Ratio"
   ),
   constant_by_vars = exprs(USUBJID),
+  get_unit_expr = admiral::extract_unit(PARAM),
   filter = VISIT \%in\% c("SCREENING", "WEEK 3")
 )
 
@@ -177,7 +179,8 @@ derive_param_waisthgt(
   set_values_to = exprs(
     PARAMCD = "WAISTHGT",
     PARAM = "Waist to Height Ratio"
-  )
+  ),
+  get_unit_expr = admiral::extract_unit(PARAM)
 )
 
 # Example 4: Automatic conversion is performed when deriving the ratio
@@ -205,7 +208,7 @@ derive_param_waisthgt(
     PARAM = "Waist to Height Ratio"
   ),
   constant_by_vars = exprs(USUBJID),
-  get_unit_expr = AVALU
+  get_unit_expr = admiral::extract_unit(PARAM)
 )
 }
 \seealso{

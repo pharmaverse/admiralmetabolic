@@ -24,7 +24,7 @@ test_that(
       denominator_code = "HIPCIR",
       set_values_to = exprs(
         PARAMCD = "WAISTHIP",
-        PARAM = "Waist-to-Hip Ratio"
+        PARAM = "Waist to Hip Ratio"
       )
     )
 
@@ -35,7 +35,7 @@ test_that(
       set_values_to = exprs(
         AVAL = AVAL.WSTCIR / AVAL.HIPCIR,
         PARAMCD = "WAISTHIP",
-        PARAM = "Waist-to-Hip Ratio"
+        PARAM = "Waist to Hip Ratio"
       )
     )
 
@@ -70,7 +70,7 @@ test_that(
       denominator_code = "HEIGHT",
       set_values_to = exprs(
         PARAMCD = "WAISTHGT",
-        PARAM = "Waist-to-Height Ratio"
+        PARAM = "Waist to Height Ratio"
       ),
       constant_denominator = TRUE,
       constant_by_vars = exprs(USUBJID)
@@ -83,7 +83,7 @@ test_that(
       set_values_to = exprs(
         AVAL = AVAL.WSTCIR / AVAL.HEIGHT,
         PARAMCD = "WAISTHGT",
-        PARAM = "Waist-to-Height Ratio"
+        PARAM = "Waist to Height Ratio"
       ),
       constant_parameters = "HEIGHT",
       constant_by_vars = exprs(USUBJID)

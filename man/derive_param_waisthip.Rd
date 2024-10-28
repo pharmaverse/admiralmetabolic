@@ -11,7 +11,7 @@ derive_param_waisthip(
   hipcir_code = "HIPCIR",
   set_values_to = exprs(PARAMCD = "WAISTHIP"),
   filter = NULL,
-  get_unit_expr = NULL
+  get_unit_expr
 )
 }
 \arguments{
@@ -119,7 +119,8 @@ derive_param_waisthip(
   set_values_to = exprs(
     PARAMCD = "WAISTHIP",
     PARAM = "Waist to Hip Ratio"
-  )
+  ),
+  get_unit_expr = admiral::extract_unit(PARAM)
 )
 
 # Only adding Waist to Hip Ratio at certain visits
@@ -133,6 +134,7 @@ derive_param_waisthip(
     PARAMCD = "WAISTHIP",
     PARAM = "Waist to Hip Ratio"
   ),
+  get_unit_expr = admiral::extract_unit(PARAM),
   filter = VISIT \%in\% c("SCREENING", "WEEK 3")
 )
 

@@ -74,7 +74,8 @@
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHIP",
 #'     PARAM = "Waist to Hip Ratio"
-#'   )
+#'   ),
+#'   get_unit_expr = admiral::extract_unit(PARAM)
 #' )
 #'
 #' # Only adding Waist to Hip Ratio at certain visits
@@ -88,6 +89,7 @@
 #'     PARAMCD = "WAISTHIP",
 #'     PARAM = "Waist to Hip Ratio"
 #'   ),
+#'   get_unit_expr = admiral::extract_unit(PARAM),
 #'   filter = VISIT %in% c("SCREENING", "WEEK 3")
 #' )
 #'
@@ -127,7 +129,7 @@ derive_param_waisthip <- function(dataset,
                                   hipcir_code = "HIPCIR",
                                   set_values_to = exprs(PARAMCD = "WAISTHIP"),
                                   filter = NULL,
-                                  get_unit_expr = NULL) {
+                                  get_unit_expr) {
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(wstcir_code)
@@ -135,7 +137,23 @@ derive_param_waisthip <- function(dataset,
   assert_varval_list(set_values_to, required_elements = "PARAMCD")
   assert_param_does_not_exist(dataset, set_values_to$PARAMCD)
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
-  get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
+  get_unit_expr <- assert_expr(enexpr(get_unit_expr))
+
+  units_supported <- names(get_conv_factors_all()[["length"]])
+
+  assert_unit(
+    dataset,
+    param = wstcir_code,
+    required_unit = units_supported,
+    get_unit_expr = !!get_unit_expr
+  )
+
+  assert_unit(
+    dataset,
+    param = hipcir_code,
+    required_unit = units_supported,
+    get_unit_expr = !!get_unit_expr
+  )
 
   derive_param_ratio(
     dataset,
@@ -237,7 +255,8 @@ derive_param_waisthip <- function(dataset,
 #'     PARAMCD = "WAISTHGT",
 #'     PARAM = "Waist to Height Ratio"
 #'   ),
-#'   constant_by_vars = exprs(USUBJID)
+#'   constant_by_vars = exprs(USUBJID),
+#'   get_unit_expr = admiral::extract_unit(PARAM)
 #' )
 #'
 #' # Example 2: Same as above but only adding Waist to Height Ratio at certain visits
@@ -252,6 +271,7 @@ derive_param_waisthip <- function(dataset,
 #'     PARAM = "Waist to Height Ratio"
 #'   ),
 #'   constant_by_vars = exprs(USUBJID),
+#'   get_unit_expr = admiral::extract_unit(PARAM),
 #'   filter = VISIT %in% c("SCREENING", "WEEK 3")
 #' )
 #'
@@ -281,7 +301,8 @@ derive_param_waisthip <- function(dataset,
 #'   set_values_to = exprs(
 #'     PARAMCD = "WAISTHGT",
 #'     PARAM = "Waist to Height Ratio"
-#'   )
+#'   ),
+#'   get_unit_expr = admiral::extract_unit(PARAM)
 #' )
 #'
 #' # Example 4: Automatic conversion is performed when deriving the ratio
@@ -318,7 +339,7 @@ derive_param_waisthgt <- function(dataset,
                                   set_values_to = exprs(PARAMCD = "WAISTHGT"),
                                   filter = NULL,
                                   constant_by_vars = NULL,
-                                  get_unit_expr = NULL) {
+                                  get_unit_expr) {
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(wstcir_code)
@@ -327,7 +348,23 @@ derive_param_waisthgt <- function(dataset,
   assert_param_does_not_exist(dataset, set_values_to$PARAMCD)
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
   assert_vars(constant_by_vars, optional = TRUE)
-  get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
+  get_unit_expr <- assert_expr(enexpr(get_unit_expr))
+
+  units_supported <- names(get_conv_factors_all()[["length"]])
+
+  assert_unit(
+    dataset,
+    param = wstcir_code,
+    required_unit = units_supported,
+    get_unit_expr = !!get_unit_expr
+  )
+
+  assert_unit(
+    dataset,
+    param = height_code,
+    required_unit = units_supported,
+    get_unit_expr = !!get_unit_expr
+  )
 
   derive_param_ratio(
     dataset,
@@ -464,6 +501,12 @@ derive_param_ratio <- function(dataset,
   assert_vars(constant_by_vars, optional = TRUE)
   get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
 
+  if (constant_numerator && constant_denominator) {
+    cli_abort(
+      "Only one of two input parameters are expected to be constant, or none of them."
+    )
+  }
+
   ### Default formula with no units conversion applied ----
 
   ratio_formula <- expr(
@@ -474,30 +517,14 @@ derive_param_ratio <- function(dataset,
   ### If `get_unit_expr` provided then check units and enable units conversion ----
 
   if (!missing(get_unit_expr) && !is.null(get_unit_expr)) {
-    param_units <- list()
-
-    # Check if units are the same within each of two parameters
-
-    for (param in c(numerator_code, denominator_code)) {
-      units_found <- dataset %>%
-        mutate(`_unit` = !!get_unit_expr) %>%
-        filter(PARAMCD == param) %>%
-        pull(`_unit`) %>%
-        unique()
-
-      if (length(units_found) != 1L) {
-        cli_abort(
-          "Multiple units {.val {units_found}} found for {.val {param}}.
-          Please review and update the units."
-        )
-      }
-
-      param_units[[param]] <- units_found
-    }
-
     # If the input parameters are measured in different units
     # but are convertible from one to another (and this kind of conversion supported)
     # then modify the formula in order to perform units conversion on the fly
+
+    param_units <- dataset %>%
+      mutate(tmp_unit = !!get_unit_expr) %>%
+      distinct(PARAMCD, .data$tmp_unit) %>%
+      pull(name = PARAMCD)
 
     if (param_units[[denominator_code]] != param_units[[numerator_code]]) {
       # Find conversion factor for denominator
@@ -531,7 +558,7 @@ derive_param_ratio <- function(dataset,
     constant_parameters <- c(constant_parameters, numerator_code)
 
     parameters <- parameters %>%
-      setdiff(numenator_code)
+      setdiff(numerator_code)
   }
 
   if (constant_denominator) {
