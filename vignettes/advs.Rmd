@@ -342,8 +342,8 @@ advs <- advs %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   arrange(advs, USUBJID, VISITNUM, VSTPTNUM, PARAMCD),
-  display_vars = exprs(USUBJID, PARAMCD, PCHG, CRIT1, CRIT1FL, CRIT2, CRIT2FL),
-  filter = PARAMCD %in% c("WEIGHT")
+  display_vars = exprs(USUBJID, PARAMCD, PCHG, CRIT1, CRIT1FL, CRIT2, CRIT2FL, VISIT, VISITNUM),
+  filter = PARAMCD %in% c("WEIGHT") & USUBJID == "01-701-1034"
 )
 ```
 
