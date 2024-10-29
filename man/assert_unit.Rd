@@ -62,29 +62,8 @@ once https://github.com/pharmaverse/admiraldev/issues/468 is closed.
 
 }
 \seealso{
-Checks for valid input and returns warning or errors messages: 
-\code{\link[admiraldev]{assert_atomic_vector}()},
-\code{\link[admiraldev]{assert_character_scalar}()},
-\code{\link[admiraldev]{assert_character_vector}()},
-\code{\link[admiraldev]{assert_data_frame}()},
-\code{\link[admiraldev]{assert_date_vector}()},
-\code{\link[admiraldev]{assert_expr}()},
-\code{\link[admiraldev]{assert_expr_list}()},
-\code{\link[admiraldev]{assert_filter_cond}()},
-\code{\link[admiraldev]{assert_function}()},
-\code{\link[admiraldev]{assert_integer_scalar}()},
-\code{\link[admiraldev]{assert_list_element}()},
-\code{\link[admiraldev]{assert_list_of}()},
-\code{\link[admiraldev]{assert_logical_scalar}()},
-\code{\link[admiraldev]{assert_named}()},
-\code{\link[admiraldev]{assert_numeric_vector}()},
-\code{\link[admiraldev]{assert_one_to_one}()},
-\code{\link[admiraldev]{assert_param_does_not_exist}()},
-\code{\link[admiraldev]{assert_s3_class}()},
-\code{\link[admiraldev]{assert_same_type}()},
-\code{\link[admiraldev]{assert_symbol}()},
-\code{\link[admiraldev]{assert_vars}()},
-\code{\link[admiraldev]{assert_varval_list}()}
+\link[admiraldev:assert_unit]{admiraldev::assert_unit}
 }
-\concept{deprecated}
+\concept{internal deprecated}
 \keyword{deprecated}
+\keyword{internal}

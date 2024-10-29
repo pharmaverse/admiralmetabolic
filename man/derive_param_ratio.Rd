@@ -23,9 +23,9 @@ derive_param_ratio(
 The variables specified by the \code{by_vars} argument are expected to be in the dataset.
 \code{PARAMCD}, and \code{AVAL} are expected as well.
 
-The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of
-the input dataset after restricting it by the filter condition (\code{filter} argument)
-and to the parameters specified by \code{numerator_code} and \code{denominator_code}.}
+The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of the input dataset
+after restricting it by the filter condition (\code{filter} argument) and to the parameters
+specified by \code{numerator_code} and \code{denominator_code}.}
 
 \item{by_vars}{Grouping variables
 
@@ -38,15 +38,13 @@ e.g. \code{exprs(USUBJID, VISIT)}}
 
 \item{numerator_code}{Numerator parameter code
 
-The observations where \code{PARAMCD} equals the specified value are considered
-as the numerator
+The observations where \code{PARAMCD} equals the specified value are considered as the numerator.
 
 \emph{Permitted Values:} character value}
 
 \item{denominator_code}{Denominator parameter code
 
-The observations where \code{PARAMCD} equals the specified value are considered
-as the denominator
+The observations where \code{PARAMCD} equals the specified value are considered as the denominator.
 
 \emph{Permitted Values:} character value}
 
@@ -56,15 +54,15 @@ The specified variables are set to the specified values for the new
 observations. For example \code{exprs(PARAMCD = "RATIO")} defines the parameter code
 for the new parameter.
 
-\emph{Permitted Values}: List of variable-value pairs}
+\emph{Permitted Values:} List of variable-value pairs}
 
 \item{constant_numerator}{Is numerator parameter constant?
 
 It is expected that the parameter code (PARAMCD) specified in \code{numerator_code}
 which is required to derive the new parameter is measured only once. For example,
-if Height to Weight Ratio should be derived and height is measured only once
-while Weight is measured at each visit. Height could be specified in the
-\code{numerator_code} argument and \code{constant_numerator} is to be set to \code{TRUE}.
+if Height to Weight Ratio should be derived and height is measured only once while
+Weight is measured at each visit. Height could be specified in the \code{numerator_code}
+argument and \code{constant_numerator} is to be set to \code{TRUE}.
 
 \emph{Permitted Values:} logical scalar}
 
@@ -73,8 +71,8 @@ while Weight is measured at each visit. Height could be specified in the
 It is expected that the parameter code (PARAMCD) specified in \code{numerator_code}
 which is required to derive the new parameter is measured only once. For example,
 if Waist to Height Ratio should be derived and height is measured only once
-while Waist Circumference is measured at each visit. Height could be specified in the
-\code{denominator_code} argument and \code{constant_denominator} is to be set to \code{TRUE}.
+while Waist Circumference is measured at each visit. Height could be specified in
+the \code{denominator_code} argument and \code{constant_denominator} is to be set to \code{TRUE}.
 
 \emph{Permitted Values:} logical scalar}
 
@@ -92,13 +90,12 @@ When numerator and/or denominator is constant, the parameters (measured only onc
 to the other parameters using the specified variables.
 
 If numerator and/or denominator is constant (e.g. only measured once at screening or baseline)
-then use \code{constant_by_vars} to select the subject-level variable to merge on (e.g.
-\code{USUBJID}). This will produce a generic Ratio parameter at all visits where numerator
-and/or denominator is measured. Otherwise it will only be calculated at visits with both
-numerator and denominator parameters collected.
+then use \code{constant_by_vars} to select the subject-level variable to merge on (e.g. \code{USUBJID}).
+This will produce a generic Ratio parameter at all visits where numerator and/or denominator
+is measured. Otherwise it will only be calculated at visits with both numerator and denominator
+parameters collected.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}
-e.g. \code{exprs(USUBJID, VISIT)}}
+\emph{Permitted Values}: list of variables created by \code{exprs()}, e.g. \code{exprs(USUBJID, VISIT)}}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
@@ -109,7 +106,7 @@ Additionally, if the input parameters are measured in different units but are mu
 convertible (e.g., centimeters for one parameter and inches for another), an automatic
 conversion will be performed in order to uniform the values before calculating the ratio.
 
-\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus
+\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus.
 
 \emph{Permitted Values:} A variable of the input dataset or a function call}
 }
@@ -122,8 +119,7 @@ Adds a record for a generic Ratio parameter using two existing parameter
 (numerator and denominator) each by group (e.g., subject and visit) where the source parameters
 are available.
 
-\strong{Note:} This is a wrapper function for the more generic
-\code{admiral::derive_param_computed()}.
+\strong{Note:} This is a wrapper function for the more generic \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}.
 }
 \details{
 The analysis value of the new parameter is derived as

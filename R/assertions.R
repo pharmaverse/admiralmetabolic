@@ -8,11 +8,13 @@
 #'
 #' @inherit admiraldev::assert_unit
 #'
+#' @seealso [admiraldev::assert_unit]
+#'
 #' @examples
 #' # See examples of `admiraldev::assert_unit`
 #'
-#' @family deprecated
-#' @keywords deprecated
+#' @family internal deprecated
+#' @keywords internal deprecated
 assert_unit <- function(dataset,
                         param,
                         required_unit,
@@ -24,7 +26,6 @@ assert_unit <- function(dataset,
   assert_data_frame(dataset, required_vars = exprs(PARAMCD))
   assert_character_scalar(param)
   assert_character_vector(required_unit)
-
   get_unit_expr <- enexpr(get_unit_expr)
 
   units <- dataset %>%

@@ -21,9 +21,9 @@ derive_param_waisthgt(
 The variables specified by the \code{by_vars} argument are expected to be in the dataset.
 \code{PARAMCD}, and \code{AVAL} are expected as well.
 
-The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of
-the input dataset after restricting it by the filter condition (\code{filter} argument)
-and to the parameters specified by \code{wstcir_code} and \code{height_code}.}
+The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of the input dataset
+after restricting it by the filter condition (\code{filter} argument) and to the parameters
+specified by \code{wstcir_code} and \code{height_code}.}
 
 \item{by_vars}{Grouping variables
 
@@ -43,8 +43,7 @@ as the Waist Circumference.
 
 \item{height_code}{Height parameter code
 
-The observations where \code{PARAMCD} equals the specified value are considered
-as the Height.
+The observations where \code{PARAMCD} equals the specified value are considered as the Height.
 
 \emph{Permitted Values:} character value}
 
@@ -54,7 +53,7 @@ The specified variables are set to the specified values for the new
 observations. For example \code{exprs(PARAMCD = "RATIO")} defines the parameter code
 for the new parameter.
 
-\emph{Permitted Values}: List of variable-value pairs}
+\emph{Permitted Values:} List of variable-value pairs}
 
 \item{filter}{Filter condition
 
@@ -75,8 +74,7 @@ This will produce Waist to Height Ratio at all visits where Waist Circumference 
 Otherwise it will only be calculated at visits with both Height and Waist Circumference
 collected.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}
-e.g. \code{exprs(USUBJID, VISIT)}}
+\emph{Permitted Values}: list of variables created by \code{exprs()}, e.g. \code{exprs(USUBJID, VISIT)}}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
@@ -87,7 +85,7 @@ Additionally, if the input parameters are measured in different units but are mu
 convertible (e.g., centimeters for one parameter and inches for another), an automatic
 conversion will be performed in order to uniform the values before calculating the ratio.
 
-\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus
+\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus.
 
 \emph{Permitted Values:} A variable of the input dataset or a function call}
 }
@@ -99,8 +97,7 @@ be populated in the new parameter rows if it is specified in \code{by_vars}.
 Adds a record for Waist to Height Ratio using Waist Circumference and Height
 for each by group (e.g., subject and visit) where the source parameters are available.
 
-\strong{Note:} This is a wrapper function for the more generic
-\code{admiral::derive_param_computed()}.
+\strong{Note:} This is a wrapper function for the more generic \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}.
 }
 \details{
 The analysis value of the new parameter is derived as
@@ -137,7 +134,8 @@ derive_param_waisthgt(
   get_unit_expr = admiral::extract_unit(PARAM)
 )
 
-# Example 2: Same as above but only adding Waist to Height Ratio at certain visits
+# Example 2: Same as above but only adding Waist to Height Ratio
+# at certain visits
 
 derive_param_waisthgt(
   advs,
@@ -153,7 +151,8 @@ derive_param_waisthgt(
   filter = VISIT \%in\% c("SCREENING", "WEEK 3")
 )
 
-# Example 3: Pediatric study where Height and Waist Circumference are measured multiple times
+# Example 3: Pediatric study where Height and Waist Circumference
+# are measured multiple times
 
 advs <- tribble(
   ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,

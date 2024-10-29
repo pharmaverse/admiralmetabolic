@@ -16,6 +16,6 @@ Returns \code{NA} if units are not supported/convertible.
 
 \code{get_conv_factors_all()} returns all conversion factors supported.
 
-\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus
+\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus.
 }
 \keyword{internal}
