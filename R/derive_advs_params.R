@@ -1,6 +1,6 @@
 #' Adds a Parameter for Waist to Hip Ratio
 #'
-#' @description Adds a record for Waist to Hip Ratio using Waist Circumference and Hip Circumference
+#' @description Adds a parameter for Waist to Hip Ratio using Waist Circumference and Hip Circumference
 #' for each by group (e.g., subject and visit) where the source parameters are available.
 #'
 #' **Note:** This is a wrapper function for the more generic [`admiral::derive_param_computed()`].
@@ -166,7 +166,7 @@ derive_param_waisthip <- function(dataset,
 
 #' Adds a Parameter for Waist to Height Ratio
 #'
-#' @description Adds a record for Waist to Height Ratio using Waist Circumference and Height
+#' @description Adds a parameter for Waist to Height Ratio using Waist Circumference and Height
 #' for each by group (e.g., subject and visit) where the source parameters are available.
 #'
 #' **Note:** This is a wrapper function for the more generic [`admiral::derive_param_computed()`].
