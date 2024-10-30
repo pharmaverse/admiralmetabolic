@@ -215,3 +215,32 @@ test_that(
     )
   }
 )
+
+test_that(
+  "derive_param_ratio Test 5: Both input parameters are constant",
+  {
+    input <- tribble(
+      ~USUBJID, ~PARAMCD, ~PARAM, ~AVAL, ~AVALU, ~VISIT,
+      "01-101-1001", "HEIGHT", "Height (cm)", 147, "cm", "SCREENING",
+      "01-101-1001", "WSTCIR", "Waist Circumference (cm)", 110, "cm", "SCREENING",
+      "01-101-1002", "HEIGHT", "Height (cm)", 163, "cm", "SCREENING",
+      "01-101-1002", "WSTCIR", "Waist Circumference (cm)", 120, "cm", "SCREENING"
+    )
+
+    expect_error(
+      derive_param_ratio(
+        input,
+        by_vars = exprs(USUBJID, VISIT),
+        numerator_code = "WSTCIR",
+        denominator_code = "HEIGHT",
+        set_values_to = exprs(
+          PARAMCD = "WAISTHGT",
+          PARAM = "Waist to Height Ratio"
+        ),
+        constant_numerator = TRUE,
+        constant_denominator = TRUE,
+        constant_by_vars = exprs(USUBJID)
+      )
+    )
+  }
+)
