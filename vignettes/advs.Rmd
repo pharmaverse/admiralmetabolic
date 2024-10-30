@@ -268,7 +268,7 @@ advs <- advs %>%
 dataset_vignette(
   arrange(advs, USUBJID, PARAMCD, VISITNUM),
   display_vars = exprs(USUBJID, PARAMCD, VISIT, AVAL, AVALCA1N, AVALCAT1),
-  filter = PARAMCD == "BMI" & USUBJID %in% c("01-701-1023","01-701-1034")
+  filter = PARAMCD == "BMI" & USUBJID %in% c("01-701-1023", "01-701-1034")
 )
 ```
 
@@ -298,7 +298,7 @@ advs <- advs %>%
 dataset_vignette(
   arrange(advs, USUBJID, PARAMCD, VISITNUM),
   display_vars = exprs(USUBJID, PARAMCD, VISIT, AVAL, BASE, ABLFL, BASECA1N, BASECAT1),
-  filter = PARAMCD == "BMI" & USUBJID %in% c("01-701-1023","01-701-1034")
+  filter = PARAMCD == "BMI" & USUBJID %in% c("01-701-1023", "01-701-1034")
 )
 ```
 
@@ -343,7 +343,7 @@ advs <- advs %>%
 dataset_vignette(
   arrange(advs, USUBJID, VISITNUM, VSTPTNUM, PARAMCD),
   display_vars = exprs(USUBJID, PARAMCD, PCHG, CRIT1, CRIT1FL, CRIT2, CRIT2FL, VISIT, VISITNUM),
-  filter = PARAMCD %in% c("WEIGHT") & USUBJID %in% c("01-701-1033","01-701-1034") & VISITNUM %in% c(3,10,11,12,13)
+  filter = PARAMCD %in% c("WEIGHT") & USUBJID %in% c("01-701-1033", "01-701-1034") & VISITNUM %in% c(3, 10, 11, 12, 13)
 )
 ```
 
