@@ -12,6 +12,7 @@ library(tibble)
 library(dplyr)
 library(pharmaversesdtm)
 library(purrr)
+library(stringr)
 
 # Set seed for random data generation ----
 set.seed(3.14159265)
@@ -49,7 +50,7 @@ coeq_structure <- tibble::tribble(
 # Use visit schedule and days from VS ----
 visit_schedule <- vs_metabolic %>%
   select(STUDYID, USUBJID, VISIT, VISITNUM, VISITDY, VSDTC, VSDY) %>%
-  filter(stringr::str_detect(VISIT, "AMBUL|RETRIEVAL", negate = TRUE)) %>%
+  filter(str_detect(VISIT, "AMBUL|RETRIEVAL", negate = TRUE)) %>%
   rename(QSDTC = VSDTC, QSDY = VSDY) %>%
   distinct()
 
