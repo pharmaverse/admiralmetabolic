@@ -106,7 +106,11 @@ Additionally, if the input parameters are measured in different units but are mu
 convertible (e.g., centimeters for one parameter and inches for another), an automatic
 conversion will be performed in order to uniform the values before calculating the ratio.
 
-\strong{Note:} Conversion factors come from unit definitions as per the NCI Thesaurus.
+\strong{Note:} Conversion factors come from unit definitions as per CDISC standards.
+\if{html}{\out{<br/>}}\emph{m} is defined as 100 cm
+\if{html}{\out{<br/>}}\emph{mm} is defined as 0.1 cm
+\if{html}{\out{<br/>}}\emph{in} is defined as 2.54 cm
+\if{html}{\out{<br/>}}\emph{ft} is defined as 30.48 cm
 
 \emph{Permitted Values:} A variable of the input dataset or a function call}
 }

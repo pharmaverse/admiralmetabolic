@@ -30,6 +30,7 @@ Imports:
     lifecycle (>= 0.1.0),
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
+    purrr (>= 0.3.3),
     rlang (>= 0.4.4),
     tidyselect (>= 1.0.0)
 Suggests:

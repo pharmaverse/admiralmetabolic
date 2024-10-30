@@ -11,6 +11,7 @@
 #'             starts_with transmute ungroup vars n_distinct union distinct
 #'             summarise_at summarise coalesce bind_cols na_if tibble tribble
 #' @importFrom magrittr %>%
+#' @importFrom purrr discard_at
 #' @importFrom rlang := %||% abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enexprs enquo eval_bare eval_tidy expr
 #'             exprs expr_interp expr_label f_lhs f_rhs inform
@@ -21,7 +22,7 @@
 #'             set_names sym syms type_of warn quo_set_env quo_get_env
 #' @importFrom utils capture.output str
 #' @importFrom stringr str_c str_detect str_extract str_remove str_remove_all
-#'             str_replace str_trim str_to_lower str_to_title str_to_upper str_glue
+#'             str_replace str_trim str_to_lower str_to_title str_to_upper str_glue str_glue_data
 #' @importFrom lubridate as_datetime ceiling_date date days duration floor_date is.Date is.instant
 #'             time_length %--% ymd ymd_hms weeks years hours minutes
 #' @importFrom tidyselect all_of contains vars_select
