@@ -85,7 +85,7 @@ The input dataset with the new parameter added. Note, a variable will only
 be populated in the new parameter rows if it is specified in \code{by_vars}.
 }
 \description{
-Adds a record for Waist to Hip Ratio using Waist Circumference and Hip Circumference
+Adds a parameter for Waist to Hip Ratio using Waist Circumference and Hip Circumference
 for each by group (e.g., subject and visit) where the source parameters are available.
 
 \strong{Note:} This is a wrapper function for the more generic \code{\link[admiral:derive_param_computed]{admiral::derive_param_computed()}}.
