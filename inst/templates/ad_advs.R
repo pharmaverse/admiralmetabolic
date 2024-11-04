@@ -18,8 +18,8 @@ library(stringr)
 # place
 set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
-# Store ADSL join variables as an R object, enabling simplified usage throughout
-# the program
+# Store ADSL variables required for derivations as an R object, enabling
+# simplified usage throughout the program
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 
 
@@ -31,14 +31,13 @@ adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 vs_metabolic <- admiralmetabolic::vs_metabolic
 adsl <- admiral::admiral_adsl
 
-# Convert SAS empty values to NA
+# Convert SAS missing character values to NA
 advs <- vs_metabolic %>%
   convert_blanks_to_na()
 adsl <- adsl %>%
   convert_blanks_to_na()
 
 # Merge ADSL variables (stored in `adsl_vars`) needed for ADVS
-# derivations
 advs <- advs %>%
   derive_vars_merged(
     dataset_add = adsl,
@@ -49,11 +48,11 @@ advs <- advs %>%
 # Define parameter look-up table used for merging parameter codes to ADVS
 param_lookup <- tribble(
   ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
-  "HEIGHT", "HEIGHT", "Height (cm)", 1, "Anthropometric measurements", 1,
-  "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Anthropometric measurements", 1,
-  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Anthropometric measurements", 1,
-  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric measurements", 1,
-  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric measurements", 1,
+  "HEIGHT", "HEIGHT", "Height (cm)", 1, "Anthropometric measurement", 1,
+  "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Anthropometric measurement", 1,
+  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Anthropometric measurement", 1,
+  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric measurement", 1,
+  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric measurement", 1,
   "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
   "PULSE", "PULSE", "Pulse Rate (beats/min)", 7, "Vital Sign", 2,
   "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 8, "Vital Sign", 2,
@@ -63,6 +62,9 @@ param_lookup <- tribble(
 # Add parameter (PARAMCD) info to enable later ADVS derivations. Additional
 # parameter information will be merged again, after all AVDS derivations are
 # completed.
+
+# See function documentation for `derive_vars_merged_lookup()`:
+# (https://pharmaverse.github.io/admiral/reference/derive_vars_merged_lookup.html)
 advs <- advs %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
