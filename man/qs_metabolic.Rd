@@ -5,7 +5,7 @@
 \alias{qs_metabolic}
 \title{Example questionnaire dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 966 rows and 19 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 966 rows and 18 columns.
 }
 \source{
 Constructed using \code{dm_metabolic} from \code{{admiralmetabolic}} package
