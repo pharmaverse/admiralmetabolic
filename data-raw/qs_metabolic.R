@@ -62,7 +62,7 @@ qs_metabolic_shell <- visit_schedule %>%
 qs_metabolic_results <- qs_metabolic_shell %>%
   mutate(
     DOMAIN = "QS",
-    QSORRES = floor(runif(1) * 10) + round(runif(1)),
+    QSORRES = round(runif(n(), min = 0, max = 100)),
     QSORRESU = "cm",
     QSSTRESU = "cm",
     QSSTRESN = QSORRES,
@@ -82,21 +82,27 @@ qs_metabolic_seq <- qs_metabolic_results %>%
   ungroup()
 
 # Add labels to variables that don't have them yet ----
-attr(qs_metabolic_seq$DOMAIN, "label") <- "Domain Abbreviation"
-attr(qs_metabolic_seq$QSBLFL, "label") <- "Baseline Flag"
-attr(qs_metabolic_seq$QSCAT, "label") <- "Category for Questionnaire"
-attr(qs_metabolic_seq$QSSCAT, "label") <- "Subcategory for Questionnaire"
-attr(qs_metabolic_seq$QSTEST, "label") <- "Questionnaire Test Name"
-attr(qs_metabolic_seq$QSTESTCD, "label") <- "Questionnaire Test Short Name"
-attr(qs_metabolic_seq$QSORRES, "label") <- "Result or Finding in Original Units"
-attr(qs_metabolic_seq$QSORRESU, "label") <- "Original Units"
-attr(qs_metabolic_seq$QSSTRESC, "label") <- "Character Result/Finding in Std Format"
-attr(qs_metabolic_seq$QSSTRESN, "label") <- "Numeric Result/Finding in Standard Units"
-attr(qs_metabolic_seq$QSSTRESU, "label") <- "Standard Units"
-attr(qs_metabolic_seq$QSSEQ, "label") <- "Sequence Number"
+labels <- list(
+  DOMAIN = "Domain Abbreviation",
+  QSBLFL = "Baseline Flag",
+  QSCAT = "Category for Questionnaire",
+  QSSCAT = "Subcategory for Questionnaire",
+  QSTEST = "Questionnaire Test Name",
+  QSTESTCD = "Questionnaire Test Short Name",
+  QSORRES = "Result or Finding in Original Units",
+  QSORRESU = "Original Units",
+  QSSTRESC = "Character Result/Finding in Std Format",
+  QSSTRESN = "Numeric Result/Finding in Standard Units",
+  QSSTRESU = "Standard Units",
+  QSSEQ = "Sequence Number"
+)
+
+for (var in names(labels)) {
+  attr(qs_metabolic_seq[[var]], "label") <- labels[[var]]
+}
 
 # Label QS dataset ----
-attr(qs_metabolic_seq, "label") <- "Questionnaire"
+attr(qs_metabolic_seq, "label") <- "Questionnaires"
 
 # Final dataset ----
 qs_metabolic <- qs_metabolic_seq
