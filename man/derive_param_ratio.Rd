@@ -14,7 +14,8 @@ derive_param_ratio(
   constant_denominator = FALSE,
   filter = NULL,
   constant_by_vars = NULL,
-  get_unit_expr = NULL
+  get_unit_expr = NULL,
+  unit_conversion = FALSE
 )
 }
 \arguments{
@@ -113,6 +114,12 @@ conversion will be performed in order to uniform the values before calculating t
 \if{html}{\out{<br/>}}\emph{ft} is defined as 30.48 cm
 
 \emph{Permitted Values:} A variable of the input dataset or a function call}
+
+\item{unit_conversion}{Enable/Disable unit conversion
+
+Unit conversion is disabled by default. Ignored if \code{get_unit_expr} is \code{NULL}.
+
+\emph{Permitted Values:} logical scalar}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only

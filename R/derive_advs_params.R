@@ -161,7 +161,8 @@ derive_param_waisthip <- function(dataset,
     denominator_code = hipcir_code,
     by_vars = by_vars,
     set_values_to = set_values_to,
-    get_unit_expr = !!get_unit_expr
+    get_unit_expr = !!get_unit_expr,
+    unit_conversion = TRUE
   )
 }
 
@@ -373,7 +374,8 @@ derive_param_waisthgt <- function(dataset,
     constant_numerator = FALSE,
     constant_denominator = !is.null(constant_by_vars),
     constant_by_vars = constant_by_vars,
-    get_unit_expr = !!get_unit_expr
+    get_unit_expr = !!get_unit_expr,
+    unit_conversion = TRUE
   )
 }
 
@@ -465,6 +467,12 @@ derive_param_waisthgt <- function(dataset,
 #'
 #'   *Permitted Values:* A variable of the input dataset or a function call
 #'
+#' @param unit_conversion Enable/Disable unit conversion
+#'
+#'   Unit conversion is disabled by default. Ignored if `get_unit_expr` is `NULL`.
+#'
+#'   *Permitted Values:* logical scalar
+#'
 #' @inheritParams admiral::derive_param_computed
 #'
 #' @details
@@ -486,7 +494,8 @@ derive_param_ratio <- function(dataset,
                                constant_denominator = FALSE,
                                filter = NULL,
                                constant_by_vars = NULL,
-                               get_unit_expr = NULL) {
+                               get_unit_expr = NULL,
+                               unit_conversion = FALSE) {
   assert_vars(by_vars)
   assert_data_frame(dataset, required_vars = exprs(!!!by_vars, PARAMCD, AVAL))
   assert_character_scalar(numerator_code)
@@ -498,6 +507,7 @@ derive_param_ratio <- function(dataset,
   filter <- assert_filter_cond(enexpr(filter), optional = TRUE)
   assert_vars(constant_by_vars, optional = TRUE)
   get_unit_expr <- assert_expr(enexpr(get_unit_expr), optional = TRUE)
+  assert_logical_scalar(unit_conversion)
 
   if (constant_numerator && constant_denominator) {
     cli_abort(
@@ -514,7 +524,7 @@ derive_param_ratio <- function(dataset,
 
   ### If `get_unit_expr` provided then check units and enable units conversion ----
 
-  if (!missing(get_unit_expr) && !is.null(get_unit_expr)) {
+  if (unit_conversion == TRUE && !missing(get_unit_expr) && !is.null(get_unit_expr)) {
     # If the input parameters are measured in different units
     # but are convertible from one to another (and this kind of conversion supported)
     # then modify the formula in order to perform units conversion on the fly
@@ -531,19 +541,18 @@ derive_param_ratio <- function(dataset,
         param_units[[numerator_code]]
       )
 
-      if (!is.na(conv_factor)) {
-        ratio_formula <- expr(
-          !!sym(paste0("AVAL.", numerator_code)) / (
-            !!sym(paste0("AVAL.", denominator_code)) * !!conv_factor
-          )
+      # Adjust formula
+      ratio_formula <- expr(
+        !!sym(paste0("AVAL.", numerator_code)) / (
+          !!sym(paste0("AVAL.", denominator_code)) * !!conv_factor
         )
+      )
 
-        cli_alert_info(
-          "ALERT: Unit conversion performed for {.val {denominator_code}}. Values converted from
-          {.val {param_units[[denominator_code]]}} to {.val {param_units[[numerator_code]]}}.",
-          wrap = TRUE
-        )
-      }
+      cli_alert_info(
+        "ALERT: Unit conversion performed for {.val {denominator_code}}. Values converted from
+        {.val {param_units[[denominator_code]]}} to {.val {param_units[[numerator_code]]}}.",
+        wrap = TRUE
+      )
     }
   }
 
@@ -591,7 +600,7 @@ NULL
 #> NULL
 
 #' @description `get_conv_factor()` extracts a conversion factor for a pair of units.
-#' Returns `NA` if units are not supported/convertible.
+#' Fails with error if units are not supported/convertible.
 #'
 #' @rdname unit-conversion
 #' @keywords internal
@@ -599,18 +608,25 @@ get_conv_factor <- function(from_unit, to_unit) {
   # Get all conversion factors supported
   conv_factors_all <- get_conv_factors_all()
 
-  # Return conversion factor if units are supported and convertible
+  # Look up for a conversion factor if units are supported and convertible
+  conv_factor <- NULL
+
   for (unit_category in names(conv_factors_all)) {
     if (all(c(from_unit, to_unit) %in% names(conv_factors_all[[unit_category]]))) {
-      return(
-        conv_factors_all[[unit_category]][[from_unit]] /
-          conv_factors_all[[unit_category]][[to_unit]]
-      )
+      conv_factor <- conv_factors_all[[unit_category]][[from_unit]] /
+        conv_factors_all[[unit_category]][[to_unit]]
     }
   }
 
-  # If units are not supported/convertible
-  return(NA_real_)
+  # Fail if conversion for the provided units is not supported
+  if (is.null(conv_factor)) {
+    cli_abort(
+      "Conversion for a pair of units {.val {c(from_unit, to_unit)}} is not supported."
+    )
+  }
+
+  # Return conversion factor
+  conv_factor
 }
 
 #' @description `get_conv_factors_all()` returns all conversion factors supported.

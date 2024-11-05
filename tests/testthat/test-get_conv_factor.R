@@ -13,8 +13,7 @@ test_that("get_conv_factor Test 2: Indirect conversion factor for length (via cm
 })
 
 test_that("get_conv_factor Test 3: Inconvertible units", {
-  expect_equal(
-    get_conv_factor("cm", "kg"),
-    NA_real_
+  expect_error(
+    get_conv_factor("cm", "kg")
   )
 })
