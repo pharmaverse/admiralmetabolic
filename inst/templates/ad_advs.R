@@ -95,13 +95,12 @@ advs <- advs %>%
     ATPTN = VSTPTNUM,
     AVISIT = case_when(
       is.na(VISIT) ~ NA_character_,
-      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ "Screening",
+      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ "BASELINE",
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
       TRUE ~ str_to_title(VISIT)
     ),
     AVISITN = case_when(
-      VISIT == "BASELINE" ~ 0,
-      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ -1,
+      VISIT == "BASELINE" | (VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1") ~ 0,
       str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     )
