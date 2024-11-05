@@ -15,7 +15,7 @@ library(stringr)
 
 # Define project options/variables ----
 # Use the admiral option functionality to store subject key variables in one
-# place
+# place (note: `subject_keys` defaults to STUDYID and USUBJID)
 set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
 # Store ADSL variables required for derivations as an R object, enabling
@@ -50,7 +50,7 @@ param_lookup <- tribble(
   ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
   "HEIGHT", "HEIGHT", "Height (cm)", 1, "Anthropometric measurement", 1,
   "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Anthropometric measurement", 1,
-  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Anthropometric measurement", 1,
+  "BMI", "BMI", "Body Mass Index(kg/m2)", 3, "Anthropometric measurement", 1,
   "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric measurement", 1,
   "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric measurement", 1,
   "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
@@ -80,8 +80,7 @@ advs <- advs %>%
 
 # Add vital sign analysis date (ADT) and treatment start date (TRTSDT)
 advs <- advs %>%
-  derive_vars_dt(new_vars_prefix = "A", dtc = VSDTC)
-advs <- advs %>%
+  derive_vars_dt(new_vars_prefix = "A", dtc = VSDTC) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 
@@ -96,11 +95,13 @@ advs <- advs %>%
     ATPTN = VSTPTNUM,
     AVISIT = case_when(
       is.na(VISIT) ~ NA_character_,
+      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ "Screening",
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
       TRUE ~ str_to_title(VISIT)
     ),
     AVISITN = case_when(
       VISIT == "BASELINE" ~ 0,
+      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ -1,
       str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     )
@@ -125,8 +126,8 @@ advs <- advs %>%
   filter(VSTESTCD != "BMI") %>%
   derive_param_bmi(
     by_vars = exprs(
-      STUDYID, USUBJID, !!!adsl_vars,
-      AVISITN, ADT, ADY, ATPT, ATPTN
+      !!!get_admiral_option("subject_keys"), !!!adsl_vars,
+      AVISIT, AVISITN, ADT, ADY, ATPT, ATPTN
     ),
     set_values_to = exprs(
       PARAMCD = "BMI"
@@ -172,7 +173,7 @@ advs <- advs %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
-      by_vars = exprs(STUDYID, USUBJID, PARAMCD),
+      by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
       order = exprs(ADT, ATPTN, AVISITN),
       new_var = ABLFL,
       mode = "last"
@@ -183,16 +184,21 @@ advs <- advs %>%
 # Derive baseline analysis value (BASE)
 advs <- advs %>%
   derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
     source_var = AVAL,
     new_var = BASE
   )
 
 # Derive absolute (CHG) and relative (PCHG) change from baseline
 advs <- advs %>%
-  derive_var_chg()
-advs <- advs %>%
-  derive_var_pchg()
+  restrict_derivation(
+    derivation = derive_var_chg,
+    filter = !(is.na(AVISIT) | toupper(AVISIT) %in% "BASELINE")
+  ) %>%
+  restrict_derivation(
+    derivation = derive_var_pchg,
+    filter = !(is.na(AVISIT) | toupper(AVISIT) %in% "BASELINE")
+  )
 
 
 # Derive criterion variables ----
