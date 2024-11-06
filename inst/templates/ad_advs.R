@@ -95,7 +95,7 @@ advs <- advs %>%
     ATPTN = VSTPTNUM,
     AVISIT = case_when(
       is.na(VISIT) ~ NA_character_,
-      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ "BASELINE",
+      VSTESTCD == "HEIGHT" & VISIT == "SCREENING 1" ~ "Baseline",
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
       TRUE ~ str_to_title(VISIT)
     ),
