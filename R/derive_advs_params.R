@@ -524,7 +524,7 @@ derive_param_ratio <- function(dataset,
 
   ### If `get_unit_expr` provided then check units and enable units conversion ----
 
-  if (unit_conversion == TRUE && !missing(get_unit_expr) && !is.null(get_unit_expr)) {
+  if (unit_conversion && !missing(get_unit_expr) && !is.null(get_unit_expr)) {
     # If the input parameters are measured in different units
     # but are convertible from one to another (and this kind of conversion supported)
     # then modify the formula in order to perform units conversion on the fly
