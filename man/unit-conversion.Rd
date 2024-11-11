@@ -12,7 +12,7 @@ get_conv_factors_all()
 }
 \description{
 \code{get_conv_factor()} extracts a conversion factor for a pair of units.
-Returns \code{NA} if units are not supported/convertible.
+Fails with error if units are not supported/convertible.
 
 \code{get_conv_factors_all()} returns all conversion factors supported.
 

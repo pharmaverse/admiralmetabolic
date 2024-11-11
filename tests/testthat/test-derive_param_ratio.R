@@ -175,7 +175,8 @@ test_that(
         PARAMCD = "WAISTHIP",
         PARAM = "Waist to Hip Ratio"
       ),
-      get_unit_expr = admiral::extract_unit(PARAM)
+      get_unit_expr = admiral::extract_unit(PARAM),
+      unit_conversion = TRUE
     ) %>%
       filter(PARAMCD == "WAISTHIP")
 

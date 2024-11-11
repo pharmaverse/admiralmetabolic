@@ -1,9 +1,9 @@
 #' @keywords internal
 #' @family internal
-#' @importFrom admiraldev %notin% assert_numeric_vector assert_character_scalar
-#'             assert_logical_scalar assert_data_frame assert_vars assert_varval_list
-#'             assert_filter_cond assert_param_does_not_exist assert_expr expect_dfs_equal
-#'             assert_character_vector
+#' @importFrom admiraldev assert_numeric_vector assert_character_scalar assert_logical_scalar
+#'             assert_data_frame assert_vars assert_varval_list assert_filter_cond
+#'             assert_param_does_not_exist assert_expr expect_dfs_equal assert_character_vector
+#'             assert_unit
 #' @importFrom admiral derive_param_computed
 #' @importFrom cli cli_abort cli_alert_info
 #' @importFrom dplyr arrange bind_rows case_when desc ends_with filter full_join group_by
@@ -12,7 +12,7 @@
 #'             summarise_at summarise coalesce bind_cols na_if tibble tribble
 #' @importFrom magrittr %>%
 #' @importFrom purrr discard_at
-#' @importFrom rlang := %||% abort arg_match as_function as_string call2 caller_env
+#' @importFrom rlang := abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enexprs enquo eval_bare eval_tidy expr
 #'             exprs expr_interp expr_label f_lhs f_rhs inform
 #'             is_bare_formula is_call is_character is_formula is_integerish
