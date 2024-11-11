@@ -65,7 +65,8 @@ are available.</p>
 <span>  constant_denominator <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  constant_by_vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  get_unit_expr <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  get_unit_expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unit_conversion <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -164,6 +165,12 @@ conversion will be performed in order to uniform the values before calculating t
 <br><em>in</em> is defined as 2.54 cm
 <br><em>ft</em> is defined as 30.48 cm</p>
 <p><em>Permitted Values:</em> A variable of the input dataset or a function call</p></dd>
+
+
+<dt id="arg-unit-conversion">unit_conversion<a class="anchor" aria-label="anchor" href="#arg-unit-conversion"></a></dt>
+<dd><p>Enable/Disable unit conversion</p>
+<p>Unit conversion is disabled by default. Ignored if <code>get_unit_expr</code> is <code>NULL</code>.</p>
+<p><em>Permitted Values:</em> logical scalar</p></dd>
 
 </dl></div>
     <div class="section level2">
