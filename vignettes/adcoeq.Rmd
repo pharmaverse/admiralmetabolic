@@ -20,8 +20,8 @@ library(admiraldev)
 # License
 
 Note that University of Leeds are the copyright holders of the Control of Eating Questionnaire (CoEQ) and the test 
-data included within {admiralmetabolic} as well as the ADCOEQ code are for 
-not-for-profit use only within {admiralmetabolic} and pharmaverse-related 
+data included within `{admiralmetabolic}` as well as the ADCOEQ code are for 
+not-for-profit use only within `{admiralmetabolic}` and pharmaverse-related 
 examples/documentation. Any persons or companies wanting to use the CoEQ should 
 request a license to do so from the following [link](https://licensing.leeds.ac.uk/product/control-of-eating-questionnaire-coeq).
 
@@ -61,7 +61,7 @@ To start, all data frames needed for the creation of the ADaM dataset should be 
 
 
 In this vignette we use example data for the CoEQ. 
-The example `QS` data (`qs_metabolic`) is included in the admiralmetabolic package.
+The example `QS` data (`qs_metabolic`) is included in the `{admiralmetabolic}` package.
 
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- admiralmetabolic::dm_metabolic
