@@ -181,11 +181,11 @@ adcoeq3 <- adcoeq2 %>%
       ),      
       params(
         filter_add = PARAMCD %in% c('COEQ05','COEQ07','COEQ08','COEQ06'),
-         set_values_to = exprs(
-           AVAL = mean(AVAL, na.rm = TRUE),
-           PARAMCD = "COEQPOMO",
-           PARAM = "COEQ - Positive Mood"
-       )
+        set_values_to = exprs(
+          AVAL = mean(AVAL, na.rm = TRUE),
+          PARAMCD = "COEQPOMO",
+          PARAM = "COEQ - Positive Mood"
+        )
       )
     ),
     dataset_add = adcoeq2,
