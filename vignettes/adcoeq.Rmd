@@ -214,7 +214,7 @@ dataset_vignette(
 After deriving the scores by visit, the baseline and change from baseline variables can be derived:
 ```{r eval=TRUE}
 adcoeq4 <- adcoeq3 %>%
-  # Flag baseline records (last before treatement start)
+  # Flag baseline records (last before treatment start)
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
