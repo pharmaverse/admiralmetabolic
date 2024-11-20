@@ -40,8 +40,7 @@ The examples of this vignette require the following packages.
 
 ```{r, warning=FALSE, message=FALSE}
 library(admiral)
-#library(admiralmetabolic)
-devtools::load_all()
+library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr)
 ```
@@ -155,49 +154,44 @@ For the Control of Eating Questionnaire, four subscales are derived:
 These parameters can be derived by `derive_summary_records()`:
 ```{r eval=TRUE}
 adcoeq3 <- adcoeq2 %>%
-  derive_summary_records(
-    dataset = .,
-    dataset_add = .,
-    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A),
-    filter_add = (PARAMCD %in% c('COEQ09','COEQ10','COEQ11','COEQ12','COEQ19')),
-    set_values_to = exprs(
-      AVAL = mean(AVAL, na.rm = TRUE),
-      PARAMCD = "COEQCRCO",
-      PARAM = "COEQ - Craving Control"
-    )
-  ) %>%
-  derive_summary_records(
-    dataset = .,
-    dataset_add = .,
-    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A),
-    filter_add = (PARAMCD %in% c('COEQ03','COEQ13','COEQ14','COEQ15')),
-    set_values_to = exprs(
-      AVAL = mean(AVAL, na.rm = TRUE),
-      PARAMCD = "COEQCRSW",
-      PARAM = "COEQ - Craving for Sweet"
-    )
-  ) %>%
-  derive_summary_records(
-    dataset = .,
-    dataset_add = .,
-    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A),
-    filter_add = (PARAMCD %in% c('COEQ04','COEQ16','COEQ17','COEQ18')),
-    set_values_to = exprs(
-      AVAL = mean(AVAL, na.rm = TRUE),
-      PARAMCD = "COEQCRSA",
-      PARAM = "COEQ - Craving for Savoury"
-    )
-  ) %>%
-  derive_summary_records(
-    dataset = .,
-    dataset_add = .,
-    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A),
-    filter_add = (PARAMCD %in% c('COEQ05','COEQ07','COEQ08','COEQ06')),
-    set_values_to = exprs(
-      AVAL = mean(AVAL, na.rm = TRUE),
-      PARAMCD = "COEQPOMO",
-      PARAM = "COEQ - Positive Mood"
-    )
+  call_derivation(
+    derivation = derive_summary_records,
+    variable_params = list(
+      params(
+        filter_add = PARAMCD %in% c('COEQ09','COEQ10','COEQ11','COEQ12','COEQ19'),
+        set_values_to = exprs(
+          AVAL = mean(AVAL, na.rm = TRUE),
+          PARAMCD = "COEQCRCO",
+          PARAM = "COEQ - Craving Control"
+        )
+      ),
+      params(
+        filter_add = PARAMCD %in% c('COEQ03','COEQ13','COEQ14','COEQ15'),
+         set_values_to = exprs(
+           AVAL = mean(AVAL, na.rm = TRUE),
+           PARAMCD = "COEQCRSW",
+           PARAM = "COEQ - Craving for Sweet"
+       )
+      ),
+      params(
+        filter_add = PARAMCD %in% c('COEQ04','COEQ16','COEQ17','COEQ18'),
+         set_values_to = exprs(
+           AVAL = mean(AVAL, na.rm = TRUE),
+           PARAMCD = "COEQCRSA",
+           PARAM = "COEQ - Craving for Savoury"
+       )
+      ),      
+      params(
+        filter_add = PARAMCD %in% c('COEQ05','COEQ07','COEQ08','COEQ06'),
+         set_values_to = exprs(
+           AVAL = mean(AVAL, na.rm = TRUE),
+           PARAMCD = "COEQPOMO",
+           PARAM = "COEQ - Positive Mood"
+       )
+      )
+    ),
+    dataset_add = adcoeq2,
+    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A)
   )
 ```
 
