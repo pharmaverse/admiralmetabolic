@@ -50,7 +50,7 @@ library(dplyr)
 -   [Read in Data](#readdata)
 -   [Original items](#original_items)
 -   [Derive the four Subscales](#subscales)
--   [Derive baseline and change from baseline](#chg)
+-   [Remaining ADCOEQ Set-up](#adcoeq_end)
 
 
 
@@ -73,8 +73,8 @@ admiral_adsl <- convert_blanks_to_na(admiral_adsl)
 ```
 
 Within this vignette, `DM` is used as the basis for `ADSL`:
-
-```{r echo=FALSE}
+```{r eval=TRUE}
+# Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset
 adsl <- dm %>%
   select(-DOMAIN) %>%
   mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
@@ -83,7 +83,7 @@ adsl <- dm %>%
 
 ## Original Items {#original_items}
 
-The original items, i.e. the answers to the questionnaire questions, can be handled in the same way as in a [{admiral} BDS finding ADaM](https://pharmaverse.github.io/admiral/articles/bds_finding.html). 
+The original items, i.e. the answers to the questionnaire questions, can be handled in the same way as in an [{admiral} BDS finding ADaM](https://pharmaverse.github.io/admiral/articles/bds_finding.html). 
 
 ```{r eval=TRUE}
 adcoeq1 <- qs %>%
@@ -108,6 +108,13 @@ adcoeq1 <- qs %>%
   ) 
 ```
 
+```{r echo=FALSE}
+dataset_vignette(
+  arrange(adcoeq1, USUBJID, PARCAT1, ADY, PARAMCD),
+  display_vars = exprs(USUBJID, PARAMCD, PARAM, PARCAT1, QSSTRESN, ADY, AVISIT)
+)
+```
+
 If the numeric values of the answers in `QSSTRESN` values are not ready to be used for deriving
 scores and require transformation, it is recommended that `QSSTRESN` is kept in
 the ADaM dataset for traceability, and the transformed value is stored in
@@ -116,7 +123,7 @@ For the CoEQ item 6 has to be handled in such way as in the "Positive Mood" sect
 
 ```{r eval=TRUE}
 adcoeq2 <- adcoeq1 %>%
-  # Add analysis parameter variables
+  # Add analysis value variables
   mutate(
     AVAL = if_else(PARAMCD == "COEQ06", 100-QSSTRESN, QSSTRESN),
     AVALC = if_else(PARAMCD == "COEQ20", QSORRES, NA_character_)
@@ -126,13 +133,13 @@ adcoeq2 <- adcoeq1 %>%
 ```{r echo=FALSE}
 dataset_vignette(
   arrange(adcoeq2, USUBJID, PARCAT1, ADY, PARAMCD),
-  display_vars = exprs(USUBJID, PARAMCD, PARAM, PARCAT1, QSSTRESN, AVALC, AVAL, ADY, AVISIT)
+  display_vars = exprs(USUBJID, PARAMCD, PARAM, PARCAT1, QSSTRESN, ADY, AVISIT, AVALC, AVAL),
+  filter = PARAMCD %in% c("COEQ01", "COEQ02", "COEQ03", "COEQ04", "COEQ05", "COEQ06", "COEQ07", "COEQ08", "COEQ09", "COEQ20")
 )
 ```
 
 We handle unscheduled visits as normal visits. For deriving visits based on
-time-windows, see [Visit and Period Variables](visits_periods.html#visits). And
-for flagging values to be used for analysis, see `derive_var_extreme_flag()`.
+time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
 
 
 ## Derive the four Subscales {#subscales}
@@ -201,53 +208,8 @@ dataset_vignette(
 )
 ```
 
-## Derive baseline and change from baseline {#chg}
+## Remaining ADCOEQ Set-up {#adcoeq_end}
 
-After deriving the scores by visit, the baseline and change from baseline variables can be derived:
-```{r eval=TRUE}
-adcoeq4 <- adcoeq3 %>%
-  # Flag baseline records (last before treatment start)
-  restrict_derivation(
-    derivation = derive_var_extreme_flag,
-    args = params(
-      by_vars = exprs(STUDYID, USUBJID, PARAMCD),
-      order = exprs(ADT),
-      new_var = ABLFL,
-      mode = "last"
-    ),
-    filter = !is.na(AVAL) & ADT <= TRTSDT
-  ) %>%
-  # Derive baseline and change from baseline variables
-  derive_var_base(
-    by_vars = exprs(STUDYID, USUBJID, PARAMCD),
-    source_var = AVAL,
-    new_var = BASE
-  ) %>%
-  # Calculate CHG for post-baseline records
-  # The decision on how to populate pre-baseline and baseline values of CHG is left to producer's choice
-  restrict_derivation(
-    derivation = derive_var_chg,
-    filter = AVISITN > 0
-  ) %>%
-  # Calculate PCHG for post-baseline records
-  # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer's choice
-  restrict_derivation(
-    derivation = derive_var_pchg,
-    filter = AVISITN > 0
-  ) %>%
-  # Derive sequence number
-  derive_var_obs_number(
-    by_vars = exprs(STUDYID, USUBJID),
-    order = exprs(PARAMCD, ADT),
-    check_type = "error"
-  )
-```
-
-```{r echo=FALSE}
-dataset_vignette(
-  adcoeq4,
-  display_vars = exprs(USUBJID, PARAMCD, PARAM, AVISIT, ADY, AVAL, ABLFL, BASE, CHG, PCHG),
-  filter = PARAMCD %in% c("COEQCRCO", "COEQCRSW", "COEQCRSA", "COEQPOMO")
-)
-```
+The `{admiral}` [Creating Questionnaire ADaMs vignette](https://pharmaverse.github.io/admiral/articles/questionnaires.html) 
+describes further steps like how to calculate the change from baseline variables or how to add parameters for questionnaire completion.
 
