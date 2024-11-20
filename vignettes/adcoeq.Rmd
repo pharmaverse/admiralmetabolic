@@ -75,8 +75,6 @@ admiral_adsl <- convert_blanks_to_na(admiral_adsl)
 Within this vignette, `DM` is used as the basis for `ADSL`:
 
 ```{r echo=FALSE}
-dm <- admiralmetabolic::dm_metabolic
-
 adsl <- dm %>%
   select(-DOMAIN) %>%
   mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
