@@ -112,7 +112,7 @@ If the numeric values of the answers in `QSSTRESN` values are not ready to be us
 scores and require transformation, it is recommended that `QSSTRESN` is kept in
 the ADaM dataset for traceability, and the transformed value is stored in
 `AVAL`, since that's what will be used for the score calculation.
-For the CoEQ item 6 has to be handled in such way:
+For the CoEQ item 6 has to be handled in such way as in the "Positive Mood" section high values are supposed to indicate a positive outcome (original direction of item 6: 0 = Not at all anxious = Positive, 100 = Extremely anxious = Negative):
 
 ```{r eval=TRUE}
 adcoeq2 <- adcoeq1 %>%
