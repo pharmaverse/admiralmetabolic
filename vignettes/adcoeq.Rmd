@@ -226,7 +226,7 @@ adcoeq4 <- adcoeq3 %>%
     new_var = BASE
   ) %>%
   # Calculate CHG for post-baseline records
-  # The decision on how to populate pre-baseline and baseline values of CHG is left to producer choice
+  # The decision on how to populate pre-baseline and baseline values of CHG is left to producer's choice
   restrict_derivation(
     derivation = derive_var_chg,
     filter = AVISITN > 0
