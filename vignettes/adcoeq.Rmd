@@ -118,8 +118,8 @@ For the CoEQ item 6 has to be handled in such way:
 adcoeq2 <- adcoeq1 %>%
   # Add analysis parameter variables
   mutate(
-    AVAL = ifelse(PARAMCD=='COEQ06', 100-QSSTRESN, QSSTRESN),
-    AVALC = ifelse(PARAMCD=='COEQ20', QSORRES, NA)
+    AVAL = if_else(PARAMCD == "COEQ06", 100-QSSTRESN, QSSTRESN),
+    AVALC = if_else(PARAMCD == "COEQ20", QSORRES, NA_character_)
   ) 
 ```
 
