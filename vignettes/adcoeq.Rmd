@@ -232,7 +232,7 @@ adcoeq4 <- adcoeq3 %>%
     filter = AVISITN > 0
   ) %>%
   # Calculate PCHG for post-baseline records
-  # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
+  # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer's choice
   restrict_derivation(
     derivation = derive_var_pchg,
     filter = AVISITN > 0
