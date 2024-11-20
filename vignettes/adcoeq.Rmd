@@ -142,7 +142,7 @@ for flagging values to be used for analysis, see `derive_var_extreme_flag()`.
 
 Scales and Scores are often derived as the sum or the average across a subset of
 the items. 
-For the Control of Eating questionnaire, four subscales are derived:
+For the Control of Eating Questionnaire, four subscales are derived:
 
 * Craving Control: Calculate average of items 9, 10, 11, 12 and 19.
 
