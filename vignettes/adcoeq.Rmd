@@ -212,5 +212,5 @@ dataset_vignette(
 ## Remaining ADCOEQ Set-up {#adcoeq_end}
 
 The `{admiral}` [Creating Questionnaire ADaMs vignette](https://pharmaverse.github.io/admiral/articles/questionnaires.html) 
-describes further steps like how to calculate the change from baseline variables or how to add parameters for questionnaire completion.
+describes further steps, including, how to calculate the change from baseline variables, and how to add parameters for questionnaire completion.
 
