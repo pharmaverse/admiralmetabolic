@@ -139,8 +139,7 @@ dataset_vignette(
 )
 ```
 
-We handle unscheduled visits as normal visits. For deriving visits based on
-time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
+For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
 
 
 ## Derive the four Subscales {#subscales}
@@ -213,4 +212,10 @@ dataset_vignette(
 
 The `{admiral}` [Creating Questionnaire ADaMs vignette](https://pharmaverse.github.io/admiral/articles/questionnaires.html) 
 describes further steps, including, how to calculate the change from baseline variables, and how to add parameters for questionnaire completion.
+
+# Example Scripts {#example}
+
+ADaM | Sample Code
+---- | --------------
+ADCOEQ | [ad_adcoeq.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_adcoeq.R){target="_blank"} 
 
