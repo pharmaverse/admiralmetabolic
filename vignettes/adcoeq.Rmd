@@ -117,11 +117,10 @@ dataset_vignette(
 )
 ```
 
-If the numeric values of the answers in `QSSTRESN` values are not ready to be used for deriving
-scores and require transformation, it is recommended that `QSSTRESN` is kept in
-the ADaM dataset for traceability, and the transformed value is stored in
-`AVAL`, since that's what will be used for the score calculation.
-For the CoEQ item 6 has to be handled in such way as in the "Positive Mood" section high values are supposed to indicate a positive outcome (original direction of item 6: 0 = Not at all anxious = Positive, 100 = Extremely anxious = Negative):
+The analysis values (`AVAL` and `AVALC`) for most original items are set directly from `QSSTRESN` and `QSORRES`, respectively. However, CoEQ item 6 (`COEQ06`) requires a manual transformation, where we invert the original scores. This transformation is performed because CoEQ item 6 is used in calculating the subscale for "Positive Mood," where its original scores indicate anxiety.
+
+
+In cases where `QSSTRESN` values require transformation, it is recommended to keep the original `QSSTRESN` values in the ADaM dataset for traceability.
 
 ```{r eval=TRUE}
 adcoeq2 <- adcoeq1 %>%
