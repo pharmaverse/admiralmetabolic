@@ -78,7 +78,9 @@ Within this vignette, `DM` is used as the basis for `ADSL`:
 adsl <- dm %>%
   select(-DOMAIN) %>%
   mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
-  left_join(admiral_adsl %>% select(USUBJID, TRTSDT, TRTEDT), by = "USUBJID")
+  derive_vars_merged(dataset_add = admiral_adsl,
+                              by_vars = exprs(USUBJID),
+                              new_vars = exprs(TRTSDT, TRTEDT))
 ```
 
 ## Original Items {#original_items}
