@@ -78,9 +78,11 @@ Within this vignette, `DM` is used as the basis for `ADSL`:
 adsl <- dm %>%
   select(-DOMAIN) %>%
   mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
-  derive_vars_merged(dataset_add = admiral_adsl,
-                              by_vars = exprs(USUBJID),
-                              new_vars = exprs(TRTSDT, TRTEDT))
+  derive_vars_merged(
+    dataset_add = admiral_adsl,
+    by_vars = exprs(USUBJID),
+    new_vars = exprs(TRTSDT, TRTEDT)
+  )
 ```
 
 ## Original Items {#original_items}
@@ -107,7 +109,7 @@ adcoeq1 <- qs %>%
   mutate(
     AVISIT = if_else(ADT <= TRTSDT, "BASELINE", VISIT),
     AVISITN = if_else(ADT <= TRTSDT, 0, VISITNUM)
-  ) 
+  )
 ```
 
 ```{r echo=FALSE}
@@ -126,9 +128,9 @@ In cases where `QSSTRESN` values require transformation, it is recommended to ke
 adcoeq2 <- adcoeq1 %>%
   # Add analysis value variables
   mutate(
-    AVAL = if_else(PARAMCD == "COEQ06", 100-QSSTRESN, QSSTRESN),
+    AVAL = if_else(PARAMCD == "COEQ06", 100 - QSSTRESN, QSSTRESN),
     AVALC = if_else(PARAMCD == "COEQ20", QSORRES, NA_character_)
-  ) 
+  )
 ```
 
 ```{r echo=FALSE}
@@ -163,7 +165,7 @@ adcoeq3 <- adcoeq2 %>%
     derivation = derive_summary_records,
     variable_params = list(
       params(
-        filter_add = PARAMCD %in% c('COEQ09','COEQ10','COEQ11','COEQ12','COEQ19'),
+        filter_add = PARAMCD %in% c("COEQ09", "COEQ10", "COEQ11", "COEQ12", "COEQ19"),
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRCO",
@@ -171,7 +173,7 @@ adcoeq3 <- adcoeq2 %>%
         )
       ),
       params(
-        filter_add = PARAMCD %in% c('COEQ03','COEQ13','COEQ14','COEQ15'),
+        filter_add = PARAMCD %in% c("COEQ03", "COEQ13", "COEQ14", "COEQ15"),
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRSW",
@@ -179,15 +181,15 @@ adcoeq3 <- adcoeq2 %>%
         )
       ),
       params(
-        filter_add = PARAMCD %in% c('COEQ04','COEQ16','COEQ17','COEQ18'),
+        filter_add = PARAMCD %in% c("COEQ04", "COEQ16", "COEQ17", "COEQ18"),
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRSA",
           PARAM = "COEQ - Craving for Savoury"
         )
-      ),      
+      ),
       params(
-        filter_add = PARAMCD %in% c('COEQ05','COEQ07','COEQ08','COEQ06'),
+        filter_add = PARAMCD %in% c("COEQ05", "COEQ07", "COEQ08", "COEQ06"),
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQPOMO",
