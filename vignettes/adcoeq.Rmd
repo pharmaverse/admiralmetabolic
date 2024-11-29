@@ -145,9 +145,9 @@ time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.g
 
 ## Derive the four Subscales {#subscales}
 
-Scales and Scores are often derived as the sum or the average across a subset of
-the items. 
-For the Control of Eating Questionnaire, four subscales are derived:
+For the Control of Eating Questionnaire, four subscales are derived. These subscales are derived as the sum or the average across a subset of the various items/questions. 
+
+The subscales are defined as follows:
 
 * Craving Control: Calculate average of items 9, 10, 11, 12 and 19.
 
