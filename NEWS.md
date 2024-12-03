@@ -3,7 +3,7 @@
 - Initial package release mainly focused on obesity therapeutic area
 (e.g. functions for Waist to Hip Ratio, Waist to Height Ratio).
 
-## New Features
+## Functions
 
 - The new function "'derive_param_waisthip'" is provided to derive parameters for Waist to Hip Ratio. (#33 &  #52)
 - The new function "'derive_param_waisthgt'" is provided to derive parameters for Waist to Height Ratio. (#33 & #52)
