@@ -5,11 +5,11 @@
 
 ## Functions
 
-- The new function "'derive_param_waisthip'" is provided to derive parameters for Waist to Hip Ratio. (#33 &  #52)
-- The new function "'derive_param_waisthgt'" is provided to derive parameters for Waist to Height Ratio. (#33 & #52)
+- The function `derive_param_waisthip()` for deriving Waist to Hip Ratio. (#33 &  #52)
+- The function `derive_param_waisthgt()` for deriving Waist to Height Ratio. (#33 & #52)
 
 ## Documentation
 
-- New vignette "Creating a Metabolic ADVS ADaM" has been created. (#28) 
-- New vignette "Creating a Control of Eating Questionnaire ADaM" has been created. (#53)
-- New template scripts for ADVS "'ad_advs.R'" has been created. (#35)
+- Vignette "Creating a Metabolic ADVS ADaM". (#28) 
+- Vignette "Creating a Control of Eating Questionnaire ADaM". (#53)
+- ADVS template scripts `ad_advs.R` which creates a Vital Sign Analysis Dataset with metabolic specific derivations. (#35)
