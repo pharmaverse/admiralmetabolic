@@ -1,7 +1,6 @@
 # admiralmetabolic 0.1.0
 
 - Initial package release mainly focused on obesity therapeutic area
-(e.g. functions for Waist to Hip Ratio, Waist to Height Ratio).
 
 ## Functions
 
