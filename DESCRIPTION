@@ -4,6 +4,7 @@ Title: Metabolism Extension Package for ADaM in 'R' Asset Library
 Version: 0.0.0
 Authors@R: c(
     person("Anders", "Askeland", , "iakd@novonordisk.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2996-129X")),
+    person("Andrii", "Yurovskyi", , "andrii.yurovskyi@intego-group.com", role = "aut", comment = c(ORCID = "0009-0006-8606-0929")),
     person("Kathrin", "Flunkert", , "kathrin.flunkert@roche.com", role = "aut",  comment = c()),
     person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = "aut",  comment = c(ORCID = "0009-0006-4899-8641")),
     person("Siddhesh", "Pujari", , "spuj@novonordisk.com", role = "aut",  comment = c(ORCID = "0009-0003-4971-1217"))
