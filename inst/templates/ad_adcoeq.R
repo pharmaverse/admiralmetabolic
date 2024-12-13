@@ -56,6 +56,7 @@ adcoeq <- adcoeq %>%
   mutate(
     PARAMCD = QSTESTCD,
     PARAM = QSTEST,
+    PARAMN = as.numeric(str_extract(QSTESTCD, "\\d+")),
     PARCAT1 = QSCAT
   )
 
@@ -66,10 +67,14 @@ adcoeq <- adcoeq %>%
 
 # Add questionnaire analysis date (ADT) and treatment start date (TRTSDT)
 adcoeq <- adcoeq %>%
-  derive_vars_dt(new_vars_prefix = "A",
-                 dtc = QSDTC) %>%
-  derive_vars_dy(reference_date = TRTSDT,
-                 source_vars = exprs(ADT))
+  derive_vars_dt(
+    new_vars_prefix = "A",
+    dtc = QSDTC
+  ) %>%
+  derive_vars_dy(
+    reference_date = TRTSDT,
+    source_vars = exprs(ADT)
+  )
 
 # Derive visit info ----
 # See the "Visit and Period Variables" vignette for more information:
@@ -139,7 +144,8 @@ adcoeq <- adcoeq %>%
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRCO",
-          PARAM = "COEQ - Craving Control"
+          PARAM = "COEQ - Craving Control",
+          PARAMN = 22
         )
       ),
       params(
@@ -148,7 +154,8 @@ adcoeq <- adcoeq %>%
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRSW",
-          PARAM = "COEQ - Craving for Sweet"
+          PARAM = "COEQ - Craving for Sweet",
+          PARAMN = 23
         )
       ),
       params(
@@ -157,7 +164,8 @@ adcoeq <- adcoeq %>%
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRSA",
-          PARAM = "COEQ - Craving for Savoury"
+          PARAM = "COEQ - Craving for Savoury",
+          PARAMN = 24
         )
       ),
       params(
@@ -166,7 +174,8 @@ adcoeq <- adcoeq %>%
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQPOMO",
-          PARAM = "COEQ - Positive Mood"
+          PARAM = "COEQ - Positive Mood",
+          PARAMN = 25
         )
       )
     ),
