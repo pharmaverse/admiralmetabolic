@@ -66,8 +66,10 @@ adcoeq <- adcoeq %>%
 
 # Add questionnaire analysis date (ADT) and treatment start date (TRTSDT)
 adcoeq <- adcoeq %>%
-  derive_vars_dt(new_vars_prefix = "A", dtc = QSDTC) %>%
-  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
+  derive_vars_dt(new_vars_prefix = "A",
+                 dtc = QSDTC) %>%
+  derive_vars_dy(reference_date = TRTSDT,
+                 source_vars = exprs(ADT))
 
 # Derive visit info ----
 # See the "Visit and Period Variables" vignette for more information:
@@ -98,7 +100,7 @@ adcoeq <- adcoeq %>%
 # Derive analysis result (AVAL, AVALC)
 adcoeq <- adcoeq %>%
   mutate(
-    # Invert the original scores as they indicate anxiety and CoEQ item 6
+    # Invert the original scores for COEQ item 6 as they indicate anxiety and
     # is used in calculating the subscale for "Positive Mood"
     AVAL = if_else(PARAMCD == "COEQ06", 100 - QSSTRESN, QSSTRESN),
     AVALC = if_else(PARAMCD == "COEQ20", QSORRES, NA_character_)
@@ -107,23 +109,23 @@ adcoeq <- adcoeq %>%
 
 # Derive summary records ----
 
-# See the "Example 2(Deriving a Summary Record)" vignette section for more
+# See the "Example 2 (Deriving a Summary Record)" vignette section for more
 # information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#example-2-deriving-a-summary-record)
 
 # For the Control of Eating Questionnaire, four subscales are derived.
-# These subscales are derived as the sum or the average across a subset of the
+# These subscales are derived as the sum or the mean across a subset of the
 # various items/questions.
 
 # The subscales are defined as follows:
 
-# 1) Craving Control: Calculate average of items 9, 10, 11, 12 and 19.
+# 1) Craving Control: Calculate mean of items 9, 10, 11, 12 and 19.
 
-# 2) Craving for Sweet: Calculate average of items 3, 13, 14 and 15.
+# 2) Craving for Sweet: Calculate mean of items 3, 13, 14 and 15.
 
-# 3) Craving for Savoury: Calculate average of items 4, 16, 17 and 18.
+# 3) Craving for Savoury: Calculate mean of items 4, 16, 17 and 18.
 
-# 4) Positive Mood: Calculate average of items 5, 7, 8 and 6 (reversed).
+# 4) Positive Mood: Calculate mean of items 5, 7, 8 and 6 (reversed).
 
 # Derive four subscales
 adcoeq <- adcoeq %>%
