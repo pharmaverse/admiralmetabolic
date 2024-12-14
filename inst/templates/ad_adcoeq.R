@@ -119,7 +119,7 @@ adcoeq <- adcoeq %>%
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#example-2-deriving-a-summary-record)
 
 # For the Control of Eating Questionnaire, four subscales are derived.
-# These subscales are derived as the sum or the mean across a subset of the
+# These subscales are derived as the mean across a subset of the
 # various items/questions.
 
 # The subscales are defined as follows:
@@ -228,8 +228,9 @@ adcoeq <- adcoeq %>%
 # Assign ASEQ ----
 # See the "Assign ASEQ" vignette section for more information:
 # https://pharmaverse.github.io/admiral/articles/bds_finding.html#aseq
+
+# Calculate ASEQ
 adcoeq <- adcoeq %>%
-  # Calculate ASEQ
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = exprs(STUDYID, USUBJID),
