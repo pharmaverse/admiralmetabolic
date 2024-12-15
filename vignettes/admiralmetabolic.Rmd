@@ -14,11 +14,43 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r eval=FALSE}
-library(admiralmetabolic)
+# Introduction
+
+As this is a package extension, if you are new to `{admiral}` then the best
+place to first start reading would be the [Get
+Started](https://pharmaverse.github.io/admiral/articles/admiral.html) page. This
+extension package follows the same main idea and conventions, and re-uses many
+functions from `{admiral}`, so it is important to thoroughly understand these to
+be able to use `{admiralmetabolic}`.
+
+# Creating Pediatrics ADaM Datasets
+
+For the metabolic ADaM data structures, an overview of the flow and example function calls for the most common steps are provided by the following vignettes:
+
+- [Creating a Control of Eating Questionnaire ADaM](adcoeq.html)
+- [Creating a Metabolic ADVS ADaM](advs.html)
+
+`{admiralmetabolic}` also provides template R scripts as a starting point. They can be
+created by calling `use_ad_template()` from `{admiral}`, e.g.,
+
+```{r}
+library(admiral)
 ```
 
-Introduction to how to use the package extension...
+```r
+use_ad_template(
+  adam_name = "advs",
+  save_path = "./ad_advs.R",
+  package = "admiralmetabolic"
+)
+```
+
+A list of all available templates can be obtained by `list_all_templates()`
+from `{admiral}`:
+
+```{r}
+list_all_templates(package = "admiralmetabolic")
+```
 
 # Support
 
