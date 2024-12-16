@@ -158,7 +158,7 @@ adcoeq <- adcoeq %>%
       ),
       params(
         filter_add = PARAMCD %in% c("COEQ04", "COEQ16", "COEQ17", "COEQ18") &
-          AVISIT >= 0,
+          AVISITN >= 0,
         set_values_to = exprs(
           AVAL = mean(AVAL, na.rm = TRUE),
           PARAMCD = "COEQCRSA",
