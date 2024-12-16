@@ -86,13 +86,11 @@ adcoeq <- adcoeq %>%
     AVISIT = case_when(
       is.na(VISIT) ~ NA_character_,
       str_detect(VISIT, "UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
-      str_detect(VISIT, "SCREEN") ~ "SCREENING",
-      ADT <= TRTSDT ~ "Baseline",
       TRUE ~ str_to_title(VISIT)
     ),
     AVISITN = case_when(
       AVISIT == "Baseline" ~ 0,
-      str_detect(AVISIT, "SCREEN") ~ -1,
+      str_detect(AVISIT, "Screen") ~ -1,
       str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     )
