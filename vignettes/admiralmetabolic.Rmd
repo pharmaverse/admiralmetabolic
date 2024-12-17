@@ -23,6 +23,12 @@ extension package follows the same main idea and conventions, and re-uses many
 functions from `{admiral}`, so it is important to thoroughly understand these to
 be able to use `{admiralmetabolic}`.
 
+# Derivations
+
+The most important functions in `{admiralmetabolic}` are the
+[derivations](../reference/index.html). Again these follow the same
+conventions as `{admiral}` but are focused to ophthalmology-specific needs.
+
 # Creating ADaM Datasets
 
 For the metabolic ADaM data structures, an overview of the flow and example function calls for the most common steps are provided by the following vignettes:
