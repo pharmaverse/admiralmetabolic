@@ -23,7 +23,7 @@ extension package follows the same main idea and conventions, and re-uses many
 functions from `{admiral}`, so it is important to thoroughly understand these to
 be able to use `{admiralmetabolic}`.
 
-# Creating Pediatrics ADaM Datasets
+# Creating ADaM Datasets
 
 For the metabolic ADaM data structures, an overview of the flow and example function calls for the most common steps are provided by the following vignettes:
 
@@ -45,7 +45,7 @@ use_ad_template(
 )
 ```
 
-A list of all available templates can be obtained by `list_all_templates()`
+A list of all available templates from `{admiralmetabolic}` can be obtained by `list_all_templates()`
 from `{admiral}`:
 
 ```{r}
