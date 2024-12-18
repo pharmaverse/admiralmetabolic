@@ -10,7 +10,8 @@ Authors@R: c(
     person("Shunsuke", "Goto", , "shunsuke.goto@novartis.com", role = "aut",  comment = c()),
     person("Siddhesh", "Pujari", , "spuj@novonordisk.com", role = "aut",  comment = c(ORCID = "0009-0003-4971-1217")),
     person("Sonali", "Das", , "sxd@novonordisk.com", role = "aut",  comment = c()),
-    person("Olga", "Starostecka", , "olga.starostecka@boehringer-ingelheim.com", role = "aut",  comment = c())
+    person("Olga", "Starostecka", , "olga.starostecka@boehringer-ingelheim.com", role = "aut",  comment = c()),
+    person("Vang", "Le-Quy", , "vqul@novonordisk.com", role = "aut",  comment = c(ORCID = "0000-0003-2035-8619"))
   )
 Description: A toolbox for programming Clinical Data Standards Interchange
     Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R.
