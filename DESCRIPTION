@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralmetabolic
 Title: Metabolism Extension Package for ADaM in 'R' Asset Library
-Version: 0.0.0
+Version: 0.1.0
 Authors@R: c(
     person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = c("aut", "cre")),
     person("Anders", "Askeland", , "iakd@novonordisk.com", role = "aut")
