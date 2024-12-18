@@ -9,6 +9,7 @@ Authors@R: c(
     person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = "aut",  comment = c(ORCID = "0009-0006-4899-8641")),
     person("Shunsuke", "Goto", , "shunsuke.goto@novartis.com", role = "aut",  comment = c()),
     person("Siddhesh", "Pujari", , "spuj@novonordisk.com", role = "aut",  comment = c(ORCID = "0009-0003-4971-1217")),
+    person("Sonali", "Das", , "sxd@novonordisk.com", role = "aut",  comment = c()),
     person("Olga", "Starostecka", , "olga.starostecka@boehringer-ingelheim.com", role = "aut",  comment = c())
   )
 Description: A toolbox for programming Clinical Data Standards Interchange
