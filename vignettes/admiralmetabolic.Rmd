@@ -41,9 +41,7 @@ created by calling `use_ad_template()` from `{admiral}`, e.g.,
 
 ```{r}
 library(admiral)
-```
 
-```r
 use_ad_template(
   adam_name = "advs",
   save_path = "./ad_advs.R",
@@ -61,3 +59,4 @@ list_all_templates(package = "admiralmetabolic")
 # Support
 
 Support is provided via [pharmaverse Slack](https://pharmaverse.slack.com/).
+Additionally, please feel free to raise issues in our [GitHub repository](https://github.com/pharmaverse/admiralmetabolic/issues).
