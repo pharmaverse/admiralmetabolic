@@ -1,8 +1,14 @@
 # admiralmetabolic 0.1.0
 
-- Initial package release focused on `<<ADD INITIAL SCOPE>>`
+- Initial package release mainly focused on obesity therapeutic area.
 
-Note that after first release you should then start maintaining this `NEWS.md` file for every user-facing update.
-You should categorize the updates under title sections for New Features, Updates of Existing Functions,
-Breaking Changes, Documentation, Various.
-Each update should also reference the original issue by adding at the end: (#ISSUE-NUMBER)
+## Functions
+
+- The function `derive_param_waisthip()` for deriving Waist to Hip Ratio. (#33 &  #52)
+- The function `derive_param_waisthgt()` for deriving Waist to Height Ratio. (#33 & #52)
+
+## Documentation
+
+- Vignette "Creating a Metabolic ADVS ADaM". (#28) 
+- Vignette "Creating a Control of Eating Questionnaire ADaM". (#53)
+- ADVS template scripts `ad_advs.R` which creates a Vital Sign Analysis Dataset with metabolic specific derivations. (#35)
