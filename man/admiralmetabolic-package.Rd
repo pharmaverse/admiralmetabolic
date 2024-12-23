@@ -22,11 +22,18 @@ Other internal:
 \code{\link{derive_param_ratio}()}
 }
 \author{
-\strong{Maintainer}: Edoardo Mancini \email{edoardo.mancini@roche.com}
+\strong{Maintainer}: Anders Askeland \email{iakd@novonordisk.com} (\href{https://orcid.org/0000-0002-2996-129X}{ORCID})
 
 Authors:
 \itemize{
-  \item Anders Askeland \email{iakd@novonordisk.com}
+  \item Andrii Yurovskyi \email{andrii.yurovskyi@intego-group.com} (\href{https://orcid.org/0009-0006-8606-0929}{ORCID})
+  \item Kathrin Flunkert \email{kathrin.flunkert@roche.com}
+  \item Edoardo Mancini \email{edoardo.mancini@roche.com} (\href{https://orcid.org/0009-0006-4899-8641}{ORCID})
+  \item Shunsuke Goto \email{shunsuke.goto@novartis.com}
+  \item Siddhesh Pujari \email{spuj@novonordisk.com} (\href{https://orcid.org/0009-0003-4971-1217}{ORCID})
+  \item Sonali Das \email{sxd@novonordisk.com}
+  \item Olga Starostecka \email{olga.starostecka@boehringer-ingelheim.com}
+  \item Vang Le-Quy \email{vqul@novonordisk.com} (\href{https://orcid.org/0000-0003-2035-8619}{ORCID})
 }
 
 }
