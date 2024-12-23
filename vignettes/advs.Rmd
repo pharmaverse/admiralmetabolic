@@ -108,11 +108,11 @@ One key addition in metabolic trials are vital sign parameters associated to bod
 ```{r, echo=TRUE, message=FALSE}
 param_lookup <- tribble(
   ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
-  "HEIGHT", "HEIGHT", "Height (cm)", 1, "Subject Characteristic", 1,
-  "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Subject Characteristic", 1,
-  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Subject Characteristic", 1,
-  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Subject Characteristic", 1,
-  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Subject Characteristic", 1,
+  "HEIGHT", "HEIGHT", "Height (cm)", 1, "Anthropometric Measurement", 1,
+  "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Anthropometric Measurement", 1,
+  "BMI", "BMI", "Body Mass Index(kg/m^2)", 3, "Anthropometric Measurement", 1,
+  "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric Measurement", 1,
+  "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric Measurement", 1,
   "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
   "PULSE", "PULSE", "Pulse Rate (beats/min)", 7, "Vital Sign", 2,
   "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 8, "Vital Sign", 2,
@@ -175,11 +175,10 @@ advs <- derive_param_bmi(
     PARAMCD = "BMI",
     PARAM = "Body Mass Index (kg/m^2)",
     PARAMN = 3,
-    PARCAT1 = "Subject Characteristic",
+    PARCAT1 = "Anthropometric Measurement",
     PARCAT1N = 1
   ),
   get_unit_expr = VSSTRESU,
-  filter = VSSTAT != "NOT DONE" | is.na(VSSTAT),
   constant_by_vars = exprs(USUBJID)
 )
 ```
@@ -240,84 +239,66 @@ outlined below.
 assigning `AVALCATy`/ `AVALCAvN` and `BASECATy`/ `BASECAvN` values.
 Below is a simple example of how these values may be assigned:
 
+For deriving categorization variables (`AVALCATx`, `BASECATx`)
+`{admiral}` provides
+[`derive_vars_cat()`](https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html) (see
+documentation of the function for details).
+
 ```{r eval=TRUE}
-avalcat_lookup <- tibble::tribble(
-  ~PARAMCD, ~AVALCA1N, ~AVALCAT1,
-  "BMI",    1,         "Underweight",
-  "BMI",    2,         "Normal weight",
-  "BMI",    3,         "Overweight",
-  "BMI",    4,         "Obesity class I",
-  "BMI",    5,         "Obesity class II",
-  "BMI",    6,         "Obesity class III",
-  "BMI",    NA,        NA_character_
+avalcat_lookup <- exprs(
+  ~PARAMCD, ~condition,                ~AVALCAT1,           ~AVALCA1N,
+  "BMI",    AVAL < 18.5,               "Underweight",       1,
+  "BMI",    AVAL >= 18.5 & AVAL < 25,  "Normal weight",     2,
+  "BMI",    AVAL >= 25 & AVAL < 30,    "Overweight",        3,
+  "BMI",    AVAL >= 30 & AVAL < 35,    "Obesity class I",   4,
+  "BMI",    AVAL >= 35 & AVAL < 40,    "Obesity class II",  5,
+  "BMI",    AVAL >= 40,                "Obesity class III", 6,
+  "BMI",    is.na(AVAL),               NA_character_,       NA_integer_
 )
 
-format_avalcat1n <- function(param, aval) {
-  case_when(
-    param == "BMI" & aval < 18.5 ~ 1,
-    param == "BMI" & aval >= 18.5 & aval < 25 ~ 2,
-    param == "BMI" & aval >= 25 & aval < 30 ~ 3,
-    param == "BMI" & aval >= 30 & aval < 35 ~ 4,
-    param == "BMI" & aval >= 35 & aval < 40 ~ 5,
-    param == "BMI" & aval >= 40 ~ 6,
-    TRUE ~ NA_real_
-  )
-}
-
+# Derive BMI class (AVALCAT1, AVALCA1N)
 advs <- advs %>%
-  mutate(AVALCA1N = format_avalcat1n(param = PARAMCD, aval = AVAL)) %>%
-  derive_vars_merged(
-    avalcat_lookup,
-    by = exprs(PARAMCD, AVALCA1N)
+  derive_vars_cat(
+    definition = avalcat_lookup,
+    by_vars = exprs(PARAMCD)
   )
 ```
 
 ```{r eval=TRUE, echo=FALSE}
 dataset_vignette(
-  advs,
+  arrange(advs, USUBJID, PARAMCD, VISITNUM),
   display_vars = exprs(USUBJID, PARAMCD, VISIT, AVAL, AVALCA1N, AVALCAT1),
-  filter = PARAMCD == "BMI"
+  filter = PARAMCD == "BMI" & USUBJID %in% c("01-701-1023", "01-701-1034")
 )
 ```
 
 In a similar way, we will create `BASECATy`/ `BASECAvN` variables.
 
 ```{r eval=TRUE}
-basecat_lookup <- tibble::tribble(
-  ~PARAMCD, ~BASECA1N, ~BASECAT1,
-  "BMI",    1,         "Underweight",
-  "BMI",    2,         "Normal weight",
-  "BMI",    3,         "Overweight",
-  "BMI",    4,         "Obesity class I",
-  "BMI",    5,         "Obesity class II",
-  "BMI",    6,         "Obesity class III",
-  "BMI",    NA,        NA_character_
+basecat_lookup <- exprs(
+  ~PARAMCD, ~condition,                ~BASECAT1,           ~BASECA1N,
+  "BMI",    BASE < 18.5,               "Underweight",       1,
+  "BMI",    BASE >= 18.5 & BASE < 25,  "Normal weight",     2,
+  "BMI",    BASE >= 25 & BASE < 30,    "Overweight",        3,
+  "BMI",    BASE >= 30 & BASE < 35,    "Obesity class I",   4,
+  "BMI",    BASE >= 35 & BASE < 40,    "Obesity class II",  5,
+  "BMI",    BASE >= 40,                "Obesity class III", 6,
+  "BMI",    is.na(BASE),               NA_character_,       NA_integer_
 )
 
-format_basecat1n <- function(param, base) {
-  case_when(
-    param == "BMI" & base < 18.5 ~ 1,
-    param == "BMI" & base >= 18.5 & base < 25 ~ 2,
-    param == "BMI" & base >= 25 & base < 30 ~ 3,
-    param == "BMI" & base >= 30 & base < 35 ~ 4,
-    param == "BMI" & base >= 35 & base < 40 ~ 5,
-    param == "BMI" & base >= 40 ~ 6,
-    TRUE ~ NA_real_
-  )
-}
+# Derive baseline BMI class (BASECAT1, BASECA1N)
 advs <- advs %>%
-  mutate(BASECA1N = format_basecat1n(param = PARAMCD, base = BASE)) %>%
-  derive_vars_merged(
-    basecat_lookup,
-    by = exprs(PARAMCD, BASECA1N)
+  derive_vars_cat(
+    definition = basecat_lookup,
+    by_vars = exprs(PARAMCD)
   )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
-  advs,
+  arrange(advs, USUBJID, PARAMCD, VISITNUM),
   display_vars = exprs(USUBJID, PARAMCD, VISIT, AVAL, BASE, ABLFL, BASECA1N, BASECAT1),
-  filter = PARAMCD == "BMI"
+  filter = PARAMCD == "BMI" & USUBJID %in% c("01-701-1023", "01-701-1034")
 )
 ```
 
@@ -329,34 +310,40 @@ For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFLN`)
 It ensures that they are derived in an ADaM-compliant way (see
 documentation of the function for details).
 
-In most cases the criterion depends on the parameter. In the following
-example, the criterion flags for weight based on percentage change in
-weight reduction from baseline is derived. Additional criterion flags
-can be added as needed.
+In most cases the criterion depends on the parameter and in this case the higher order function [`restrict_derivation()`](https://pharmaverse.github.io/admiral/dev/reference/restrict_derivation.html) can be useful.
+In the following example, the criterion flags for weight based on percentage change in weight reduction from baseline is derived. Additional criterion flags can be added as needed.
 
 ```{r eval=TRUE}
 advs <- advs %>%
-  derive_vars_crit_flag(
-    condition = PCHG <= -5 & PARAMCD == "WEIGHT",
-    description = "Achievement of ≥ 5% weight reduction from baseline",
-    crit_nr = 1,
-    values_yn = TRUE,
-    create_numeric_flag = FALSE
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      condition = PCHG <= -5 & PARAMCD == "WEIGHT",
+      description = "Achievement of ≥ 5% weight reduction from baseline",
+      crit_nr = 1,
+      values_yn = TRUE,
+      create_numeric_flag = FALSE
+    ),
+    filter = VISITNUM > 0 & PARAMCD == "WEIGHT"
   ) %>%
-  derive_vars_crit_flag(
-    condition = PCHG <= -10 & PARAMCD == "WEIGHT",
-    description = "Achievement of ≥ 10% weight reduction from baseline",
-    crit_nr = 2,
-    values_yn = TRUE,
-    create_numeric_flag = FALSE
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      condition = PCHG <= -10 & PARAMCD == "WEIGHT",
+      description = "Achievement of ≥ 10% weight reduction from baseline",
+      crit_nr = 2,
+      values_yn = TRUE,
+      create_numeric_flag = FALSE
+    ),
+    filter = VISITNUM > 0 & PARAMCD == "WEIGHT"
   )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   arrange(advs, USUBJID, VISITNUM, VSTPTNUM, PARAMCD),
-  display_vars = exprs(USUBJID, PARAMCD, PCHG, CRIT1, CRIT1FL, CRIT2, CRIT2FL),
-  filter = PARAMCD %in% c("WEIGHT")
+  display_vars = exprs(USUBJID, PARAMCD, PCHG, CRIT1, CRIT1FL, CRIT2, CRIT2FL, VISIT, VISITNUM),
+  filter = PARAMCD %in% c("WEIGHT") & USUBJID %in% c("01-701-1033", "01-701-1034") & VISITNUM %in% c(3, 10, 11, 12, 13)
 )
 ```
 
