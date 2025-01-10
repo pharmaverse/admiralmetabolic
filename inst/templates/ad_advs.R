@@ -1,9 +1,8 @@
 # Name: ADVS
 #
-# Label: Vital Signs Analysis dataset
+# Label: Vital Signs Analysis dataset for metabolic trials
 #
 # Input: adsl, vs
-
 
 # Attach/load required packages ----
 library(admiral)
@@ -11,7 +10,6 @@ library(admiralmetabolic)
 library(tibble)
 library(dplyr)
 library(stringr)
-
 
 # Define project options/variables ----
 # Use the admiral option functionality to store subject key variables in one
@@ -21,7 +19,6 @@ set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 # Store ADSL variables required for derivations as an R object, enabling
 # simplified usage throughout the program
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
-
 
 # Read in data ----
 # See the "Read in Data" vignette section for more information:
@@ -72,7 +69,6 @@ advs <- advs %>%
     by_vars = exprs(VSTESTCD)
   )
 
-
 # Derive Date/Time and Analysis Day ----
 # See the "Derive/Impute Numeric Date/Time and Analysis Day" vignette section
 # for more information:
@@ -82,7 +78,6 @@ advs <- advs %>%
 advs <- advs %>%
   derive_vars_dt(new_vars_prefix = "A", dtc = VSDTC) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
-
 
 # Derive visit info ----
 # See the "Visit and Period Variables" vignette for more information:
@@ -106,7 +101,6 @@ advs <- advs %>%
     )
   )
 
-
 # Derive results ----
 # See the "Derive Results (AVAL, AVALC)" vignette section for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#aval)
@@ -115,14 +109,13 @@ advs <- advs %>%
 advs <- advs %>%
   mutate(AVAL = VSSTRESN)
 
-
 # Derive domain specific variables ----
 # See the "Derive Additional Parameters" vignette section for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#derive_param)
 
-# Derive BMI
+# Remove BMI derived in SDTM and re-derive it
 advs <- advs %>%
-  filter(VSTESTCD != "BMI") %>%
+  filter(VSTESTCD != "BMI" | is.na(VSTESTCD)) %>%
   derive_param_bmi(
     by_vars = exprs(
       !!!get_admiral_option("subject_keys"), !!!adsl_vars,
@@ -135,8 +128,7 @@ advs <- advs %>%
     constant_by_vars = get_admiral_option("subject_keys")
   )
 
-
-# Derive categorization variables ----
+# Derive categorization and baseline variables ----
 # See the "Derive Categorization Variables" vignette section for more
 # information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#cat)
@@ -159,7 +151,6 @@ advs <- advs %>%
     definition = avalcat_lookup,
     by_vars = exprs(PARAMCD)
   )
-
 
 # Derive Baseline variables ----
 # See the "Derive Baseline" and "Derive Change from Baseline " vignette sections
@@ -199,6 +190,18 @@ advs <- advs %>%
     filter = !(is.na(AVISIT) | toupper(AVISIT) %in% "BASELINE")
   )
 
+# Derive baseline BMI class (BASECAT1, BASECA1N)
+advs <- advs %>%
+  derive_var_base(
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    source_var = AVALCAT1,
+    new_var = BASECAT1
+  ) |>
+  derive_var_base(
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    source_var = AVALCA1N,
+    new_var = BASECA1N
+  )
 
 # Derive criterion variables ----
 # See the "Derive Criterion Variables" vignette section for more information:
@@ -229,7 +232,6 @@ advs <- advs %>%
     filter = AVISITN > 0 & PARAMCD == "WEIGHT"
   )
 
-
 # Assign parameter variables ----
 # See the "Assign PARAMCD, PARAM, PARAMN, PARCAT1" vignette section for more
 # information:
@@ -243,7 +245,6 @@ advs <- advs %>%
     by_vars = exprs(PARAMCD)
   )
 
-
 # Add ADSL variables ----
 # See the "Add ADSL variables" vignette section for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#adsl_vars)
@@ -256,6 +257,18 @@ advs <- advs %>%
     by_vars = get_admiral_option("subject_keys")
   )
 
+# Assign ASEQ ----
+# See the "Assign ASEQ" vignette section for more information:
+# (https://pharmaverse.github.io/admiral/articles/bds_finding.html#aseq)
+
+# Calculate ASEQ
+advs <- advs %>%
+  derive_var_obs_number(
+    new_var = ASEQ,
+    by_vars = exprs(STUDYID, USUBJID),
+    order = exprs(PARAMCD, ADT, AVISITN, VISITNUM, ATPTN),
+    check_type = "error"
+  )
 
 # Add Labels and Attributes ----
 # This process is usually based on one's metadata. As such, no specific example
@@ -263,7 +276,6 @@ advs <- advs %>%
 # description of several open source R packages which can be used to handle
 # metadata.
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#attributes)
-
 
 # Save output ----
 
