@@ -138,7 +138,7 @@ advs <- advs %>%
       PARAMCD = "WAISTHIP",
       PARAM = "Waist to Hip Ratio"
     ),
-    get_unit_expr = extract_unit(PARAM)
+    get_unit_expr = VSSTRESU
   )
 
 # Derive categorization variables ----

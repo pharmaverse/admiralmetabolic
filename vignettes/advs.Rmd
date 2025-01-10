@@ -254,7 +254,7 @@ advs <- advs %>%
       PARAMCD = "WAISTHIP",
       PARAM = "Waist to Hip Ratio"
     ),
-    get_unit_expr = extract_unit(PARAM)
+    get_unit_expr = VSSTRESU
   )
 ```
 
@@ -402,5 +402,5 @@ parameter-level values, timing variables, and analysis flags.
 # Example Scripts {#example}
 
 | ADaM | Sample Code                                                                                                      |
-|------|------------------------------------------------------------------------------------------------------------------|
+|-------------------|-----------------------------------------------------|
 | ADVS | [ad_advs.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_advs.R){target="_blank"} |
