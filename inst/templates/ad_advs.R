@@ -109,11 +109,11 @@ advs <- advs %>%
 advs <- advs %>%
   mutate(AVAL = VSSTRESN)
 
-# Derive domain specific variables ----
+# Derive domain specific parameters ----
 # See the "Derive Additional Parameters" vignette section for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#derive_param)
 
-# Remove BMI derived in SDTM and re-derive it
+# Derive BMI (remove BMI from source, and re-derive it)
 advs <- advs %>%
   filter(VSTESTCD != "BMI" | is.na(VSTESTCD)) %>%
   derive_param_bmi(
@@ -128,7 +128,20 @@ advs <- advs %>%
     constant_by_vars = get_admiral_option("subject_keys")
   )
 
-# Derive categorization and baseline variables ----
+# Derive waist-hip ratio
+advs <- advs %>%
+  derive_param_waisthip(
+    by_vars = exprs(USUBJID, VISIT, VISITNUM),
+    wstcir_code = "WSTCIR",
+    hipcir_code = "HIPCIR",
+    set_values_to = exprs(
+      PARAMCD = "WAISTHIP",
+      PARAM = "Waist to Hip Ratio"
+    ),
+    get_unit_expr = extract_unit(PARAM)
+  )
+
+# Derive categorization variables ----
 # See the "Derive Categorization Variables" vignette section for more
 # information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#cat)
