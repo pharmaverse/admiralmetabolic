@@ -50,10 +50,11 @@ param_lookup <- tribble(
   "BMI", "BMI", "Body Mass Index(kg/m2)", 3, "Anthropometric measurement", 1,
   "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric measurement", 1,
   "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric measurement", 1,
-  "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 6, "Vital Sign", 2,
-  "PULSE", "PULSE", "Pulse Rate (beats/min)", 7, "Vital Sign", 2,
-  "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 8, "Vital Sign", 2,
-  "TEMP", "TEMP", "Temperature (C)", 9, "Vital Sign", 2
+  "", "WAISTHIP", "Waist to Hip Ratio", 6, "Anthropometric measurement", 1,
+  "DIABP", "DIABP", "Diastolic Blood Pressure (mmHg)", 7, "Vital Sign", 2,
+  "PULSE", "PULSE", "Pulse Rate (beats/min)", 8, "Vital Sign", 2,
+  "SYSBP", "SYSBP", "Systolic Blood Pressure (mmHg)", 9, "Vital Sign", 2,
+  "TEMP", "TEMP", "Temperature (C)", 10, "Vital Sign", 2
 )
 
 # Add parameter (PARAMCD) info to enable later ADVS derivations. Additional
@@ -131,12 +132,14 @@ advs <- advs %>%
 # Derive waist-hip ratio
 advs <- advs %>%
   derive_param_waisthip(
-    by_vars = exprs(USUBJID, VISIT, VISITNUM),
+    by_vars = exprs(
+      !!!get_admiral_option("subject_keys"), !!!adsl_vars,
+      AVISIT, AVISITN, ADT, ADY, ATPT, ATPTN
+    ),
     wstcir_code = "WSTCIR",
     hipcir_code = "HIPCIR",
     set_values_to = exprs(
-      PARAMCD = "WAISTHIP",
-      PARAM = "Waist to Hip Ratio"
+      PARAMCD = "WAISTHIP"
     ),
     get_unit_expr = VSSTRESU
   )
