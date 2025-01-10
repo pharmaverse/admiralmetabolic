@@ -55,7 +55,8 @@ library(dplyr)
     -   [Derive waist hip ratio](#whr)
 -   [Common Metabolic Endpoints](#common_endpoints)
     -   [Derive Categorization Variables (`AVALCATy`, `BASECATy`)](#cat)
-    -   [Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFN`)](#crit_vars)
+    -   [Derive Criterion Variables (`CRITy`, `CRITyFL`,
+        `CRITyFN`)](#crit_vars)
 -   [Remaining ADVS Set-up](#advs_end)
 
 ## Read in Data {#readdata}
@@ -110,11 +111,11 @@ advs <-
 
 ## Create `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` variables {#paramcd}
 
-The next step is to create and assign parameter level variables such as `PARAMCD`,
-`PARAM`, `PARAMN`, `PARCAT1`, etc. For this, a lookup can be created
-based on the SDTM `--TESTCD` value to join to the source data. One key
-addition in metabolic trials are vital sign parameters associated to
-body measurements, such as `BMI`, `HIPCIR`, and `WSTCIR`.
+The next step is to create and assign parameter level variables such as
+`PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`, etc. For this, a lookup can be
+created based on the SDTM `--TESTCD` value to join to the source data.
+One key addition in metabolic trials are vital sign parameters
+associated to body measurements, such as `BMI`, `HIPCIR`, and `WSTCIR`.
 
 ```{r, echo=TRUE, message=FALSE}
 param_lookup <- tribble(
@@ -156,9 +157,15 @@ advs <- mutate(
 ```
 
 ## Derive Parameters for Metabolic indicators {#derive_param}
-In clinical trials focused on metabolic conditions, it's common to derive additional parameters from the collected data. These derived parameters often provide valuable insights into the metabolic health of the subjects. In this vignette, we will explore how one could derive BMI and waist-hip ratio.
+
+In clinical trials focused on metabolic conditions, it's common to
+derive additional parameters from the collected data. These derived
+parameters often provide valuable insights into the metabolic health of
+the subjects. In this vignette, we will explore how one could derive BMI
+and waist-hip ratio.
 
 ### Derive BMI {#bmi}
+
 In metabolic trials, `BMI` is often calculated at source. But while
 creating the `ADVS` dataset, we re-derive `BMI` from the collected
 height and weight values. This is done to ensure that the `BMI` is
@@ -229,9 +236,13 @@ advs <- derive_var_pchg(advs)
 
 ### Derive waist hip-ratio {#whr}
 
-Metabolic trials often include ratios between different anthropometric 
-measurements. For this, [`{admiralmetabolic}`](https://pharmaverse.github.io/admiralmetabolic/reference/derive_param_waisthip.html) provides several functions to quickly calculate various anthropometric ratios. 
-For instance, the function [`derive_param_waisthip()`](https://pharmaverse.github.io/admiralmetabolic/reference/derive_param_waisthip.html) can be used to derive the waist-hip ratio. 
+Metabolic trials often include ratios between different anthropometric
+measurements. For this,
+[`{admiralmetabolic}`](https://pharmaverse.github.io/admiralmetabolic/reference/derive_param_waisthip.html)
+provides several functions to quickly calculate various anthropometric
+ratios. For instance, the function
+[`derive_param_waisthip()`](https://pharmaverse.github.io/admiralmetabolic/reference/derive_param_waisthip.html)
+can be used to derive the waist-hip ratio.
 
 ```{r eval=TRUE}
 advs <- advs %>%
@@ -272,7 +283,7 @@ criteria, we will derive relevant criterion variables such as `CRITy`,
 `CRITyFL`, and `CRITyFN`, with the necessary functions provided by
 `{admiral}` outlined below.
 
-### Derive Categorization Variables (`AVALCATy`, `BASECATy`) C
+### Derive Categorization Variables (`AVALCATy`, `BASECATy`)
 
 For deriving categorization variables (`AVALCATy`, `BASECATy`)
 `{admiral}` provides
@@ -391,5 +402,5 @@ parameter-level values, timing variables, and analysis flags.
 # Example Scripts {#example}
 
 | ADaM | Sample Code                                                                                                      |
-|------------------|------------------------------------------------------|
+|------|------------------------------------------------------------------------------------------------------------------|
 | ADVS | [ad_advs.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_advs.R){target="_blank"} |
