@@ -52,7 +52,7 @@ use_ad_template(
 A list of all available templates from `{admiralmetabolic}` can be obtained by `list_all_templates()`
 from `{admiral}`:
 
-```{r}
+```{r, eval = FALSE}
 list_all_templates(package = "admiralmetabolic")
 ```
 
