@@ -210,7 +210,7 @@ advs <- advs %>%
     derivation = derive_vars_crit_flag,
     args = params(
       condition = PCHG <= -5 & PARAMCD == "WEIGHT",
-      description = "Achievement of ≥ 5% weight reduction from baseline",
+      description = "Achievement of >= 5% weight reduction from baseline",
       crit_nr = 1,
       values_yn = TRUE,
       create_numeric_flag = FALSE
@@ -221,7 +221,7 @@ advs <- advs %>%
     derivation = derive_vars_crit_flag,
     args = params(
       condition = PCHG <= -10 & PARAMCD == "WEIGHT",
-      description = "Achievement of ≥ 10% weight reduction from baseline",
+      description = "Achievement of >= 10% weight reduction from baseline",
       crit_nr = 2,
       values_yn = TRUE,
       create_numeric_flag = FALSE

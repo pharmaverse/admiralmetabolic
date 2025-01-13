@@ -52,7 +52,7 @@ for metabolic trial ADaMs.
 
 ## R Versions
 
-Here’s a summary of our strategy for this package related to R versions:
+Here's a summary of our strategy for this package related to R versions:
 
 -   R versions for developers and users will follow the same as
     `{admiral}` core package.
