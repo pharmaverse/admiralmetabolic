@@ -43,6 +43,7 @@ library(admiral)
 library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr)
+library(stringr)
 ```
 
 # Programming Workflow
@@ -107,8 +108,17 @@ adcoeq1 <- qs %>%
   derive_vars_dt(new_vars_prefix = "A", dtc = QSDTC) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
   mutate(
-    AVISIT = if_else(ADT <= TRTSDT, "BASELINE", VISIT),
-    AVISITN = if_else(ADT <= TRTSDT, 0, VISITNUM)
+    AVISIT = case_when(
+      is.na(VISIT) ~ NA_character_,
+      str_detect(VISIT, "UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
+      TRUE ~ str_to_title(VISIT)
+    ),
+    AVISITN = case_when(
+      AVISIT == "Baseline" ~ 0,
+      str_detect(AVISIT, "Screen") ~ -1,
+      str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
+      TRUE ~ NA_integer_
+    )
   )
 ```
 
@@ -146,17 +156,17 @@ For deriving visits based on time-windows, see `{admiral}` [Visit and Period Var
 
 ## Derive the four Subscales {#subscales}
 
-For the Control of Eating Questionnaire, four subscales are derived. These subscales are derived as the sum or the average across a subset of the various items/questions. 
+For the Control of Eating Questionnaire, four subscales are derived. These subscales are derived as the mean across a subset of the various items/questions. 
 
 The subscales are defined as follows:
 
-* Craving Control: Calculate average of items 9, 10, 11, 12 and 19.
+* Craving Control: Calculate mean of items 9, 10, 11, 12 and 19.
 
-* Craving for Sweet: Calculate average of items 3, 13, 14 and 15.
+* Craving for Sweet: Calculate mean of items 3, 13, 14 and 15.
 
-* Craving for Savoury: Calculate average of items 4, 16, 17 and 18.
+* Craving for Savoury: Calculate mean of items 4, 16, 17 and 18.
 
-* Positive Mood: Calculate average of items 5, 7, 8 and 6 (reversed).
+* Positive Mood: Calculate mean of items 5, 7, 8 and 6 (reversed).
 
 These parameters can be derived by `derive_summary_records()`:
 ```{r eval=TRUE}
