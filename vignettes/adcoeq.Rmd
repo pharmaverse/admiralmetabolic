@@ -43,6 +43,7 @@ library(admiral)
 library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr)
+library(stringr)
 ```
 
 # Programming Workflow
@@ -52,12 +53,9 @@ library(dplyr)
 -   [Derive the four Subscales](#subscales)
 -   [Remaining ADCOEQ Set-up](#adcoeq_end)
 
-
-
 ## Read in Data {#readdata}
 
 To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiral}`. We will utilize `DM`, `QS` and `ADSL`.
-
 
 In this vignette we use example data for the CoEQ. 
 The example `QS` data (`qs_metabolic`) is included in the `{admiralmetabolic}` package.
@@ -73,6 +71,7 @@ admiral_adsl <- convert_blanks_to_na(admiral_adsl)
 ```
 
 Within this vignette, `DM` is used as the basis for `ADSL`:
+
 ```{r eval=TRUE}
 # Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset
 adsl <- dm %>%
@@ -121,7 +120,6 @@ dataset_vignette(
 
 The analysis values (`AVAL` and `AVALC`) for most original items are set directly from `QSSTRESN` and `QSORRES`, respectively. However, CoEQ item 6 (`COEQ06`) requires a manual transformation, where we invert the original scores. This transformation is performed because CoEQ item 6 is used in calculating the subscale for "Positive Mood," where its original scores indicate anxiety.
 
-
 In cases where `QSSTRESN` values require transformation, it is recommended to keep the original `QSSTRESN` values in the ADaM dataset for traceability.
 
 ```{r eval=TRUE}
@@ -143,7 +141,6 @@ dataset_vignette(
 
 For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
 
-
 ## Derive the four Subscales {#subscales}
 
 For the Control of Eating Questionnaire, four subscales are derived. These subscales are derived as the sum or the average across a subset of the various items/questions. 
@@ -159,6 +156,7 @@ The subscales are defined as follows:
 * Positive Mood: Calculate average of items 5, 7, 8 and 6 (reversed).
 
 These parameters can be derived by `derive_summary_records()`:
+
 ```{r eval=TRUE}
 adcoeq3 <- adcoeq2 %>%
   call_derivation(
@@ -220,4 +218,3 @@ describes further steps, including, how to calculate the change from baseline va
 ADaM | Sample Code
 ---- | --------------
 ADCOEQ | [ad_adcoeq.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_adcoeq.R){target="_blank"} 
-

@@ -16,7 +16,6 @@
 # Attach/load required packages ----
 library(admiral)
 library(admiralmetabolic)
-library(tibble)
 library(dplyr)
 library(stringr)
 
@@ -109,7 +108,6 @@ adcoeq <- adcoeq %>%
     AVALC = if_else(PARAMCD == "COEQ20", QSORRES, NA_character_)
   )
 
-
 # Derive summary records ----
 
 # See the "Example 2 (Deriving a Summary Record)" vignette section for more
@@ -184,7 +182,6 @@ adcoeq <- adcoeq %>%
     )
   )
 
-
 # Derive Baseline variables ----
 # See the "Derive Baseline" and "Derive Change from Baseline " vignette sections
 # for more information:
@@ -254,7 +251,6 @@ adcoeq <- adcoeq %>%
 # description of several open source R packages which can be used to handle
 # metadata.
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#attributes)
-
 
 # Save output ----
 
