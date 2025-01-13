@@ -549,7 +549,7 @@ derive_param_ratio <- function(dataset,
       )
 
       cli_alert_info(
-        "Note: Unit conversion performed for {.val {denominator_code}}. Values converted from
+        "Unit conversion performed for {.val {denominator_code}}. Values converted from
         {.val {param_units[[denominator_code]]}} to {.val {param_units[[numerator_code]]}}.",
         wrap = TRUE
       )
