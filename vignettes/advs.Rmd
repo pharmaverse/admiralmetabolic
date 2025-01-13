@@ -318,7 +318,7 @@ dataset_vignette(
 )
 ```
 
-Now we can use `derive_var_base` to derive the `BASECATy`/ `BASECAvN`
+Now we can use `derive_var_base` to derive the `BASECATy`/ `BASECAyN`
 variables.
 
 ```{r eval=TRUE}

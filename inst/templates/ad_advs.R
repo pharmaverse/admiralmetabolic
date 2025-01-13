@@ -282,7 +282,7 @@ advs <- advs %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = get_admiral_option("subject_keys"),
-    order = exprs(PARAMCD, ADT, AVISITN, VISITNUM, ATPTN),
+    order = exprs(PARAMN, ADT, AVISITN, VISITNUM, ATPTN),
     check_type = "error"
   )
 
