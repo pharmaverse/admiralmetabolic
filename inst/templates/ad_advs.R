@@ -212,7 +212,7 @@ advs <- advs %>%
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
     source_var = AVALCAT1,
     new_var = BASECAT1
-  ) |>
+  ) %>%
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
     source_var = AVALCA1N,
