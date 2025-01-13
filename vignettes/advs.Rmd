@@ -276,12 +276,12 @@ the end of treatment, which is often assessed using Body Mass Index
 (`BMI`). To capture this, we will derive variables such as `AVALCATy`
 and `BASECATy`, as detailed in the subsequent section.
 
-Additionally, the achievement of weight reduction thresholds, such as ≥
-5%, ≥ 10%, or ≥ 15% from baseline to end of treatment or at a certain
-visit, is a common endpoint in metabolic trials. To accommodate these
-criteria, we will derive relevant criterion variables such as `CRITy`,
-`CRITyFL`, and `CRITyFN`, with the necessary functions provided by
-`{admiral}` outlined below.
+Additionally, the achievement of weight reduction thresholds, such as >=
+5%, >= 10%, or >= 15% from baseline to end of treatment or at a certain visit,
+is a common endpoint in metabolic trials. To accommodate these criteria,
+we will derive relevant criterion variables such as `CRITy`, `CRITyFL`,
+and `CRITyFLN`, with the necessary functions provided by `{admiral}`
+outlined below.
 
 ### Derive Categorization Variables (`AVALCATy`, `BASECATy`)
 
@@ -364,7 +364,7 @@ advs <- advs %>%
     derivation = derive_vars_crit_flag,
     args = params(
       condition = PCHG <= -5 & PARAMCD == "WEIGHT",
-      description = "Achievement of ≥ 5% weight reduction from baseline",
+      description = "Achievement of >= 5% weight reduction from baseline",
       crit_nr = 1,
       values_yn = TRUE,
       create_numeric_flag = FALSE
@@ -375,7 +375,7 @@ advs <- advs %>%
     derivation = derive_vars_crit_flag,
     args = params(
       condition = PCHG <= -10 & PARAMCD == "WEIGHT",
-      description = "Achievement of ≥ 10% weight reduction from baseline",
+      description = "Achievement of >= 10% weight reduction from baseline",
       crit_nr = 2,
       values_yn = TRUE,
       create_numeric_flag = FALSE

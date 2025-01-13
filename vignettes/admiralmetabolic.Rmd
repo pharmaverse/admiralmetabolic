@@ -27,7 +27,7 @@ be able to use `{admiralmetabolic}`.
 
 The most important functions in `{admiralmetabolic}` are the
 [derivations](../reference/index.html). Again these follow the same
-conventions as `{admiral}` but are focused to ophthalmology-specific needs.
+conventions as `{admiral}` but are focused to metabolism-specific needs.
 
 # Creating ADaM Datasets
 
@@ -39,7 +39,7 @@ For the metabolic ADaM data structures, an overview of the flow and example func
 `{admiralmetabolic}` also provides template R scripts as a starting point. They can be
 created by calling `use_ad_template()` from `{admiral}`, e.g.,
 
-```{r}
+```{r, eval = FALSE}
 library(admiral)
 
 use_ad_template(
@@ -52,7 +52,7 @@ use_ad_template(
 A list of all available templates from `{admiralmetabolic}` can be obtained by `list_all_templates()`
 from `{admiral}`:
 
-```{r}
+```{r, eval = FALSE}
 list_all_templates(package = "admiralmetabolic")
 ```
 
