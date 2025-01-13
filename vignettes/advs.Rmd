@@ -28,10 +28,12 @@ clinical trials.
 We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM
 vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 The programming workflow around creating the general set-up of an `ADVS`
-using `{admiral}` functions is the same. In this vignette, we focus on the most common
-endpoints and their derivations mainly found in metabolic trials to
-avoid repeating information and maintaining the same content in two
-places. As such, the code in this vignette is not completely executable; we recommend consulting the ADVS template script to view the full workflow.
+using `{admiral}` functions is the same. In this vignette, we focus on
+the most common endpoints and their derivations mainly found in
+metabolic trials to avoid repeating information and maintaining the same
+content in two places. As such, the code in this vignette is not
+completely executable; we recommend consulting the ADVS template script
+to view the full workflow.
 
 ## Required Packages
 
@@ -48,16 +50,22 @@ library(dplyr)
 
 -   [Read in Data](#readdata)
 -   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
--   [Derive Additional Parameters (e.g. `BMI` for `ADVS`)](#derive_param)
+-   [Derive Metabolic Parameters](#derive_param)
+    -   [Derive BMI](#bmi)
+    -   [Derive waist hip ratio](#whr)
 -   [Common Metabolic Endpoints](#common_endpoints)
-    -   [Derive Categorization Variables (`AVALCATx`, `BASECATx`)](#cat)
-    -   [Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`)](#crit_vars)
+    -   [Derive Categorization Variables (`AVALCATy`, `BASECATy`)](#cat)
+    -   [Derive Criterion Variables (`CRITy`, `CRITyFL`,
+        `CRITyFN`)](#crit_vars)
 -   [Remaining ADVS Set-up](#advs_end)
 
 ## Read in Data {#readdata}
 
 To start, all data frames needed for the creation of `ADVS` should be
-loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiral}`. We will utilize `DM`, `VS` and `ADSL` for the basis of `ADVS`.
+loaded into the global environment. Reading data will usually be a
+company specific process, however, for the purpose of this vignette, we
+will use example data from `{pharmaversesdtm}` and `{admiral}`. We will
+utilize `DM`, `VS` and `ADSL` for the basis of `ADVS`.
 
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- admiralmetabolic::dm_metabolic
@@ -79,8 +87,12 @@ adsl <- dm %>%
   left_join(admiral_adsl %>% select(USUBJID, TRTSDT, TRTEDT), by = "USUBJID")
 ```
 
-The following steps are to merge `ADSL` variables with the source data and
-derive the usual `ADVS` analysis variables. Note that only the sections required for this vignette are covered in the following steps. To get a detailed guidance on all the steps, refer the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+The following steps are to merge `ADSL` variables with the source data
+and derive the usual `ADVS` analysis variables. Note that only the
+sections required for this vignette are covered in the following steps.
+To get a detailed guidance on all the steps, refer the `{admiral}`
+[Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 
 ```{r, eval=TRUE, include=FALSE}
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
@@ -93,17 +105,17 @@ advs <- derive_vars_merged(
 )
 
 advs <- derive_vars_dt(advs, new_vars_prefix = "A", dtc = VSDTC)
-
 advs <-
   derive_vars_dy(advs, reference_date = TRTSDT, source_vars = exprs(ADT))
 ```
 
-## Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` {#paramcd}
+## Create `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` variables {#paramcd}
 
-The next step is to assign parameter level values such as `PARAMCD`, `PARAM`,
-`PARAMN`, `PARCAT1`, etc. For this, a lookup can be created based on
-the SDTM `--TESTCD` value to join to the source data.
-One key addition in metabolic trials are vital sign parameters associated to body measurements, such as `BMI`, `HIPCIR`, and `WSTCIR`.
+The next step is to create and assign parameter level variables such as
+`PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`, etc. For this, a lookup can be
+created based on the SDTM `--TESTCD` value to join to the source data.
+One key addition in metabolic trials are vital sign parameters
+associated to body measurements, such as `BMI`, `HIPCIR`, and `WSTCIR`.
 
 ```{r, echo=TRUE, message=FALSE}
 param_lookup <- tribble(
@@ -134,10 +146,8 @@ advs <- derive_vars_merged_lookup(
 
 ```{r, eval=TRUE, echo=FALSE}
 advs_param <- distinct(advs, USUBJID, PARAMCD, VSTESTCD, PARAM, PARCAT1, PARCAT1N)
-
 dataset_vignette(advs_param, display_vars = exprs(USUBJID, VSTESTCD, PARAMCD, PARAM, PARCAT1, PARCAT1N))
 ```
-
 
 ```{r, eval=TRUE, include=FALSE}
 advs <- mutate(
@@ -146,12 +156,20 @@ advs <- mutate(
 )
 ```
 
-## Derive Additional Parameters (e.g. `BMI` for `ADVS`) {#derive_param}
+## Derive Parameters for Metabolic indicators {#derive_param}
 
-In metabolic trials, `BMI` is often calculated at source. But while creating the `ADVS`
-dataset, we re-derive `BMI` from the collected height and weight values.
-This is done to ensure that the `BMI` is calculated consistently across
-all subjects and visits.
+In clinical trials focused on metabolic conditions, it's common to
+derive additional parameters from the collected data. These derived
+parameters often provide valuable insights into the metabolic health of
+the subjects. In this vignette, we will explore how one could derive BMI
+and waist-hip ratio.
+
+### Derive BMI {#bmi}
+
+In metabolic trials, `BMI` is often calculated at source. But while
+creating the `ADVS` dataset, we re-derive `BMI` from the collected
+height and weight values. This is done to ensure that the `BMI` is
+calculated consistently across all subjects and visits.
 
 In this step, we create parameter Body Mass Index (`BMI`) for the `ADVS`
 domain using the `derive_param_bmi()` function. Note that only variables
@@ -162,9 +180,10 @@ subject-level variable - otherwise BMI is only calculated for visits
 where both are collected.
 
 ```{r eval=TRUE}
-# Removing BMI collected at source from the dataset
-advs <- advs %>% filter(!VSTESTCD == "BMI")
+# Remove BMI collected in SDTM
+advs <- advs %>% filter(VSTESTCD != "BMI" | is.na(VSTESTCD))
 
+# Re-calculate BMI
 advs <- derive_param_bmi(
   advs,
   by_vars = c(
@@ -212,11 +231,42 @@ advs <- derive_var_base(
 )
 
 advs <- derive_var_chg(advs)
-
 advs <- derive_var_pchg(advs)
 ```
 
-## Common Metabolic Endpoints {#common_endpoints}
+### Derive waist hip-ratio {#whr}
+
+Metabolic trials often include ratios between different anthropometric
+measurements. For this,
+[`{admiralmetabolic}`](https://pharmaverse.github.io/admiralmetabolic/reference/derive_param_waisthip.html)
+provides several functions to quickly calculate various anthropometric
+ratios. For instance, the function
+[`derive_param_waisthip()`](https://pharmaverse.github.io/admiralmetabolic/reference/derive_param_waisthip.html)
+can be used to derive the waist-hip ratio.
+
+```{r eval=TRUE}
+advs <- advs %>%
+  derive_param_waisthip(
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), VISIT, VISITNUM),
+    wstcir_code = "WSTCIR",
+    hipcir_code = "HIPCIR",
+    set_values_to = exprs(
+      PARAMCD = "WAISTHIP",
+      PARAM = "Waist to Hip Ratio"
+    ),
+    get_unit_expr = VSSTRESU
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  arrange(advs, USUBJID, VISITNUM, VSTPTNUM, PARAMCD),
+  display_vars = exprs(USUBJID, PARAMCD, PARAM, VISIT, AVAL),
+  filter = PARAMCD %in% c("WAISTHIP") & USUBJID %in% c("01-701-1033", "01-701-1034") & VISITNUM %in% c(3, 10, 11, 12, 13)
+)
+```
+
+## Derive Variables for Metabolic indicators {#common_endpoints}
 
 In the following sections, we will explore some of the most common
 endpoints typically observed in metabolic trials.
@@ -233,16 +283,12 @@ we will derive relevant criterion variables such as `CRITy`, `CRITyFL`,
 and `CRITyFLN`, with the necessary functions provided by `{admiral}`
 outlined below.
 
-### Derive Categorization Variables (`AVALCATx`, `BASECATx`) {#cat}
+### Derive Categorization Variables (`AVALCATy`, `BASECATy`)
 
-`{admiral}` does not currently have a generic function to aid in
-assigning `AVALCATy`/ `AVALCAvN` and `BASECATy`/ `BASECAvN` values.
-Below is a simple example of how these values may be assigned:
-
-For deriving categorization variables (`AVALCATx`, `BASECATx`)
+For deriving categorization variables (`AVALCATy`, `BASECATy`)
 `{admiral}` provides
-[`derive_vars_cat()`](https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html) (see
-documentation of the function for details).
+[`derive_vars_cat()`](https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html)
+(see documentation of the function for details).
 
 ```{r eval=TRUE}
 avalcat_lookup <- exprs(
@@ -272,25 +318,20 @@ dataset_vignette(
 )
 ```
 
-In a similar way, we will create `BASECATy`/ `BASECAvN` variables.
+Now we can use `derive_var_base` to derive the `BASECATy`/ `BASECAyN`
+variables.
 
 ```{r eval=TRUE}
-basecat_lookup <- exprs(
-  ~PARAMCD, ~condition,                ~BASECAT1,           ~BASECA1N,
-  "BMI",    BASE < 18.5,               "Underweight",       1,
-  "BMI",    BASE >= 18.5 & BASE < 25,  "Normal weight",     2,
-  "BMI",    BASE >= 25 & BASE < 30,    "Overweight",        3,
-  "BMI",    BASE >= 30 & BASE < 35,    "Obesity class I",   4,
-  "BMI",    BASE >= 35 & BASE < 40,    "Obesity class II",  5,
-  "BMI",    BASE >= 40,                "Obesity class III", 6,
-  "BMI",    is.na(BASE),               NA_character_,       NA_integer_
-)
-
-# Derive baseline BMI class (BASECAT1, BASECA1N)
 advs <- advs %>%
-  derive_vars_cat(
-    definition = basecat_lookup,
-    by_vars = exprs(PARAMCD)
+  derive_var_base(
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
+    source_var = AVALCAT1,
+    new_var = BASECAT1
+  ) %>%
+  derive_var_base(
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
+    source_var = AVALCA1N,
+    new_var = BASECA1N
   )
 ```
 
@@ -302,16 +343,20 @@ dataset_vignette(
 )
 ```
 
-### Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFLN`) {#crit_vars}
+### Derive Criterion Variables (`CRITy`, `CRITyFL`, `CRITyFN`) {#crit_vars}
 
-For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFLN`)
+For deriving criterion variables (`CRITy`, `CRITyFL`, `CRITyFN`)
 `{admiral}` provides
 [`derive_vars_crit_flag()`](https://pharmaverse.github.io/admiral/dev/reference/derive_vars_crit_flag.html).
 It ensures that they are derived in an ADaM-compliant way (see
 documentation of the function for details).
 
-In most cases the criterion depends on the parameter and in this case the higher order function [`restrict_derivation()`](https://pharmaverse.github.io/admiral/dev/reference/restrict_derivation.html) can be useful.
-In the following example, the criterion flags for weight based on percentage change in weight reduction from baseline is derived. Additional criterion flags can be added as needed.
+In most cases the criterion depends on the parameter and in this case
+the higher order function
+[`restrict_derivation()`](https://pharmaverse.github.io/admiral/dev/reference/restrict_derivation.html)
+can be useful. In the following example, the criterion flags for weight
+based on percentage change in weight reduction from baseline is derived.
+Additional criterion flags can be added as needed.
 
 ```{r eval=TRUE}
 advs <- advs %>%
@@ -356,6 +401,6 @@ parameter-level values, timing variables, and analysis flags.
 
 # Example Scripts {#example}
 
-ADaM | Sample Code
----- | --------------
-ADVS | [ad_advs.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_advs.R){target="_blank"} 
+| ADaM | Sample Code                                                                                                      |
+|-------------------|-----------------------------------------------------|
+| ADVS | [ad_advs.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_advs.R){target="_blank"} |
