@@ -47,7 +47,7 @@ param_lookup <- tribble(
   ~VSTESTCD, ~PARAMCD, ~PARAM, ~PARAMN, ~PARCAT1, ~PARCAT1N,
   "HEIGHT", "HEIGHT", "Height (cm)", 1, "Anthropometric measurement", 1,
   "WEIGHT", "WEIGHT", "Weight (kg)", 2, "Anthropometric measurement", 1,
-  "BMI", "BMI", "Body Mass Index(kg/m2)", 3, "Anthropometric measurement", 1,
+  "BMI", "BMI", "Body Mass Index (kg/m2)", 3, "Anthropometric measurement", 1,
   "HIPCIR", "HIPCIR", "Hip Circumference (cm)", 4, "Anthropometric measurement", 1,
   "WSTCIR", "WSTCIR", "Waist Circumference (cm)", 5, "Anthropometric measurement", 1,
   "", "WAISTHIP", "Waist to Hip Ratio", 6, "Anthropometric measurement", 1,
@@ -209,12 +209,12 @@ advs <- advs %>%
 # Derive baseline BMI class (BASECAT1, BASECA1N)
 advs <- advs %>%
   derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
     source_var = AVALCAT1,
     new_var = BASECAT1
   ) %>%
   derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
     source_var = AVALCA1N,
     new_var = BASECA1N
   )

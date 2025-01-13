@@ -247,7 +247,7 @@ can be used to derive the waist-hip ratio.
 ```{r eval=TRUE}
 advs <- advs %>%
   derive_param_waisthip(
-    by_vars = exprs(USUBJID, VISIT, VISITNUM),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), VISIT, VISITNUM),
     wstcir_code = "WSTCIR",
     hipcir_code = "HIPCIR",
     set_values_to = exprs(
@@ -324,12 +324,12 @@ variables.
 ```{r eval=TRUE}
 advs <- advs %>%
   derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
     source_var = AVALCAT1,
     new_var = BASECAT1
-  ) |>
+  ) %>%
   derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD)),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD),
     source_var = AVALCA1N,
     new_var = BASECA1N
   )
