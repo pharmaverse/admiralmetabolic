@@ -26,6 +26,7 @@ Description: A toolbox for programming Clinical Data Standards Interchange
 License: Apache License (>= 2)
 URL: https://pharmaverse.github.io/admiralmetabolic/,
     https://github.com/pharmaverse/admiralmetabolic
+BugReports: https://github.com/pharmaverse/admiralmetabolic/issues
 Depends: 
     R (>= 4.1)
 Imports:
