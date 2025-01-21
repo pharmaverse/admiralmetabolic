@@ -24,8 +24,9 @@ Description: A toolbox for programming Clinical Data Standards Interchange
     an extension package of the 'admiral' package focusing on the 
     metabolism therapeutic area.
 License: Apache License (>= 2)
-URL: https://pharmaverse.github.io/admiraltemplate,
-    https://github.com/pharmaverse/admiraltemplate
+URL: https://pharmaverse.github.io/admiralmetabolic/,
+    https://github.com/pharmaverse/admiralmetabolic
+BugReports: https://github.com/pharmaverse/admiralmetabolic/issues
 Depends: 
     R (>= 4.1)
 Imports:
