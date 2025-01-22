@@ -9,6 +9,12 @@ to develop specifics for metabolic clinical trials.
 
 ## Installation
 
+The package is available from CRAN and can be installed with:
+
+```r
+install.packages("admiralmetabolic")
+```
+
 To install the latest development version of the package directly from
 GitHub use the following code:
 
