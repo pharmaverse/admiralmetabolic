@@ -13,13 +13,8 @@ To install the latest development version of the package directly from
 GitHub use the following code:
 
 ```r
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-
-remotes::install_github("pharmaverse/admiraldev") # This is a required dependency of {admiralmetabolic}
-remotes::install_github("pharmaverse/admiral") # This is a required dependency of {admiralmetabolic}
-remotes::install_github("pharmaverse/admiralmetabolic")
+install.packages("pak")
+pak::pkg_install("admiralmetabolic", dependencies = TRUE)
 ```
 
 ### Dependencies
