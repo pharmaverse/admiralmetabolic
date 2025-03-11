@@ -1,3 +1,14 @@
+# admiralmetabolic (development version)
+
+# New features
+
+<details>
+<summary>Developer Notes</summary>
+
+- Activated automatic version bumping CICD workflow. (#98)
+
+</details>
+
 # admiralmetabolic 0.1.0
 
 - Initial package release mainly focused on obesity therapeutic area.
