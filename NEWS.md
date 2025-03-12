@@ -14,5 +14,6 @@
 
 ## Documentation
 
+- README.md changed to show simplified installation commands. (#88)
 - Vignette "Creating a Metabolic ADVS ADaM". (#28) 
 - Vignette "Creating a Control of Eating Questionnaire ADaM". (#53)
