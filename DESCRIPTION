@@ -1,17 +1,22 @@
 Type: Package
 Package: admiralmetabolic
 Title: Metabolism Extension Package for ADaM in 'R' Asset Library
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
-    person("Anders", "Askeland", , "iakd@novonordisk.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2996-129X")),
-    person("Andrii", "Yurovskyi", , "andrii.yurovskyi@intego-group.com", role = "aut", comment = c(ORCID = "0009-0006-8606-0929")),
-    person("Kathrin", "Flunkert", , "kathrin.flunkert@roche.com", role = "aut",  comment = c()),
-    person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = "aut",  comment = c(ORCID = "0009-0006-4899-8641")),
-    person("Shunsuke", "Goto", , "shunsuke.goto@novartis.com", role = "aut",  comment = c()),
-    person("Siddhesh", "Pujari", , "spuj@novonordisk.com", role = "aut",  comment = c(ORCID = "0009-0003-4971-1217")),
-    person("Sonali", "Das", , "sxd@novonordisk.com", role = "aut",  comment = c()),
-    person("Olga", "Starostecka", , "olga.starostecka@boehringer-ingelheim.com", role = "aut",  comment = c()),
-    person("Vang", "Le-Quy", , "vqul@novonordisk.com", role = "aut",  comment = c(ORCID = "0000-0003-2035-8619"))
+    person("Anders", "Askeland", , "iakd@novonordisk.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-2996-129X")),
+    person("Andrii", "Yurovskyi", , "andrii.yurovskyi@intego-group.com", role = "aut",
+           comment = c(ORCID = "0009-0006-8606-0929")),
+    person("Kathrin", "Flunkert", , "kathrin.flunkert@roche.com", role = "aut"),
+    person("Edoardo", "Mancini", , "edoardo.mancini@roche.com", role = "aut",
+           comment = c(ORCID = "0009-0006-4899-8641")),
+    person("Shunsuke", "Goto", , "shunsuke.goto@novartis.com", role = "aut"),
+    person("Siddhesh", "Pujari", , "spuj@novonordisk.com", role = "aut",
+           comment = c(ORCID = "0009-0003-4971-1217")),
+    person("Sonali", "Das", , "sxd@novonordisk.com", role = "aut"),
+    person("Olga", "Starostecka", , "olga.starostecka@boehringer-ingelheim.com", role = "aut"),
+    person("Vang", "Le-Quy", , "vqul@novonordisk.com", role = "aut",
+           comment = c(ORCID = "0000-0003-2035-8619"))
   )
 Description: A toolbox for programming Clinical Data Standards Interchange
     Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R.
@@ -21,7 +26,7 @@ Description: A toolbox for programming Clinical Data Standards Interchange
     accordance with the "Analysis Data Model Implementation Guide" (CDISC
     Analysis Data Model Team, 2021,
     <https://www.cdisc.org/standards/foundational/adam>).  The package is
-    an extension package of the 'admiral' package focusing on the 
+    an extension package of the 'admiral' package focusing on the
     metabolism therapeutic area.
 License: Apache License (>= 2)
 URL: https://pharmaverse.github.io/admiralmetabolic/,
@@ -34,12 +39,12 @@ Imports:
     admiraldev (>= 1.0.0),
     cli (>= 3.6.2),
     dplyr (>= 0.8.4),
-    stringr (>= 1.4.0),
     lifecycle (>= 0.1.0),
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
     purrr (>= 0.3.3),
     rlang (>= 0.4.4),
+    stringr (>= 1.4.0),
     tidyselect (>= 1.0.0)
 Suggests:
     diffdf,
