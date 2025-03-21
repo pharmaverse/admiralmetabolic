@@ -1,3 +1,8 @@
+# admiralmetabolic (development version)
+
+## Documentation
+- Updated installation instructions. (#88)
+
 # admiralmetabolic 0.1.0
 
 - Initial package release mainly focused on obesity therapeutic area.
@@ -14,6 +19,5 @@
 
 ## Documentation
 
-- README.md changed to show simplified installation commands. (#88)
 - Vignette "Creating a Metabolic ADVS ADaM". (#28) 
 - Vignette "Creating a Control of Eating Questionnaire ADaM". (#53)
