@@ -62,7 +62,7 @@ The example `QS` data (`qs_metabolic`) is included in the `{admiralmetabolic}` p
 
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- pharmaversesdtm::dm_metabolic
-qs_metabolic <- pharmvaseresdtm::qs_metabolic
+qs_metabolic <- pharmaversesdtm::qs_metabolic
 admiral_adsl <- admiral::admiral_adsl
 
 dm <- convert_blanks_to_na(dm_metabolic)
