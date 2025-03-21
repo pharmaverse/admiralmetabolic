@@ -61,8 +61,8 @@ In this vignette we use example data for the CoEQ.
 The example `QS` data (`qs_metabolic`) is included in the `{admiralmetabolic}` package.
 
 ```{r, message=FALSE, warning=FALSE}
-dm_metabolic <- admiralmetabolic::dm_metabolic
-qs_metabolic <- admiralmetabolic::qs_metabolic
+dm_metabolic <- pharmaversesdtm::dm_metabolic
+qs_metabolic <- pharmvaseresdtm::qs_metabolic
 admiral_adsl <- admiral::admiral_adsl
 
 dm <- convert_blanks_to_na(dm_metabolic)

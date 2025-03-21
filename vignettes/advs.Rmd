@@ -68,8 +68,8 @@ will use example data from `{pharmaversesdtm}` and `{admiral}`. We will
 utilize `DM`, `VS` and `ADSL` for the basis of `ADVS`.
 
 ```{r, message=FALSE, warning=FALSE}
-dm_metabolic <- admiralmetabolic::dm_metabolic
-vs_metabolic <- admiralmetabolic::vs_metabolic
+dm_metabolic <- pharmaversesdtm::dm_metabolic
+vs_metabolic <- pharmaversesdtm::vs_metabolic
 admiral_adsl <- admiral::admiral_adsl
 
 dm <- convert_blanks_to_na(dm_metabolic)
@@ -245,7 +245,7 @@ ratios. For instance, the function
 can be used to derive the waist-hip ratio.
 
 ```{r eval=TRUE}
-advs <- advs %>%
+advs_check <- advs %>%
   derive_param_waisthip(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), VISIT, VISITNUM),
     wstcir_code = "WSTCIR",
