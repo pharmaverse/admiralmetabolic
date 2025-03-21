@@ -245,7 +245,7 @@ ratios. For instance, the function
 can be used to derive the waist-hip ratio.
 
 ```{r eval=TRUE}
-advs_check <- advs %>%
+advs <- advs %>%
   derive_param_waisthip(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), VISIT, VISITNUM),
     wstcir_code = "WSTCIR",
