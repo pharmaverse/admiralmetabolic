@@ -1,7 +1,17 @@
 # admiralmetabolic (development version)
 
 ## Documentation
+
 - Updated installation instructions. (#88)
+
+## New features
+
+<details>
+<summary>Developer Notes</summary>
+
+- Activated automatic version bumping CICD workflow. (#98)
+
+</details>
 
 # admiralmetabolic 0.1.0
 
