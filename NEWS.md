@@ -1,6 +1,10 @@
 # admiralmetabolic (development version)
 
-# New features
+## Documentation
+
+- Updated installation instructions. (#88)
+
+## New features
 
 <details>
 <summary>Developer Notes</summary>
