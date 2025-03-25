@@ -57,9 +57,6 @@ library(stringr)
 
 To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiral}`. We will utilize `DM`, `QS` and `ADSL`.
 
-In this vignette we use example data for the CoEQ. 
-The example `QS` data (`qs_metabolic`) is included in the `{admiralmetabolic}` package.
-
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- pharmaversesdtm::dm_metabolic
 qs_metabolic <- pharmaversesdtm::qs_metabolic
