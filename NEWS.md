@@ -13,6 +13,8 @@
 
 - Removed `vs_metabolic`, `qs_metabolic` and `dm_metabolic` test data from the package and referenced them from the {pharmaversesdtm} package. (#95)
 
+- Added badges (#97)
+
 </details>
 
 # admiralmetabolic 0.1.0
