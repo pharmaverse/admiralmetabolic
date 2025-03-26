@@ -17,6 +17,8 @@
 
 - Added pharmaverse, CRAN and Test Coverage badges to home page. (#97)
 
+- Added initial package scope to home page. (#101)
+
 </details>
 
 # admiralmetabolic 0.1.0
