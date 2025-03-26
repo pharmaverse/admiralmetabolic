@@ -4,14 +4,16 @@
 
 - Updated installation instructions. (#88)
 
+## Various
+
+- Moved test data `vs_metabolic`, `qs_metabolic` and `dm_metabolic` from {admiralmetabolic} to {pharmaversesdtm}. (#95)
+
 ## New features
 
 <details>
 <summary>Developer Notes</summary>
 
 - Activated automatic version bumping CICD workflow. (#98)
-
-- Removed `vs_metabolic`, `qs_metabolic` and `dm_metabolic` test data from the package and referenced them from the {pharmaversesdtm} package. (#95)
 
 - Added badges (#97)
 
