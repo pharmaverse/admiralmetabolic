@@ -44,7 +44,7 @@ previous version of `{admiralmetabolic}` was released.
     metabolism-specific ADaM datasets in R in a modular manner.
 -   All functions are created based upon the ADaM Implementation Guide
     and aim to facilitate the programming of ADaM dataset standards.
--   Initially the package will focus on <insert focus>.
+-   Initially the package will focus on the obesity therapeutic area.
 
 ## Expectations
 
