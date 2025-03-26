@@ -4,6 +4,10 @@
 
 - Updated installation instructions. (#88)
 
+## Various
+
+- Moved test data `vs_metabolic`, `qs_metabolic` and `dm_metabolic` from {admiralmetabolic} to {pharmaversesdtm}. (#95)
+
 ## New features
 
 <details>
@@ -11,7 +15,9 @@
 
 - Activated automatic version bumping CICD workflow. (#98)
 
-- Removed `vs_metabolic`, `qs_metabolic` and `dm_metabolic` test data from the package and referenced them from the {pharmaversesdtm} package. (#95)
+- Added pharmaverse, CRAN and Test Coverage badges to home page. (#97)
+
+- Added initial package scope to home page. (#101)
 
 </details>
 
