@@ -7,6 +7,7 @@
 # Attach/load required packages ----
 library(admiral)
 library(admiralmetabolic)
+library(pharmaversesdtm)
 library(tibble)
 library(dplyr)
 library(stringr)
@@ -25,7 +26,7 @@ adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#readdata)
 
 # Read data
-vs_metabolic <- admiralmetabolic::vs_metabolic
+vs_metabolic <- pharmaversesdtm::vs_metabolic
 adsl <- admiral::admiral_adsl
 
 # Convert SAS missing character values to NA
