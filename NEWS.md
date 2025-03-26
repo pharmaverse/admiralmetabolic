@@ -15,7 +15,7 @@
 
 - Activated automatic version bumping CICD workflow. (#98)
 
-- Added badges (#97)
+- Added pharmaverse, CRAN and Test Coverage badges to home page. (#97)
 
 </details>
 
