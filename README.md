@@ -1,5 +1,11 @@
 # admiralmetabolic <img src="man/figures/logo.png" align="right" width="200" style="margin-left:50px;"/>
 
+<!-- badges: start -->
+[![pharmaverse admiralmetabolic Badge](http://pharmaverse.org/shields/admiralmetabolic.svg)](https://pharmaverse.org)
+[![CRAN status](https://www.r-pkg.org/badges/version/admiralmetabolic)](https://CRAN.R-project.org/package=admiralmetabolic)
+[![Test Coverage](https://raw.githubusercontent.com/pharmaverse/admiralmetabolic/badges/main/test-coverage.svg)](https://raw.githubusercontent.com/pharmaverse/admiralmetabolic/badges/main/test-coverage.svg)
+<!-- badges: end -->
+
 Metabolism extension package for ADaM in R Asset Library `{admiral}`
 
 ## Purpose
