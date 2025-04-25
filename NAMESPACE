@@ -2,6 +2,7 @@
 
 export(derive_param_waisthgt)
 export(derive_param_waisthip)
+export(compute_metabolic_score)
 importFrom(admiral,derive_param_computed)
 importFrom(admiraldev,assert_character_scalar)
 importFrom(admiraldev,assert_character_vector)
