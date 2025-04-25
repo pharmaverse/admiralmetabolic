@@ -59,10 +59,13 @@
 #'   mode = "HOMAIR",
 #'   insulin = c(10, 15), glucose = c(5, 6)
 #' )
-compute_metabolic_score <- function(mode, alt = NA_real_, ast = NA_real_, bmi = NA_real_, t2dm = NA_character_, sex = NA_character_,
-                                    triglycerides = NA_real_, ggt = NA_real_, waist_circumference = NA_real_,
-                                    age = NA_real_, platelets = NA_real_, albumin = NA_real_,
-                                    insulin = NA_real_, glucose = NA_real_) {
+compute_metabolic_score <- function(
+  mode,
+  alt = NA_real_, ast = NA_real_, bmi = NA_real_, t2dm = NA_character_, sex = NA_character_,
+  triglycerides = NA_real_, ggt = NA_real_, waist_circumference = NA_real_,
+  age = NA_real_, platelets = NA_real_, albumin = NA_real_,
+  insulin = NA_real_, glucose = NA_real_
+) {
   assert_character_scalar(mode, values = c("HSI", "FLI", "NAFLDFS", "HOMAIR"))
 
   score <- case_when(
@@ -85,7 +88,8 @@ compute_metabolic_score <- function(mode, alt = NA_real_, ast = NA_real_, bmi = 
       assert_numeric_vector(waist_circumference)
       case_when(
         !is.na(triglycerides) & !is.na(bmi) & !is.na(ggt) & !is.na(waist_circumference) ~ {
-          lambda <- 0.953 * log(triglycerides) + 0.139 * bmi + 0.718 * log(ggt) + 0.053 * waist_circumference - 15.745
+          lambda <- 0.953 * log(triglycerides) + 0.139 * bmi + 0.718 * log(ggt) +
+            0.053 * waist_circumference - 15.745
           (exp(lambda) / (1 + exp(lambda))) * 100
         },
         TRUE ~ NA_real_
@@ -100,9 +104,10 @@ compute_metabolic_score <- function(mode, alt = NA_real_, ast = NA_real_, bmi = 
       assert_numeric_vector(platelets)
       assert_numeric_vector(albumin)
       case_when(
-        !is.na(age) & !is.na(bmi) & !is.na(ast) & !is.na(alt) & !is.na(platelets) & !is.na(albumin) ~
+        !is.na(age) & !is.na(bmi) & !is.na(ast) & !is.na(alt) &
+          !is.na(platelets) & !is.na(albumin) ~
           -1.675 + 0.037 * age + 0.094 * bmi + if_else(t2dm == "Y", 1.13, 0) +
-          0.99 * (ast / alt) - 0.013 * platelets - 0.66 * albumin,
+            0.99 * (ast / alt) - 0.013 * platelets - 0.66 * albumin,
         TRUE ~ NA_real_
       )
     },

@@ -1,9 +1,9 @@
 ---
-title: "Creating a Laboratory Analysis Dataset (ADLB)"
+title: "Creating a Metabolic ADLB ADaM"
 output:
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating a Laboratory Analysis Dataset (ADLB)}
+  %\VignetteIndexEntry{Creating a Metabolic ADLB ADaM}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,7 +19,7 @@ library(admiraldev)
 
 # Introduction
 
-This article describes creating a Laboratory Analysis Dataset (ADLB) for clinical trials.
+This article describes creating a laboratory ADaM for metabolic clinical trials.
 
 We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 The programming workflow around creating the general set-up of an `ADLB` using `{admiral}` functions is the same. 
