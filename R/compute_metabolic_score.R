@@ -60,12 +60,11 @@
 #'   insulin = c(10, 15), glucose = c(5, 6)
 #' )
 compute_metabolic_score <- function(
-  mode,
-  alt = NA_real_, ast = NA_real_, bmi = NA_real_, t2dm = NA_character_, sex = NA_character_,
-  triglycerides = NA_real_, ggt = NA_real_, waist_circumference = NA_real_,
-  age = NA_real_, platelets = NA_real_, albumin = NA_real_,
-  insulin = NA_real_, glucose = NA_real_
-) {
+    mode,
+    alt = NA_real_, ast = NA_real_, bmi = NA_real_, t2dm = NA_character_, sex = NA_character_,
+    triglycerides = NA_real_, ggt = NA_real_, waist_circumference = NA_real_,
+    age = NA_real_, platelets = NA_real_, albumin = NA_real_,
+    insulin = NA_real_, glucose = NA_real_) {
   assert_character_scalar(mode, values = c("HSI", "FLI", "NAFLDFS", "HOMAIR"))
 
   score <- case_when(

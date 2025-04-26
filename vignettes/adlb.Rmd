@@ -34,7 +34,7 @@ The examples of this vignette require the following packages.
 
 ```{r, warning=FALSE, message=FALSE}
 library(admiral)
-library(admiralmetabolic) # May still be needed for specific metabolic derivations if any
+library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr)
 library(stringr)
@@ -53,6 +53,7 @@ library(tidyr)
 -   [Derive Metabolic Parameters](#derive_metabolic)
 -   [Derive Metabolic Parameters using Functions](#derive_metabolic_functions)
 -   [Remaining ADLB Set-up](#adlb_end)
+-   [Example Script](#example)
 
 ## Read in Data {#readdata}
 
@@ -250,6 +251,7 @@ adlb <- bind_rows(adlb, adlb_converted) %>%
 ```
 
 ## Merge ADVS and ADSL variables {#merge}
+In this section, we will merge relevant variables from the ADVS (Analysis Dataset for Vital Signs) and ADSL (Analysis Dataset for Subject-Level) datasets into the ADLB dataset. This is necessary to include variables such as BMI, Waist Circumference, Age, Sex, and T2DM status, which are required for the derivation of metabolic parameters and scores in subsequent sections.
 
 ```{r}
 # Add randomly assigned ALT and Platelets values for demonstration
@@ -292,7 +294,7 @@ advs <- convert_blanks_to_na(advs)
 adsl_temp <- adsl %>%
   mutate(T2DM = sample(c("Y", "N"), n(), replace = TRUE)) # Assign randomly for now
 
-# Merge AGE, SEX, and temporary T2DM from ADSL to ADLB
+# Merge AGE, SEX, and T2DM from ADSL to ADLB
 adlb <- adlb %>%
   derive_vars_merged(
     dataset_add = adsl_temp,
@@ -318,6 +320,9 @@ adlb <- adlb %>%
   )
 ```
 
+Please note that in this example we merge on ADT, but it is also possible to merge on AVISIT or other windowing algorithms specified in the statistical analysis plan.
+
+
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
@@ -327,6 +332,8 @@ dataset_vignette(
 ```
 
 ## Derive Metabolic Parameters {#derive_metabolic}
+
+In this section, we will derive the metabolic parameters and scores described previously by directly implementing the calculation formulas.
 
 ```{r}
 # Pivot required parameters to wide format for score calculation
@@ -393,7 +400,7 @@ adlb_wide <- adlb %>%
       PARAMCD == "HSI" ~ 15,
       PARAMCD == "FLI" ~ 16,
       PARAMCD == "NAFLDFS" ~ 17,
-      PARAMCD == "HOMAIR" ~ 18 # Assign a new PARAMN
+      PARAMCD == "HOMAIR" ~ 18
     )
   ) %>%
   filter(!is.na(AVAL)) %>% # Keep only derived score records
@@ -412,6 +419,8 @@ dataset_vignette(
 )
 ```
 ## Derive Metabolic Parameters using Functions {#derive_metabolic_functions}
+
+In this section, we will demonstrate how to derive the metabolic parameters and scores using the dedicated functions provided by the `admiralmetabolic` package.
 
 ```{r}
 # Derive Metabolic Parameters using Functions
@@ -456,13 +465,13 @@ adlb_scores <- adlb %>%
       PARAMCD == "HSI" ~ 15,
       PARAMCD == "FLI" ~ 16,
       PARAMCD == "NAFLDFS" ~ 17,
-      PARAMCD == "HOMAIR" ~ 18 # Assign a new PARAMN
+      PARAMCD == "HOMAIR" ~ 18
     )
   ) %>%
   filter(!is.na(AVAL)) %>% # Keep only derived score records
   select(-PARAMCD_temp)
 
-# Combine derived scores with the adlb2 dataset (which contains original data and merged variables)
+# Combine derived scores with original ADLB data
 adlb2 <- bind_rows(adlb, adlb_scores) %>%
   arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
 ```
