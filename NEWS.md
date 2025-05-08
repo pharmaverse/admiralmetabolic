@@ -41,3 +41,4 @@
 
 - Vignette "Creating a Metabolic ADVS ADaM". (#28) 
 - Vignette "Creating a Control of Eating Questionnaire ADaM". (#53)
+- Vignette "Creating a Metabolic ADLB ADaM". (#102)
