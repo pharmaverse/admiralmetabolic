@@ -49,9 +49,8 @@ library(tidyr)
 -   [Derive Visit Information](#derive_visits)
 -   [Metabolic Parameters - Description](#metabolic_params_desc)
 -   [Convert Lab Results](#convert)
--   [Merge ADVS and ADSL variables](#merge)
+-   [Merge ADVS variables](#merge)
 -   [Derive Metabolic Parameters](#derive_metabolic)
--   [Derive Metabolic Parameters using Functions](#derive_metabolic_functions)
 -   [Remaining ADLB Set-up](#adlb_end)
 -   [Example Script](#example)
 
@@ -130,11 +129,9 @@ adlb <- adlb %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
-    by_vars = exprs(LBTESTCD),
-    check_type = "none", # Set to "warning" or "error" if you want checks
-    print_not_mapped = FALSE # Set to TRUE to see unmapped LBTESTCDs
+    by_vars = exprs(LBTESTCD)
   ) %>%
-  ## Calculate PARCAT1 AVAL AVALC ANRLO ANRHI ----
+  ## Calculate PARCAT1 AVAL AVALC ANRLO ANRHI
   mutate(
     PARCAT1 = LBCAT,
     AVAL = LBSTRESN,
@@ -190,57 +187,44 @@ For deriving visits based on time-windows, see `{admiral}` [Visit and Period Var
 
 ## Metabolic Parameters - Description {#metabolic_params_desc}
 
-In addition to the core ADLB variables, several metabolic parameters and scores will be derived based on laboratory data, vital signs, and subject-level information. These derivations include:
-
-*   **Hepatic Steatosis Index (HSI)**: Derived from ALT (U/L), AST (U/L), BMI (kg/m2), T2DM status, and sex.
-$$ HSI = 8 \times \left(\frac{ALT}{AST}\right) + BMI + 2 \text{ if T2DM present} + 2 \text{ if female.} $$
-HSI is interpreted as a score with typical values between 16 and 60, where higher values indicate a worse condition.
+In addition to the core ADLB variables, several metabolic parameters and scores will be derived based on laboratory data and vital signs. These derivations include:
 
 *   **Fatty Liver Index (FLI)**: Derived from triglycerides (mg/dL), GGT (U/L), BMI (kg/m2), and waist circumference (cm).
  $$ FLI = \left[\frac{\exp(\lambda)}{1 + \exp(\lambda)}\right] \times 100 $$
 where $$ \lambda = 0.953 \times \ln (\text{triglycerides}) + 0.139 \times BMI + 0.718 \times \ln (GGT) + 0.053 \times \text{waist circumference} – 15.745. $$
 FLI is interpreted as a score between 0 and 100, where higher values indicate a worse condition.
 
-*   **NAFLD (Non-Alcoholic Fatty Liver Disease) Fibrosis Score**: Derived from ALT (U/L), AST (U/L), Platelets (x 10^9/L), Albumin (g/dL), age, BMI (kg/m2), and T2DM status.
-$$ \text{NAFLD fibrosis score} = -1.675 + 0.037 \times \text{age} + 0.094 \times BMI + 1.13 \text{ if T2DM present} + 0.99 \times \frac{AST}{ALT} – 0.013 \times \text{platelets} – 0.66 \times \text{albumin}. $$
-Age at screening will be used and will not be re-calculated during the trial.
-
 *   **Homeostasis Model Assessment – Insulin Resistance (HOMA-IR)**: Calculated from fasting plasma glucose (mmol/L) and fasting plasma insulin (mIU/L).
 $$ \text{HOMA-IR} = \frac{FPI \times FPG}{22.5}. $$
+An alternative formula is used when fasting plasma glucose is assessed in mg/dL: $$ \text{HOMA-IR} = \frac{FPI \times FPG}{405}. $$
 
 To derive these parameters and scores, the following variables will be needed:
 
-*   From ADLB: ALT, AST, TRIG (Triglycerides), GGT, PLAT (Platelets), ALB (Albumin), GLUC (fasted), INSULIN (fasted).
+*   From ADLB: TRIG (Triglycerides), GGT, GLUC (fasted), INSULIN (fasted).
 *   From ADVS: BMI, WSTCIR (Waist Circumference).
-*   From ADSL: AGE, SEX, T2DM.
-
-Note that some units may need conversion for the calculations (e.g., Triglycerides from mmol/L to mg/dL (FLI), Albumin from g/L to g/dL (NAFLD), Insulin from pmol/L to mIU/L (HOMA-IR)).
 
 ## Convert Lab Results {#convert}
+Some laboratory parameters are recorded in units that are not suitable for direct use in metabolic score calculations (e.g., FLI, HOMA-IR). This section demonstrates how to convert the units of relevant parameters (Triglycerides and Insulin) to the required units for subsequent derivations.
 ```{r}
 # Convert units for specific parameters
 adlb_converted <- adlb %>%
-  filter(PARAMCD %in% c("TRIG", "ALB", "INSULIN")) %>%
+  filter(PARAMCD %in% c("TRIG", "INSULIN")) %>%
   mutate(
     AVAL = case_when(
       PARAMCD == "TRIG" ~ AVAL * 88.57, # mmol/L to mg/dL
-      PARAMCD == "ALB" ~ AVAL / 10, # g/L to g/dL
       PARAMCD == "INSULIN" ~ AVAL * 0.16667 # pmol/L to mIU/L
     ),
     PARAMCD = case_when(
       PARAMCD == "TRIG" ~ "TRIGMG",
-      PARAMCD == "ALB" ~ "ALBDL",
       PARAMCD == "INSULIN" ~ "INSULMIU"
     ),
     PARAM = case_when(
       PARAMCD == "TRIGMG" ~ "Triglycerides (mg/dL)",
-      PARAMCD == "ALBDL" ~ "Albumin (g/dL)",
       PARAMCD == "INSULMIU" ~ "Insulin (mIU/L)"
     ),
     PARAMN = case_when(
       PARAMCD == "TRIGMG" ~ 10,
-      PARAMCD == "ALBDL" ~ 11,
-      PARAMCD == "INSULMIU" ~ 12
+      PARAMCD == "INSULMIU" ~ 11
     )
   )
 
@@ -249,57 +233,13 @@ adlb <- bind_rows(adlb, adlb_converted) %>%
   arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
 ```
 
-## Merge ADVS and ADSL variables {#merge}
-In this section, we will merge relevant variables from the ADVS (Analysis Dataset for Vital Signs) and ADSL (Analysis Dataset for Subject-Level) datasets into the ADLB dataset. This is necessary to include variables such as BMI, Waist Circumference, Age, Sex, and T2DM status, which are required for the derivation of metabolic parameters and scores in subsequent sections.
+## Merge ADVS variables {#merge}
+In this section, we will merge relevant variables from the ADVS (Analysis Dataset for Vital Signs) dataset into the ADLB dataset. This is necessary to include variables such as BMI and Waist Circumference, which are required for the derivation of FLI score parameter in subsequent section.
 
 ```{r}
-# Add randomly assigned ALT and Platelets values for demonstration
-# This will be replaced later with actual data
-adlb_random_lab <- adlb %>%
-  select(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY) %>%
-  distinct() %>%
-  mutate(
-    AVAL = case_when(
-      TRUE ~ round(runif(n(), min = 10, max = 50), 1) # Random ALT values
-    ),
-    PARAMCD = "ALT",
-    PARAM = "Alanine Aminotransferase (U/L)",
-    PARAMN = 13
-  ) %>%
-  bind_rows(
-    adlb %>%
-      select(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY) %>%
-      distinct() %>%
-      mutate(
-        AVAL = case_when(
-          TRUE ~ round(runif(n(), min = 150, max = 400), 0) # Random Platelets values
-        ),
-        PARAMCD = "PLAT",
-        PARAM = "Platelets (x 10^9/L)",
-        PARAMN = 14
-      )
-  )
-
-adlb <- bind_rows(adlb, adlb_random_lab) %>%
-  arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
-
-
 # Load ADVS dataset (assuming it has been created by ad_advs.R)
 advs <- admiralmetabolic::admiralmetabolic_advs
 advs <- convert_blanks_to_na(advs)
-
-# Add temporary T2DM flag to ADSL for demonstration
-# This will be replaced later with actual data
-adsl_temp <- adsl %>%
-  mutate(T2DM = sample(c("Y", "N"), n(), replace = TRUE)) # Assign randomly for now
-
-# Merge AGE, SEX, and T2DM from ADSL to ADLB
-adlb <- adlb %>%
-  derive_vars_merged(
-    dataset_add = adsl_temp,
-    by_vars = get_admiral_option("subject_keys"),
-    new_vars = exprs(AGE, SEX, T2DM)
-  )
 
 # Select BMI and WSTCIR from ADVS and reshape for merging
 advs_subset <- advs %>%
@@ -311,7 +251,7 @@ advs_subset <- advs %>%
   )
 
 # Merge BMI and WSTCIR from ADVS to ADLB based on subject and date
-adlb <- adlb %>%
+adlb1 <- adlb %>%
   derive_vars_merged(
     dataset_add = advs_subset,
     by_vars = exprs(!!!get_admiral_option("subject_keys"), ADT),
@@ -321,12 +261,11 @@ adlb <- adlb %>%
 
 Please note that in this example we merge on ADT, but it is also possible to merge on AVISIT or other windowing algorithms specified in the statistical analysis plan.
 
-
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
   arrange(adlb, USUBJID, ADY, PARAMN),
-  display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN, AGE, SEX, T2DM, BMI, WSTCIR)
+  display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN, BMI, WSTCIR)
 )
 ```
 
@@ -334,153 +273,75 @@ dataset_vignette(
 
 In this section, we will derive the metabolic parameters and scores described previously by directly implementing the calculation formulas.
 
-```{r}
-# Pivot required parameters to wide format for score calculation
-adlb_wide <- adlb %>%
-  filter(PARAMCD %in% c("ALT", "AST", "TRIGMG", "GGT", "PLAT", "ALBDL", "GLUC", "INSULMIU")) %>% # Include LB parameters
-  select(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARAMCD, AVAL) %>%
-  pivot_wider(
-    names_from = PARAMCD,
-    values_from = AVAL
-  ) %>%
-  # Join with the ADLB data that already has BMI, WSTCIR, AGE, SEX, T2DM
-  derive_vars_merged(
-    dataset_add = adlb %>% distinct(STUDYID, USUBJID, ADT, BMI, WSTCIR, AGE, SEX, T2DM),
-    by_vars = exprs(!!!get_admiral_option("subject_keys"), ADT)
-  ) %>%
-  # Calculate scores
-  mutate(
-    # HSI = 8 x (ALT/AST) + BMI + 2 if T2DM present + 2 if female
-    HSI_AVAL = case_when(
-      !is.na(ALT) & !is.na(AST) & !is.na(BMI) ~
-        8 * (ALT / AST) + BMI + if_else(T2DM == "Y", 2, 0) + if_else(SEX == "F", 2, 0)
-    ),
-    # FLI = [exp(lambda)/(1 + exp(lambda))] x 100
-    # lambda = 0.953 x ln (triglycerides) + 0.139 x BMI + 0.718 x ln (GGT) + 0.053 x waist circumference – 15.745
-    FLI_AVAL = case_when(
-      !is.na(TRIGMG) & !is.na(BMI) & !is.na(GGT) & !is.na(WSTCIR) ~ {
-        lambda <- 0.953 * log(TRIGMG) + 0.139 * BMI + 0.718 * log(GGT) + 0.053 * WSTCIR - 15.745
-        (exp(lambda) / (1 + exp(lambda))) * 100
-      }
-    ),
-    # NAFLD fibrosis score = -1.675 + 0.037 x age + 0.094 x BMI + 1.13 if T2DM present + 0.99 x AST/ALT – 0.013 x Platelets – 0.66 x Albumin.
-    NAFLDFS_AVAL = case_when(
-      !is.na(AGE) & !is.na(BMI) & !is.na(AST) & !is.na(ALT) & !is.na(PLAT) & !is.na(ALBDL) ~
-        -1.675 + 0.037 * AGE + 0.094 * BMI + if_else(T2DM == "Y", 1.13, 0) +
-        0.99 * (AST / ALT) - 0.013 * PLAT - 0.66 * ALBDL
-    ),
-    # HOMA-IR = (FPI * FPG) / 22.5
-    HOMA_IR_AVAL = case_when(
-      !is.na(INSULMIU) & !is.na(GLUC) ~ (INSULMIU * GLUC) / 22.5
-    )
-  ) %>%
-  # Select only the score variables and key identifiers
-  select(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, HSI_AVAL, FLI_AVAL, NAFLDFS_AVAL, HOMA_IR_AVAL) %>%
-  # Reshape back to long format for merging with original ADLB
-  pivot_longer(
-    cols = ends_with("_AVAL"),
-    names_to = "PARAMCD_temp",
-    values_to = "AVAL"
-  ) %>%
-  mutate(
-    PARAMCD = case_when(
-      PARAMCD_temp == "HSI_AVAL" ~ "HSI",
-      PARAMCD_temp == "FLI_AVAL" ~ "FLI",
-      PARAMCD_temp == "NAFLDFS_AVAL" ~ "NAFLDFS",
-      PARAMCD_temp == "HOMA_IR_AVAL" ~ "HOMAIR"
-    ),
-    PARAM = case_when(
-      PARAMCD == "HSI" ~ "Hepatic Steatosis Index",
-      PARAMCD == "FLI" ~ "Fatty Liver Index",
-      PARAMCD == "NAFLDFS" ~ "NAFLD Fibrosis Score",
-      PARAMCD == "HOMAIR" ~ "Homeostasis Model Assessment - Insulin Resistance"
-    ),
-    PARAMN = case_when(
-      PARAMCD == "HSI" ~ 15,
-      PARAMCD == "FLI" ~ 16,
-      PARAMCD == "NAFLDFS" ~ 17,
-      PARAMCD == "HOMAIR" ~ 18
-    )
-  ) %>%
-  filter(!is.na(AVAL)) %>% # Keep only derived score records
-  select(-PARAMCD_temp)
+### Homeostasis Model Assessment – Insulin Resistance (HOMA-IR)
 
-# Combine derived scores with original ADLB data
-adlb1 <- bind_rows(adlb, adlb_wide) %>%
-  arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
+This part describes how to calculate the HOMA-IR index from fasting plasma glucose and fasting plasma insulin. This derivation does not require merging data from other datasets.
+
+```{r}
+# Derive HOMA-IR using derive_param_computed
+adlb_homair <- adlb1 %>%
+  derive_param_computed(
+    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
+    parameters = c("INSULMIU", "GLUC"),
+    set_values_to = exprs(
+      AVAL = case_when(
+        !is.na(AVAL.INSULMIU) & !is.na(AVAL.GLUC) ~ (AVAL.INSULMIU * AVAL.GLUC) / 22.5
+      ),
+      PARAMCD = "HOMAIR",
+      PARAM = "Homeostasis Model Assessment - Insulin Resistance",
+      PARAMN = 12
+    )
+  ) %>%
+  filter(PARAMCD %in% c("HOMAIR"))
 ```
 
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  arrange(adlb1, USUBJID, ADY, PARAMN),
+  arrange(adlb_homair, USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
 ```
-## Derive Metabolic Parameters using Functions {#derive_metabolic_functions}
 
-In this section, we will demonstrate how to derive the metabolic parameters and scores using the dedicated functions provided by the `admiralmetabolic` package.
+### Fatty Liver Index (FLI)
+
+To obtain the FLI score parameter, we'll utilize triglycerides, GGT, BMI, and waist circumference. Note that this derivation requires merging data from the ADVS dataset (BMI and Waist Circumference), as demonstrated in the previous section. FLI is provided here as an example; users can derive other metabolic scores like HSI, NAFLD, and others using the same logic and required input variables.
 
 ```{r}
-# Derive Metabolic Parameters using Functions
-# Start with the adlb dataset (after merging ADSL and ADVS variables)
-
-adlb_scores <- adlb %>%
-  filter(PARAMCD %in% c("ALT", "AST", "TRIGMG", "GGT", "PLAT", "ALBDL", "GLUC", "INSULMIU")) %>% # Include LB parameters
-  select(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARAMCD, AVAL, AGE, SEX, T2DM, BMI, WSTCIR) %>% # Include necessary variables for compute functions
-  pivot_wider(
-    names_from = PARAMCD,
-    values_from = AVAL
-  ) %>%
-  # Calculate scores using functions
-  mutate(
-    HSI_AVAL = compute_metabolic_score(mode = "HSI", alt = ALT, ast = AST, bmi = BMI, t2dm = T2DM, sex = SEX),
-    FLI_AVAL = compute_metabolic_score(mode = "FLI", triglycerides = TRIGMG, ggt = GGT, bmi = BMI, waist_circumference = WSTCIR),
-    NAFLDFS_AVAL = compute_metabolic_score(mode = "NAFLDFS", alt = ALT, ast = AST, platelets = PLAT, albumin = ALBDL, age = AGE, bmi = BMI, t2dm = T2DM),
-    HOMA_IR_AVAL = compute_metabolic_score(mode = "HOMAIR", glucose = GLUC, insulin = INSULMIU)
-  ) %>%
-  # Select only the score variables and key identifiers
-  select(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, HSI_AVAL, FLI_AVAL, NAFLDFS_AVAL, HOMA_IR_AVAL) %>%
-  # Reshape back to long format
-  pivot_longer(
-    cols = ends_with("_AVAL"),
-    names_to = "PARAMCD_temp",
-    values_to = "AVAL"
-  ) %>%
-  mutate(
-    PARAMCD = case_when(
-      PARAMCD_temp == "HSI_AVAL" ~ "HSI",
-      PARAMCD_temp == "FLI_AVAL" ~ "FLI",
-      PARAMCD_temp == "NAFLDFS_AVAL" ~ "NAFLDFS",
-      PARAMCD_temp == "HOMA_IR_AVAL" ~ "HOMAIR"
-    ),
-    PARAM = case_when(
-      PARAMCD == "HSI" ~ "Hepatic Steatosis Index",
-      PARAMCD == "FLI" ~ "Fatty Liver Index",
-      PARAMCD == "NAFLDFS" ~ "NAFLD Fibrosis Score",
-      PARAMCD == "HOMAIR" ~ "Homeostasis Model Assessment - Insulin Resistance"
-    ),
-    PARAMN = case_when(
-      PARAMCD == "HSI" ~ 15,
-      PARAMCD == "FLI" ~ 16,
-      PARAMCD == "NAFLDFS" ~ 17,
-      PARAMCD == "HOMAIR" ~ 18
+# Derive FLI using derive_param_computed
+adlb_fli <- adlb1 %>%
+  derive_param_computed(
+    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, BMI, WSTCIR, !!!adsl_vars),
+    parameters = c("TRIGMG", "GGT"),
+    set_values_to = exprs(
+      AVAL = case_when(
+        !is.na(AVAL.TRIGMG) & !is.na(BMI) & !is.na(AVAL.GGT) & !is.na(WSTCIR) ~ {
+          lambda <- 0.953 * log(AVAL.TRIGMG) + 0.139 * BMI + 0.718 * log(AVAL.GGT) + 0.053 * WSTCIR - 15.745
+          (exp(lambda) / (1 + exp(lambda))) * 100
+        }
+      ),
+      PARAMCD = "FLI",
+      PARAM = "Fatty Liver Index",
+      PARAMN = 13
     )
   ) %>%
-  filter(!is.na(AVAL)) %>% # Keep only derived score records
-  select(-PARAMCD_temp)
-
-# Combine derived scores with original ADLB data
-adlb2 <- bind_rows(adlb, adlb_scores) %>%
-  arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
+  filter(PARAMCD %in% c("FLI"))
 ```
 
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  arrange(adlb2, USUBJID, ADY, PARAMN),
+  arrange(adlb_fli, USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
+```
+
+Combine derived parameters with original ADLB data:
+
+```{r}
+# Combine derived parameters with original ADLB data
+adlb <- bind_rows(adlb, adlb_homair, adlb_fli) %>%
+  arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
 ```
 
 ## Remaining ADLB Set-up {#adlb_end}
