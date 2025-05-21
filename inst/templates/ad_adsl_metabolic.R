@@ -113,38 +113,44 @@ dm_metabolic <- dm %>%
     ACTARM = ARM
   )
 
+# Re-assign attributes ----
+cols <- c("ARMCD", "ARM", "ACTARMCD", "ACTARM")
+for (col in cols) {
+  attr(dm_metabolic[[col]], "label") <- attr(dm[[col]], "label")
+}
+
 adsl <- dm_metabolic %>%
   ## derive treatment variables (TRT01P, TRT01A) ----
-  # See also the "Visit and Period Variables" vignette
-  # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#treatment_adsl)
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
+# See also the "Visit and Period Variables" vignette
+# (https://pharmaverse.github.io/admiral/articles/visits_periods.html#treatment_adsl)
+mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
   ## derive treatment start date (TRTSDTM) ----
-  derive_vars_merged(
-    dataset_add = ex_ext,
-    filter_add = (EXDOSE > 0 |
-      (EXDOSE == 0 &
-        str_detect(EXTRT, "PLACEBO"))) &
-      !is.na(EXSTDTM),
-    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
-    order = exprs(EXSTDTM, EXSEQ),
-    mode = "first",
-    by_vars = exprs(STUDYID, USUBJID)
-  ) %>%
+derive_vars_merged(
+  dataset_add = ex_ext,
+  filter_add = (EXDOSE > 0 |
+                  (EXDOSE == 0 &
+                     str_detect(EXTRT, "PLACEBO"))) &
+    !is.na(EXSTDTM),
+  new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+  order = exprs(EXSTDTM, EXSEQ),
+  mode = "first",
+  by_vars = exprs(STUDYID, USUBJID)
+) %>%
   ## derive treatment end date (TRTEDTM) ----
-  derive_vars_merged(
-    dataset_add = ex_ext,
-    filter_add = (EXDOSE > 0 |
-      (EXDOSE == 0 &
-        str_detect(EXTRT, "PLACEBO"))) & !is.na(EXENDTM),
-    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
-    order = exprs(EXENDTM, EXSEQ),
-    mode = "last",
-    by_vars = exprs(STUDYID, USUBJID)
-  ) %>%
+derive_vars_merged(
+  dataset_add = ex_ext,
+  filter_add = (EXDOSE > 0 |
+                  (EXDOSE == 0 &
+                     str_detect(EXTRT, "PLACEBO"))) & !is.na(EXENDTM),
+  new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+  order = exprs(EXENDTM, EXSEQ),
+  mode = "last",
+  by_vars = exprs(STUDYID, USUBJID)
+) %>%
   ## Derive treatment end/start date TRTSDT/TRTEDT ----
-  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
+derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
   ## derive treatment duration (TRTDURD) ----
-  derive_var_trtdurd()
+derive_var_trtdurd()
 
 ## Disposition dates, status ----
 # convert character date to numeric date without imputation
@@ -293,16 +299,16 @@ adsl <- adsl %>%
     condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO")))
   ) %>%
   ## Groupings and others variables ----
-  mutate(
-    RACEGR1 = format_racegr1(RACE),
-    AGEGR1 = format_agegr1(AGE),
-    REGION1 = format_region1(COUNTRY),
-    LDDTHGR1 = format_lddthgr1(LDDTHELD),
-    DTH30FL = if_else(LDDTHGR1 == "<= 30", "Y", NA_character_),
-    DTHA30FL = if_else(LDDTHGR1 == "> 30", "Y", NA_character_),
-    DTHB30FL = if_else(DTHDT <= TRTSDT + 30, "Y", NA_character_),
-    DOMAIN = NULL
-  )
+mutate(
+  RACEGR1 = format_racegr1(RACE),
+  AGEGR1 = format_agegr1(AGE),
+  REGION1 = format_region1(COUNTRY),
+  LDDTHGR1 = format_lddthgr1(LDDTHELD),
+  DTH30FL = if_else(LDDTHGR1 == "<= 30", "Y", NA_character_),
+  DTHA30FL = if_else(LDDTHGR1 == "> 30", "Y", NA_character_),
+  DTHB30FL = if_else(DTHDT <= TRTSDT + 30, "Y", NA_character_),
+  DOMAIN = NULL
+)
 
 # Subset to first 5 subjects for admiralmetabolic----
 adsl_metabolic <- adsl %>%
