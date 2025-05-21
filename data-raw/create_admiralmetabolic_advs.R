@@ -8,14 +8,14 @@ source("inst/templates/ad_advs.R", echo = TRUE) # nolint
 admiralmetabolic_advs <- advs
 
 # Get previous dataset for comparison
-adlb_old <- admiral::admiralmetabolic_advs
+advs_old <- admiral::admiralmetabolic_advs
 
 # Finally, save reduced dataset
 usethis::use_data(admiralmetabolic_advs, overwrite = TRUE)
 
 # Compare with previous version
 diffdf::diffdf(
-  base = advs,
-  compare = admiralmetabolic_advs,
+  base = admiralmetabolic_advs,
+  compare = advs_old,
   keys = c("USUBJID", "PARAMCD", "AVISIT", "ADT")
 )
