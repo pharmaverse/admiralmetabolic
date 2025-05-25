@@ -100,7 +100,7 @@ param_lookup <- tibble::tribble(
   "GLUC", "GLUC", "Glucose (mmol/L)", 6,
   "HBA1CHGB", "HBA1CHGB", "Hemoglobin A1C/Hemoglobin (%)", 7,
   "INSULIN", "INSULIN", "Insulin (mIU/L)", 8,
-  "TRIG", "TRIG", "Triglycerides (mg/gL)", 9
+  "TRIG", "TRIG", "Triglycerides (mg/dL)", 9
 )
 ```
 
