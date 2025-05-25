@@ -48,7 +48,6 @@ library(tidyr)
 -   [Derive Core ADLB Variables](#derive_core)
 -   [Derive Visit Information](#derive_visits)
 -   [Metabolic Parameters - Description](#metabolic_params_desc)
--   [Convert Lab Results](#convert)
 -   [Merge ADVS variables](#merge)
 -   [Derive Metabolic Parameters](#derive_metabolic)
 -   [Remaining ADLB Set-up](#adlb_end)
@@ -100,8 +99,8 @@ param_lookup <- tibble::tribble(
   "GGT", "GGT", "Gamma Glutamyl Transferase (U/L)", 5,
   "GLUC", "GLUC", "Glucose (mmol/L)", 6,
   "HBA1CHGB", "HBA1CHGB", "Hemoglobin A1C/Hemoglobin (%)", 7,
-  "INSULIN", "INSULIN", "Insulin (pmol/L)", 8,
-  "TRIG", "TRIG", "Triglycerides (mmol/L)", 9
+  "INSULIN", "INSULIN", "Insulin (mIU/L)", 8,
+  "TRIG", "TRIG", "Triglycerides (mg/gL)", 9
 )
 ```
 
@@ -123,8 +122,8 @@ adlb <- lb %>%
     dtc = LBDTC
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
-
-adlb <- adlb %>%
+  
+ adlb <- adlb %>%
   ## Add PARAMCD PARAM and PARAMN - from LOOK-UP table
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -134,12 +133,20 @@ adlb <- adlb %>%
   ## Calculate PARCAT1 AVAL AVALC ANRLO ANRHI
   mutate(
     PARCAT1 = LBCAT,
-    AVAL = LBSTRESN,
-    # Only populate AVALC if character value is non-redundant with AVAL
-    AVALC = if_else(
-      is.na(LBSTRESN) | as.character(LBSTRESN) != LBSTRESC,
-      LBSTRESC,
-      NA_character_
+    PARCAT2 = case_when(
+      LBTESTCD %in% c("TRIG", "INSULIN") ~ "CV",
+      TRUE ~ "SI"
+    ),
+    # Assign AVAL based on LBORRES for specific tests, otherwise use LBSTRESN
+    AVAL = case_when(
+      LBTESTCD %in% c("TRIG", "INSULIN") ~ as.numeric(LBORRES),
+      TRUE ~ LBSTRESN
+    ),
+    # Only populate AVALC if character value is non-redundant with AVAL, except for TRIG and INSULIN
+    AVALC = case_when(
+      LBTESTCD %in% c("TRIG", "INSULIN") ~ NA_character_,
+      is.na(AVAL) | as.character(AVAL) != LBSTRESC ~ LBSTRESC, # Compare AVAL with LBSTRESC
+      TRUE ~ NA_character_
     ),
     ANRLO = LBSTNRLO,
     ANRHI = LBSTNRHI
@@ -195,43 +202,13 @@ where $$ \lambda = 0.953 \times \ln (\text{triglycerides}) + 0.139 \times BMI + 
 FLI is interpreted as a score between 0 and 100, where higher values indicate a worse condition.
 
 *   **Homeostasis Model Assessment – Insulin Resistance (HOMA-IR)**: Calculated from fasting plasma glucose (mmol/L) and fasting plasma insulin (mIU/L).
-$$ \text{HOMA-IR} = \frac{FPI \times FPG}{22.5}. $$
+ $$ \text{HOMA-IR} = \frac{FPI \times FPG}{22.5}. $$
 An alternative formula is used when fasting plasma glucose is assessed in mg/dL: $$ \text{HOMA-IR} = \frac{FPI \times FPG}{405}. $$
 
 To derive these parameters and scores, the following variables will be needed:
 
 *   From ADLB: TRIG (Triglycerides), GGT, GLUC (fasted), INSULIN (fasted).
 *   From ADVS: BMI, WSTCIR (Waist Circumference).
-
-## Convert Lab Results {#convert}
-Some laboratory parameters are recorded in units that are not suitable for direct use in metabolic score calculations (e.g., FLI, HOMA-IR). This section demonstrates how to convert the units of relevant parameters (Triglycerides and Insulin) to the required units for subsequent derivations.
-```{r}
-# Convert units for specific parameters
-adlb_converted <- adlb %>%
-  filter(PARAMCD %in% c("TRIG", "INSULIN")) %>%
-  mutate(
-    AVAL = case_when(
-      PARAMCD == "TRIG" ~ AVAL * 88.57, # mmol/L to mg/dL
-      PARAMCD == "INSULIN" ~ AVAL * 0.16667 # pmol/L to mIU/L
-    ),
-    PARAMCD = case_when(
-      PARAMCD == "TRIG" ~ "TRIGMG",
-      PARAMCD == "INSULIN" ~ "INSULMIU"
-    ),
-    PARAM = case_when(
-      PARAMCD == "TRIGMG" ~ "Triglycerides (mg/dL)",
-      PARAMCD == "INSULMIU" ~ "Insulin (mIU/L)"
-    ),
-    PARAMN = case_when(
-      PARAMCD == "TRIGMG" ~ 10,
-      PARAMCD == "INSULMIU" ~ 11
-    )
-  )
-
-# Combine original ADLB with converted records
-adlb <- bind_rows(adlb, adlb_converted) %>%
-  arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
-```
 
 ## Merge ADVS variables {#merge}
 In this section, we will merge relevant variables from the ADVS (Analysis Dataset for Vital Signs) dataset into the ADLB dataset. This is necessary to include variables such as BMI and Waist Circumference, which are required for the derivation of FLI score parameter in subsequent section.
@@ -241,21 +218,14 @@ In this section, we will merge relevant variables from the ADVS (Analysis Datase
 advs <- admiralmetabolic::admiralmetabolic_advs
 advs <- convert_blanks_to_na(advs)
 
-# Select BMI and WSTCIR from ADVS and reshape for merging
-advs_subset <- advs %>%
-  filter(PARAMCD %in% c("BMI", "WSTCIR")) %>%
-  select(STUDYID, USUBJID, ADT, PARAMCD, AVAL) %>%
-  pivot_wider(
-    names_from = PARAMCD,
-    values_from = AVAL
-  )
-
 # Merge BMI and WSTCIR from ADVS to ADLB based on subject and date
-adlb1 <- adlb %>%
-  derive_vars_merged(
-    dataset_add = advs_subset,
+adlb <- adlb %>%
+  derive_vars_transposed(
+    advs,
     by_vars = exprs(!!!get_admiral_option("subject_keys"), ADT),
-    new_vars = exprs(BMI, WSTCIR)
+    key_var = PARAMCD,
+    value_var = AVAL,
+    filter = PARAMCD %in% c("BMI", "WSTCIR")
   )
 ```
 
@@ -279,26 +249,28 @@ This part describes how to calculate the HOMA-IR index from fasting plasma gluco
 
 ```{r}
 # Derive HOMA-IR using derive_param_computed
-adlb_homair <- adlb1 %>%
+adlb <- adlb %>%
   derive_param_computed(
-    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
-    parameters = c("INSULMIU", "GLUC"),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
+    parameters = c("INSULIN", "GLUC"),
     set_values_to = exprs(
-      AVAL = case_when(
-        !is.na(AVAL.INSULMIU) & !is.na(AVAL.GLUC) ~ (AVAL.INSULMIU * AVAL.GLUC) / 22.5
+      AVAL = if_else(
+        complete.cases(AVAL.INSULIN, AVAL.GLUC),
+        (AVAL.INSULIN * AVAL.GLUC) / 22.5,
+        NA_real_
       ),
       PARAMCD = "HOMAIR",
       PARAM = "Homeostasis Model Assessment - Insulin Resistance",
-      PARAMN = 12
+      PARAMN = 10
     )
-  ) %>%
-  filter(PARAMCD %in% c("HOMAIR"))
+  )
 ```
 
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  arrange(adlb_homair, USUBJID, ADY, PARAMN),
+  filter(adlb, PARAMCD == "HOMAIR") %>% 
+  arrange(USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
 ```
@@ -309,39 +281,36 @@ To obtain the FLI score parameter, we'll utilize triglycerides, GGT, BMI, and wa
 
 ```{r}
 # Derive FLI using derive_param_computed
-adlb_fli <- adlb1 %>%
+adlb <- adlb %>%
   derive_param_computed(
-    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, BMI, WSTCIR, !!!adsl_vars),
-    parameters = c("TRIGMG", "GGT"),
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, BMI, WSTCIR, !!!adsl_vars),
+    parameters = c("TRIG", "GGT"),
     set_values_to = exprs(
-      AVAL = case_when(
-        !is.na(AVAL.TRIGMG) & !is.na(BMI) & !is.na(AVAL.GGT) & !is.na(WSTCIR) ~ {
-          lambda <- 0.953 * log(AVAL.TRIGMG) + 0.139 * BMI + 0.718 * log(AVAL.GGT) + 0.053 * WSTCIR - 15.745
+      AVAL = if_else(
+        complete.cases(AVAL.TRIG, BMI, AVAL.GGT, WSTCIR),
+        {
+          lambda <- 0.953 * log(AVAL.TRIG) + 0.139 * BMI + 0.718 * log(AVAL.GGT) + 0.053 * WSTCIR - 15.745
           (exp(lambda) / (1 + exp(lambda))) * 100
-        }
+        },
+        NA_real_
       ),
       PARAMCD = "FLI",
       PARAM = "Fatty Liver Index",
-      PARAMN = 13
+      PARAMN = 11
     )
-  ) %>%
-  filter(PARAMCD %in% c("FLI"))
+  )
+
+adlb <- adlb %>% 
+arrange(!!!get_admiral_option("subject_keys"), ADT, PARAMN) # Arrange for consistency
 ```
 
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  arrange(adlb_fli, USUBJID, ADY, PARAMN),
+  filter(adlb, PARAMCD == "FLI") %>% 
+  arrange(USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
-```
-
-Combine derived parameters with original ADLB data:
-
-```{r}
-# Combine derived parameters with original ADLB data
-adlb <- bind_rows(adlb, adlb_homair, adlb_fli) %>%
-  arrange(STUDYID, USUBJID, ADT, PARAMN) # Arrange for consistency
 ```
 
 ## Remaining ADLB Set-up {#adlb_end}
