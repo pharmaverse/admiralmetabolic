@@ -130,26 +130,39 @@ adlb <- lb %>%
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
     by_vars = exprs(LBTESTCD)
   ) %>%
-  ## Calculate PARCAT1 AVAL AVALC ANRLO ANRHI
-  mutate(
-    PARCAT1 = LBCAT,
-    PARCAT2 = case_when(
-      LBTESTCD %in% c("TRIG", "INSULIN") ~ "CV",
-      TRUE ~ "SI"
+  ## Calculate PARCAT1 PARCAT2 AVAL AVALC ANRLO ANRHI
+  slice_derivation(
+    derivation = mutate,
+    args = params(
+      PARCAT1 = LBCAT,
     ),
-    # Assign AVAL based on LBORRES for specific tests, otherwise use LBSTRESN
-    AVAL = case_when(
-      LBTESTCD %in% c("TRIG", "INSULIN") ~ as.numeric(LBORRES),
-      TRUE ~ LBSTRESN
+    # Handle specific parameters requiring conventional units (CV)
+    derivation_slice(
+      filter = LBTESTCD %in% c("TRIG", "INSULIN"),
+      args = params(
+        PARCAT2 = "CV",
+        AVAL = as.numeric(LBORRES),
+        AVALC = NA_character_,
+        ANRLO = as.numeric(LBORNRLO),
+        ANRHI = as.numeric(LBORNRHI)
+      )
     ),
-    # Only populate AVALC if character value is non-redundant with AVAL, except for TRIG and INSULIN
-    AVALC = case_when(
-      LBTESTCD %in% c("TRIG", "INSULIN") ~ NA_character_,
-      is.na(AVAL) | as.character(AVAL) != LBSTRESC ~ LBSTRESC, # Compare AVAL with LBSTRESC
-      TRUE ~ NA_character_
-    ),
-    ANRLO = LBSTNRLO,
-    ANRHI = LBSTNRHI
+    # Handle other parameters using standard units (SI)
+    derivation_slice(
+      filter = TRUE,
+      args = params(
+        PARCAT2 = "SI",
+        AVAL = LBSTRESN,
+        # Only populate AVALC if character value is non-redundant with AVAL
+        AVALC = if_else(
+          is.na(AVAL) | as.character(AVAL) != LBSTRESC,
+          LBSTRESC,
+          NA_character_
+        ),
+        ANRLO = LBSTNRLO,
+        ANRHI = LBSTNRHI
+      )
+    )
   )
 ```
 
