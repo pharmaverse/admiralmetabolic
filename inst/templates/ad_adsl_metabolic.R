@@ -294,7 +294,7 @@ adsl <- adsl %>%
   ) %>%
   derive_var_merged_exist_flag(
     dataset_add = ex,
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     new_var = SAFFL,
     condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO")))
   ) %>%
