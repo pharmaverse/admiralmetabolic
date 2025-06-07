@@ -193,7 +193,7 @@ adsl <- adsl %>%
   derive_vars_merged(
     dataset_add = ds_ext,
     filter_add = DSDECOD == "RANDOMIZED",
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     new_vars = exprs(RANDDT = DSSTDT)
   ) %>%
   # Death date - impute partial date to first day/month
