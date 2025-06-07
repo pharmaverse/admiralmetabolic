@@ -120,36 +120,36 @@ for (col in cols) {
 
 adsl <- dm_metabolic %>%
   ## derive treatment variables (TRT01P, TRT01A) ----
-# See also the "Visit and Period Variables" vignette
-# (https://pharmaverse.github.io/admiral/articles/visits_periods.html#treatment_adsl)
-mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
+  # See also the "Visit and Period Variables" vignette
+  # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#treatment_adsl)
+  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
   ## derive treatment start date (TRTSDTM) ----
-derive_vars_merged(
-  dataset_add = ex_ext,
-  filter_add = (EXDOSE > 0 |
-                  (EXDOSE == 0 &
-                     str_detect(EXTRT, "PLACEBO"))) &
-    !is.na(EXSTDTM),
-  new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
-  order = exprs(EXSTDTM, EXSEQ),
-  mode = "first",
-  by_vars = exprs(STUDYID, USUBJID)
-) %>%
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = (EXDOSE > 0 |
+      (EXDOSE == 0 &
+        str_detect(EXTRT, "PLACEBO"))) &
+      !is.na(EXSTDTM),
+    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+    order = exprs(EXSTDTM, EXSEQ),
+    mode = "first",
+    by_vars = get_admiral_option("subject_keys")
+  ) %>%
   ## derive treatment end date (TRTEDTM) ----
-derive_vars_merged(
-  dataset_add = ex_ext,
-  filter_add = (EXDOSE > 0 |
-                  (EXDOSE == 0 &
-                     str_detect(EXTRT, "PLACEBO"))) & !is.na(EXENDTM),
-  new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
-  order = exprs(EXENDTM, EXSEQ),
-  mode = "last",
-  by_vars = exprs(STUDYID, USUBJID)
-) %>%
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = !is.na(EXSTDTM) & (
+      EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO"))
+    ),
+    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+    order = exprs(EXENDTM, EXSEQ),
+    mode = "last",
+    by_vars = get_admiral_option("subject_keys")
+  ) %>%
   ## Derive treatment end/start date TRTSDT/TRTEDT ----
-derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
+  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
   ## derive treatment duration (TRTDURD) ----
-derive_var_trtdurd()
+  derive_var_trtdurd()
 
 ## Disposition dates, status ----
 # convert character date to numeric date without imputation
