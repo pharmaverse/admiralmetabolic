@@ -185,7 +185,7 @@ adsl <- adsl %>%
   # Last retrieval date
   derive_vars_merged(
     dataset_add = ds_ext,
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     new_vars = exprs(FRVDT = DSSTDT),
     filter_add = DSCAT == "OTHER EVENT" & DSDECOD == "FINAL RETRIEVAL VISIT"
   ) %>%
