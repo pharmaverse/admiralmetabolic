@@ -55,30 +55,14 @@ library(tidyr)
 
 ## Read in Data {#readdata}
 
-To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiral}`. We will utilize `DM`, `LB` and `ADSL`.
+To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiralmetabolic}`. We will utilize `LB` and `ADSL` data.
 
 ```{r, message=FALSE, warning=FALSE}
-dm_metabolic <- pharmaversesdtm::dm_metabolic
 lb_metabolic <- pharmaversesdtm::lb_metabolic
-admiral_adsl <- admiral::admiral_adsl
+admiralmetabolic_adsl <- admiralmetabolic::admiralmetabolic_adsl
 
-dm <- convert_blanks_to_na(dm_metabolic)
 lb <- convert_blanks_to_na(lb_metabolic)
-admiral_adsl <- convert_blanks_to_na(admiral_adsl)
-```
-
-Within this vignette, `DM` is used as the basis for `ADSL`:
-
-```{r eval=TRUE}
-# Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset
-adsl <- dm %>%
-  select(-DOMAIN) %>%
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
-  derive_vars_merged(
-    dataset_add = admiral_adsl,
-    by_vars = get_admiral_option("subject_keys"),
-    new_vars = exprs(TRTSDT, TRTEDT)
-  )
+adsl <- convert_blanks_to_na(admiralmetabolic_adsl)
 
 # Keep only required ADSL variables for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
@@ -98,7 +82,7 @@ param_lookup <- tibble::tribble(
   "CHOL", "CHOLES", "Cholesterol (mmol/L)", 4,
   "GGT", "GGT", "Gamma Glutamyl Transferase (U/L)", 5,
   "GLUC", "GLUC", "Glucose (mmol/L)", 6,
-  "HBA1CHGB", "HBA1CHGB", "Hemoglobin A1C/Hemoglobin (%)", 7,
+  "HBA1CHGB", "HBA1CHGB", "Hemoglobin A1C/Hemoglobin (mmol/mol)", 7,
   "INSULIN", "INSULIN", "Insulin (mIU/L)", 8,
   "TRIG", "TRIG", "Triglycerides (mg/dL)", 9
 )
@@ -107,9 +91,12 @@ param_lookup <- tibble::tribble(
 ## Derive Core ADLB Variables {#derive_core}
 
 The basic parameters and timing variables can be derived similarly to other BDS finding ADaMs.
+For the derivation of Glucose and Insulin, only fasted results (where LBFAST is 'Y') are considered. For all other laboratory tests, the fasting status does not affect their inclusion in the dataset at this stage.
 
 ```{r}
 adlb <- lb %>%
+  # Keep only fasted results for GLUC and INSULIN, keep all others
+  filter(if_else(LBTESTCD %in% c("GLUC", "INSULIN"), LBFAST == "Y", TRUE)) %>%
   # Join ADSL with LB (need TRTSDT for ADY derivation)
   derive_vars_merged(
     dataset_add = adsl,
@@ -122,8 +109,8 @@ adlb <- lb %>%
     dtc = LBDTC
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
-  
- adlb <- adlb %>%
+
+adlb <- adlb %>%
   ## Add PARAMCD PARAM and PARAMN - from LOOK-UP table
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -282,8 +269,8 @@ adlb <- adlb %>%
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  filter(adlb, PARAMCD == "HOMAIR") %>% 
-  arrange(USUBJID, ADY, PARAMN),
+  filter(adlb, PARAMCD == "HOMAIR") %>%
+    arrange(USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
 ```
@@ -313,15 +300,15 @@ adlb <- adlb %>%
     )
   )
 
-adlb <- adlb %>% 
-arrange(!!!get_admiral_option("subject_keys"), ADT, PARAMN) # Arrange for consistency
+adlb <- adlb %>%
+  arrange(!!!get_admiral_option("subject_keys"), ADT, PARAMN) # Arrange for consistency
 ```
 
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  filter(adlb, PARAMCD == "FLI") %>% 
-  arrange(USUBJID, ADY, PARAMN),
+  filter(adlb, PARAMCD == "FLI") %>%
+    arrange(USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
 ```
