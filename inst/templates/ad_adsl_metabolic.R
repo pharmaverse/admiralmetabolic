@@ -298,16 +298,16 @@ adsl <- adsl %>%
     condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO")))
   ) %>%
   ## Groupings and others variables ----
-mutate(
-  RACEGR1 = format_racegr1(RACE),
-  AGEGR1 = format_agegr1(AGE),
-  REGION1 = format_region1(COUNTRY),
-  LDDTHGR1 = format_lddthgr1(LDDTHELD),
-  DTH30FL = if_else(LDDTHGR1 == "<= 30", "Y", NA_character_),
-  DTHA30FL = if_else(LDDTHGR1 == "> 30", "Y", NA_character_),
-  DTHB30FL = if_else(DTHDT <= TRTSDT + 30, "Y", NA_character_),
-  DOMAIN = NULL
-)
+  mutate(
+    RACEGR1 = format_racegr1(RACE),
+    AGEGR1 = format_agegr1(AGE),
+    REGION1 = format_region1(COUNTRY),
+    LDDTHGR1 = format_lddthgr1(LDDTHELD),
+    DTH30FL = if_else(LDDTHGR1 == "<= 30", "Y", NA_character_),
+    DTHA30FL = if_else(LDDTHGR1 == "> 30", "Y", NA_character_),
+    DTHB30FL = if_else(DTHDT <= TRTSDT + 30, "Y", NA_character_),
+    DOMAIN = NULL
+  )
 
 # Subset to first 5 subjects for admiralmetabolic----
 adsl_metabolic <- adsl %>%
