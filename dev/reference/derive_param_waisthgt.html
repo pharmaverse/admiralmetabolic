@@ -11,7 +11,7 @@ Note: This is a wrapper function for the more generic admiral::derive_param_comp
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9004</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,17 +80,9 @@ specified by <code>wstcir_code</code> and <code>height_code</code>.</p></dd>
 
 <dt id="arg-by-vars">by_vars<a class="anchor" aria-label="anchor" href="#arg-by-vars"></a></dt>
 <dd><p>Grouping variables</p>
-<p>For each group defined by <code>by_vars</code> an observation is added to the output
-dataset. Only variables specified in <code>by_vars</code> will be populated
-in the newly created records.</p>
-<dl><dt>Permitted values</dt>
-<dd><p>list of variables created by <code><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs()</a></code>, e.g., <code>exprs(USUBJID, VISIT)</code></p></dd>
-
-<dt>Default value</dt>
-<dd><p>none</p></dd>
-
-
-</dl></dd>
+<p>Grouping variables uniquely identifying a set of records for which
+<code>new_vars</code> are to be calculated.</p>
+<p><em>Permitted Values:</em> list of variables created by exprs()</p></dd>
 
 
 <dt id="arg-wstcir-code">wstcir_code<a class="anchor" aria-label="anchor" href="#arg-wstcir-code"></a></dt>
@@ -119,14 +111,7 @@ for the new parameter.</p>
 <p>The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.</p>
-<dl><dt>Permitted values</dt>
-<dd><p>an unquoted condition, e.g., <code>AVISIT == "BASELINE"</code></p></dd>
-
-<dt>Default value</dt>
-<dd><p><code>NULL</code></p></dd>
-
-
-</dl></dd>
+<p><em>Permitted Values:</em> a condition</p></dd>
 
 
 <dt id="arg-constant-by-vars">constant_by_vars<a class="anchor" aria-label="anchor" href="#arg-constant-by-vars"></a></dt>
