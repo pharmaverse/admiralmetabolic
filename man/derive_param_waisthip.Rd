@@ -30,8 +30,10 @@ For each group defined by \code{by_vars} an observation is added to the output
 dataset. Only variables specified in \code{by_vars} will be populated
 in the newly created records.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}
-e.g. \code{exprs(USUBJID, VISIT)}}
+\describe{
+\item{Permitted values}{list of variables created by \code{exprs()}, e.g., \code{exprs(USUBJID, VISIT)}}
+\item{Default value}{none}
+}}
 
 \item{wstcir_code}{Waist Circumference parameter code
 
@@ -61,7 +63,10 @@ The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.
 
-\emph{Permitted Values:} a condition}
+\describe{
+\item{Permitted values}{an unquoted condition, e.g., \code{AVISIT == "BASELINE"}}
+\item{Default value}{\code{NULL}}
+}}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
