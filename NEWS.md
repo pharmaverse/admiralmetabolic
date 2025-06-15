@@ -22,6 +22,9 @@
 
 - Added initial package scope to home page. (#101)
 
+- Added `advs` as a dataset. (#113)
+
+
 </details>
 
 # admiralmetabolic 0.1.0

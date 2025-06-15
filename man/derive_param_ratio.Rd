@@ -30,14 +30,10 @@ specified by \code{numerator_code} and \code{denominator_code}.}
 
 \item{by_vars}{Grouping variables
 
-For each group defined by \code{by_vars} an observation is added to the output
-dataset. Only variables specified in \code{by_vars} will be populated
-in the newly created records.
+Grouping variables uniquely identifying a set of records for which
+\code{new_vars} are to be calculated.
 
-\describe{
-\item{Permitted values}{list of variables created by \code{exprs()}, e.g., \code{exprs(USUBJID, VISIT)}}
-\item{Default value}{none}
-}}
+\emph{Permitted Values:} list of variables created by exprs()}
 
 \item{numerator_code}{Numerator parameter code
 
@@ -85,10 +81,7 @@ The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.
 
-\describe{
-\item{Permitted values}{an unquoted condition, e.g., \code{AVISIT == "BASELINE"}}
-\item{Default value}{\code{NULL}}
-}}
+\emph{Permitted Values:} a condition}
 
 \item{constant_by_vars}{By variables for when numerator and/or denominator is constant
 
