@@ -26,13 +26,10 @@ specified by \code{wstcir_code} and \code{hipcir_code}.}
 
 \item{by_vars}{Grouping variables
 
-For each group defined by \code{by_vars} an observation is added to the output
-dataset. Only variables specified in \code{by_vars} will be populated
-in the newly created records.
+Grouping variables uniquely identifying a set of records for which
+\code{new_vars} are to be calculated.
 
-\describe{
-\item{Default value}{none}
-}}
+\emph{Permitted Values:} list of variables created by exprs()}
 
 \item{wstcir_code}{Waist Circumference parameter code
 
@@ -62,10 +59,7 @@ The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.
 
-\describe{
-\item{Permitted values}{a condition}
-\item{Default value}{\code{NULL}}
-}}
+\emph{Permitted Values:} a condition}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
