@@ -11,6 +11,7 @@
 ## New features
 
 - A new SDTM dataset for metabolic specific laboratory measurements (`lb_metabolic`) in {pharmaversesdtm}. (#94)
+- A new ADSL dataset for metabolic specific variables (`adsl_metabolic`). (#73)
 
 <details>
 <summary>Developer Notes</summary>
