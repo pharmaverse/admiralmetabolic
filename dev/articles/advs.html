@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,10 +91,10 @@
 </h2>
 <p>This article describes creating a vital signs ADaM for metabolic
 clinical trials.</p>
-<p>We advise you first consult the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+<p>We advise you first consult the <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a>. The programming workflow around
 creating the general set-up of an <code>ADVS</code> using
-<a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> functions is the same. In this vignette, we focus
+<a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> functions is the same. In this vignette, we focus
 on the most common endpoints and their derivations mainly found in
 metabolic trials to avoid repeating information and maintaining the same
 content in two places. As such, the code in this vignette is not
@@ -105,7 +105,7 @@ to view the full workflow.</p>
 </h3>
 <p>The examples of this vignette require the following packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiralmetabolic/">admiralmetabolic</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
@@ -143,7 +143,7 @@ to view the full workflow.</p>
 <code>ADVS</code> should be loaded into the global environment. Reading
 data will usually be a company specific process, however, for the
 purpose of this vignette, we will use example data from
-<a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a> and <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>. We will
+<a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a> and <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a>. We will
 utilize <code>DM</code>, <code>VS</code> and <code>ADSL</code> for the
 basis of <code>ADVS</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -166,7 +166,7 @@ basis of <code>ADVS</code>.</p>
 source data and derive the usual <code>ADVS</code> analysis variables.
 Note that only the sections required for this vignette are covered in
 the following steps. To get a detailed guidance on all the steps, refer
-the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+the <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a>.</p>
 </div>
 <div class="section level3">
@@ -293,13 +293,13 @@ at a certain visit, is a common endpoint in metabolic trials. To
 accommodate these criteria, we will derive relevant criterion variables
 such as <code>CRITy</code>, <code>CRITyFL</code>, and
 <code>CRITyFLN</code>, with the necessary functions provided by
-<a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> outlined below.</p>
+<a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> outlined below.</p>
 <div class="section level4">
 <h4 id="derive-categorization-variables-avalcaty-basecaty">Derive Categorization Variables (<code>AVALCATy</code>,
 <code>BASECATy</code>)<a class="anchor" aria-label="anchor" href="#derive-categorization-variables-avalcaty-basecaty"></a>
 </h4>
 <p>For deriving categorization variables (<code>AVALCATy</code>,
-<code>BASECATy</code>) <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> provides <a href="https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html" class="external-link"><code>derive_vars_cat()</code></a>
+<code>BASECATy</code>) <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> provides <a href="https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html" class="external-link"><code>derive_vars_cat()</code></a>
 (see documentation of the function for details).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avalcat_lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
@@ -342,7 +342,7 @@ such as <code>CRITy</code>, <code>CRITyFL</code>, and
 <code>CRITyFL</code>, <code>CRITyFN</code>)<a class="anchor" aria-label="anchor" href="#crit_vars"></a>
 </h4>
 <p>For deriving criterion variables (<code>CRITy</code>,
-<code>CRITyFL</code>, <code>CRITyFN</code>) <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>
+<code>CRITyFL</code>, <code>CRITyFN</code>) <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a>
 provides <a href="https://pharmaverse.github.io/admiral/dev/reference/derive_vars_crit_flag.html" class="external-link"><code>derive_vars_crit_flag()</code></a>.
 It ensures that they are derived in an ADaM-compliant way (see
 documentation of the function for details).</p>
@@ -382,7 +382,7 @@ Additional criterion flags can be added as needed.</p>
 <div class="section level3">
 <h3 id="advs_end">Remaining ADVS Set-up<a class="anchor" aria-label="anchor" href="#advs_end"></a>
 </h3>
-<p>The <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+<p>The <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a> covers all the steps that are not shown
 here, such as merging the parameter-level values, timing variables, and
 analysis flags.</p>

@@ -13,7 +13,7 @@ Note: This is a wrapper function for the more generic admiral::derive_param_comp
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,8 +89,14 @@ specified by <code>numerator_code</code> and <code>denominator_code</code>.</p><
 <p>For each group defined by <code>by_vars</code> an observation is added to the output
 dataset. Only variables specified in <code>by_vars</code> will be populated
 in the newly created records.</p>
-<p><em>Permitted Values</em>: list of variables created by <code>exprs()</code>
-e.g. <code>exprs(USUBJID, VISIT)</code></p></dd>
+<dl><dt>Permitted values</dt>
+<dd><p>list of variables created by <code>exprs()</code>, e.g., <code>exprs(USUBJID, VISIT)</code></p></dd>
+
+<dt>Default value</dt>
+<dd><p>none</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-numerator-code">numerator_code<a class="anchor" aria-label="anchor" href="#arg-numerator-code"></a></dt>
@@ -138,7 +144,14 @@ the <code>denominator_code</code> argument and <code>constant_denominator</code>
 <p>The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.</p>
-<p><em>Permitted Values:</em> a condition</p></dd>
+<dl><dt>Permitted values</dt>
+<dd><p>an unquoted condition, e.g., <code>AVISIT == "BASELINE"</code></p></dd>
+
+<dt>Default value</dt>
+<dd><p><code>NULL</code></p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-constant-by-vars">constant_by_vars<a class="anchor" aria-label="anchor" href="#arg-constant-by-vars"></a></dt>
