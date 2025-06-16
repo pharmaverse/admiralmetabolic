@@ -16,5 +16,9 @@ admiralmetabolic_advs
 \description{
 An example of vital sings analysis dataset
 }
+\seealso{
+Other datasets: 
+\code{\link{admiralmetabolic_adsl}}
+}
 \concept{datasets}
 \keyword{datasets}
