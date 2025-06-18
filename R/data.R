@@ -1,6 +1,6 @@
 #' Vital sings Dataset
 #'
-#' An example of vital sings analysis dataset
+#' An example vital sings analysis dataset
 #' @keywords datasets
 #' @family datasets
 #' @source
@@ -10,7 +10,7 @@
 
 #' Subject Level Analysis Dataset
 #'
-#' An example of subject level analysis dataset
+#' An example subject level analysis dataset
 #' @keywords datasets
 #' @family datasets
 #' @source
