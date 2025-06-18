@@ -5,7 +5,7 @@
 source("inst/templates/ad_adsl_metabolic.R", echo = TRUE) # nolint
 
 # Set object
-admiralmetabolic_adsl <- adsl
+admiralmetabolic_adsl <- adsl_metabolic
 
 # Get previous dataset for comparison
 adsl_old <- admiralmetabolic::admiralmetabolic_adsl
