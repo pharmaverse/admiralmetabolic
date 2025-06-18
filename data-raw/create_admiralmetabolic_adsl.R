@@ -1,4 +1,4 @@
-#  Create dataset:   data/admiralmetabolic_adsl
+#  Create dataset:   data/admiralmetabolic_adsl.Rda
 #  This script:  create_admiralmetabolic_adsl.R creates dataset data/admiralmetabolic_adsl.rda.
 
 # Run template script to create advs
