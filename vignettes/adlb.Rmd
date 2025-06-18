@@ -91,7 +91,7 @@ param_lookup <- tibble::tribble(
 ## Derive Core ADLB Variables {#derive_core}
 
 The basic parameters and timing variables can be derived similarly to other BDS finding ADaMs.
-For the derivation of Glucose and Insulin, only fasted results (where LBFAST is 'Y') are considered. For all other laboratory tests, the fasting status does not affect their inclusion in the dataset at this stage.
+For the derivation of Glucose and Insulin, only fasted results (where `LBFAST = "Y"`) are considered. For all other laboratory tests, the fasting status does not affect their inclusion in the dataset at this stage.
 
 ```{r}
 adlb <- lb %>%
@@ -157,7 +157,7 @@ adlb <- adlb %>%
 # Example display of derived data
 dataset_vignette(
   arrange(adlb, USUBJID, PARCAT1, ADY, PARAMN),
-  display_vars = exprs(!!!get_admiral_option("subject_keys"), ADT, ADY, PARAMCD, PARAM, PARAMN, PARCAT1, AVAL, AVALC, ANRLO, ANRHI)
+  display_vars = exprs(!!!get_admiral_option("subject_keys"), ADT, ADY, PARAMCD, PARAM, PARAMN, PARCAT1, PARCAT2, AVAL, AVALC, ANRLO, ANRHI)
 )
 ```
 
@@ -215,8 +215,8 @@ In this section, we will merge relevant variables from the ADVS (Analysis Datase
 
 ```{r}
 # Load ADVS dataset (assuming it has been created by ad_advs.R)
-advs <- admiralmetabolic::admiralmetabolic_advs
-advs <- convert_blanks_to_na(advs)
+admiralmetabolic_advs <- admiralmetabolic::admiralmetabolic_advs
+advs <- convert_blanks_to_na(admiralmetabolic_advs)
 
 # Merge BMI and WSTCIR from ADVS to ADLB based on subject and date
 adlb <- adlb %>%
@@ -235,7 +235,7 @@ Please note that in this example we merge on ADT, but it is also possible to mer
 # Example display of derived data
 dataset_vignette(
   arrange(adlb, USUBJID, ADY, PARAMN),
-  display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN, BMI, WSTCIR)
+  display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADT, ADY, AVISIT, AVISITN, BMI, WSTCIR)
 )
 ```
 
