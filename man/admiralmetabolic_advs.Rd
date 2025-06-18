@@ -8,13 +8,13 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 760 rows and 101 columns.
 }
 \source{
-Derived from the \code{advs} template
+Derived from the \code{ad_advs} template
 }
 \usage{
 admiralmetabolic_advs
 }
 \description{
-An example of vital sings analysis dataset
+An example vital sings analysis dataset
 }
 \seealso{
 Other datasets: 
