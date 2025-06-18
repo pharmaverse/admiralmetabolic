@@ -8,7 +8,7 @@ source("inst/templates/ad_advs.R", echo = TRUE) # nolint
 admiralmetabolic_advs <- advs
 
 # Get previous dataset for comparison
-advs_old <- admiral::admiralmetabolic_advs
+advs_old <- admiralmetabolic::admiralmetabolic_advs
 
 # Finally, save reduced dataset
 usethis::use_data(admiralmetabolic_advs, overwrite = TRUE)
