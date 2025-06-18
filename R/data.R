@@ -10,7 +10,7 @@
 
 #' Subject Level Analysis Dataset
 #'
-#' An example subject level analysis dataset
+#' An example of subject level analysis dataset
 #' @keywords datasets
 #' @family datasets
 #' @source
