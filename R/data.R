@@ -4,7 +4,7 @@
 #' @keywords datasets
 #' @family datasets
 #' @source
-#' Derived from the `advs` template
+#' Derived from the `ad_advs` template
 #'
 "admiralmetabolic_advs"
 
