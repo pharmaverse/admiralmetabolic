@@ -26,12 +26,10 @@ specified by \code{wstcir_code} and \code{hipcir_code}.}
 
 \item{by_vars}{Grouping variables
 
-For each group defined by \code{by_vars} an observation is added to the output
-dataset. Only variables specified in \code{by_vars} will be populated
-in the newly created records.
+Grouping variables uniquely identifying a set of records for which
+\code{new_vars} are to be calculated.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}
-e.g. \code{exprs(USUBJID, VISIT)}}
+\emph{Permitted Values:} list of variables created by exprs()}
 
 \item{wstcir_code}{Waist Circumference parameter code
 

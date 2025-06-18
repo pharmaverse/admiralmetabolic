@@ -10,6 +10,9 @@
 
 ## New features
 
+- A new SDTM dataset for metabolic specific laboratory measurements (`lb_metabolic`) in {pharmaversesdtm}. (#94)
+- A new ADSL dataset for metabolic specific variables (`adsl_metabolic`). (#73 & #116)
+
 <details>
 <summary>Developer Notes</summary>
 
@@ -18,6 +21,9 @@
 - Added pharmaverse, CRAN and Test Coverage badges to home page. (#97)
 
 - Added initial package scope to home page. (#101)
+
+- Added `advs` as a dataset. (#113)
+
 
 </details>
 

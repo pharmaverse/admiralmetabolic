@@ -473,7 +473,21 @@ derive_param_waisthgt <- function(dataset,
 #'
 #'   *Permitted Values:* logical scalar
 #'
-#' @inheritParams admiral::derive_param_computed
+#' @param filter Filter condition
+#'
+#'   The specified condition is applied to the input dataset before deriving the
+#'   new parameter, i.e., only observations fulfilling the condition are taken
+#'   into account.
+#'
+#'   *Permitted Values:* a condition
+#'
+#' @param by_vars Grouping variables
+#'
+#'   Grouping variables uniquely identifying a set of records for which
+#'   `new_vars` are to be calculated.
+#'
+#'   *Permitted Values:* list of variables created by exprs()
+#'
 #'
 #' @details
 #' The analysis value of the new parameter is derived as
