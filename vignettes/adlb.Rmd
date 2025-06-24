@@ -24,7 +24,6 @@ This article describes creating a laboratory ADaM for metabolic clinical trials.
 We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 The programming workflow around creating the general set-up of an `ADLB` using `{admiral}` functions is the same. 
 In this vignette, we focus on common ADLB derivations in metabolic studies and avoid repeating information and maintaining the same content in two places. 
-As such, the code in this vignette is not completely executable - we recommend consulting the ADLB template script to view the full workflow.
 
 **Note**: *All examples assume CDISC SDTM and/or ADaM format as input unless otherwise specified.*
 
@@ -47,9 +46,10 @@ library(tidyr)
 -   [Define Lookup Tables](#lookups)
 -   [Derive Core ADLB Variables](#derive_core)
 -   [Derive Visit Information](#derive_visits)
--   [Metabolic Parameters - Description](#metabolic_params_desc)
--   [Merge ADVS variables](#merge)
--   [Derive Metabolic Parameters](#derive_metabolic)
+-   [Derive Metabolic Parameters](#metabolic_params_desc)
+    -   [Add variables required for derivation](#merge)
+    -   [Derive HOMA-IR index](#derive_homa)
+    -   [Derive FLI score](#derive_fli)
 -   [Remaining ADLB Set-up](#adlb_end)
 -   [Example Script](#example)
 
@@ -63,14 +63,11 @@ admiralmetabolic_adsl <- admiralmetabolic::admiralmetabolic_adsl
 
 lb <- convert_blanks_to_na(lb_metabolic)
 adsl <- convert_blanks_to_na(admiralmetabolic_adsl)
-
-# Keep only required ADSL variables for derivations
-adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 ```
 
 ## Define Lookup Tables {#lookups}
 
-Define parameter lookup table.
+Define parameter lookup table used to derive `PARAMCD`, `PARAM`, and `PARAMN` variables. 
 
 ```{r}
 # Assign PARAMCD, PARAM, and PARAMN
@@ -94,16 +91,19 @@ The basic parameters and timing variables can be derived similarly to other BDS 
 For the derivation of Glucose and Insulin, only fasted results (where `LBFAST = "Y"`) are considered. For all other laboratory tests, the fasting status does not affect their inclusion in the dataset at this stage.
 
 ```{r}
+# Define required ADSL variables for derivations
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
+
 adlb <- lb %>%
-  # Keep only fasted results for GLUC and INSULIN, keep all others
-  filter(if_else(LBTESTCD %in% c("GLUC", "INSULIN"), LBFAST == "Y", TRUE)) %>%
+  # Remove non-fasted GLUC and INSULIN results
+  filter(!(LBTESTCD %in% c("GLUC", "INSULIN") & LBFAST != "Y")) %>%
   # Join ADSL with LB (need TRTSDT for ADY derivation)
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
-  ## Calculate ADT, ADY
+  # Calculate ADT, ADY
   derive_vars_dt(
     new_vars_prefix = "A",
     dtc = LBDTC
@@ -111,7 +111,7 @@ adlb <- lb %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 adlb <- adlb %>%
-  ## Add PARAMCD PARAM and PARAMN - from LOOK-UP table
+  # Add PARAMCD PARAM and PARAMN - from parameter lookup table
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
@@ -163,11 +163,10 @@ dataset_vignette(
 
 ## Derive Visit Information {#derive_visits}
 
-Derive Analysis Visit (AVISIT) and Analysis Visit Number (AVISITN).
+Derive Analysis Visit (`AVISIT`) and Analysis Visit Number (`AVISITN`).
 
 ```{r}
 adlb <- adlb %>%
-  # Derive Timing
   mutate(
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN") ~ "Baseline",
@@ -192,7 +191,7 @@ dataset_vignette(
 
 For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
 
-## Metabolic Parameters - Description {#metabolic_params_desc}
+## Derive Metabolic Parameters {#metabolic_params_desc}
 
 In addition to the core ADLB variables, several metabolic parameters and scores will be derived based on laboratory data and vital signs. These derivations include:
 
@@ -210,8 +209,8 @@ To derive these parameters and scores, the following variables will be needed:
 *   From ADLB: TRIG (Triglycerides), GGT, GLUC (fasted), INSULIN (fasted).
 *   From ADVS: BMI, WSTCIR (Waist Circumference).
 
-## Merge ADVS variables {#merge}
-In this section, we will merge relevant variables from the ADVS (Analysis Dataset for Vital Signs) dataset into the ADLB dataset. This is necessary to include variables such as BMI and Waist Circumference, which are required for the derivation of FLI score parameter in subsequent section.
+### Add variables required for derivation {#merge}
+In this section, we will merge relevant variables needed to derive metabolic parameter from the ADVS (Analysis Dataset for Vital Signs) dataset into the ADLB dataset. This is necessary to include variables such as BMI and Waist Circumference, which are required for the derivation of FLI score parameter in subsequent section.
 
 ```{r}
 # Load ADVS dataset (assuming it has been created by ad_advs.R)
@@ -239,13 +238,9 @@ dataset_vignette(
 )
 ```
 
-## Derive Metabolic Parameters {#derive_metabolic}
+### Derive HOMA-IR index {#derive_homa}
 
-In this section, we will derive the metabolic parameters and scores described previously by directly implementing the calculation formulas.
-
-### Homeostasis Model Assessment – Insulin Resistance (HOMA-IR)
-
-This part describes how to calculate the HOMA-IR index from fasting plasma glucose and fasting plasma insulin. This derivation does not require merging data from other datasets.
+This part describes how to calculate the Homeostasis Model Assessment – Insulin Resistance (HOMA-IR) index from fasting plasma glucose and fasting plasma insulin. This derivation does not require merging data from other datasets.
 
 ```{r}
 # Derive HOMA-IR using derive_param_computed
@@ -254,11 +249,7 @@ adlb <- adlb %>%
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
     parameters = c("INSULIN", "GLUC"),
     set_values_to = exprs(
-      AVAL = if_else(
-        complete.cases(AVAL.INSULIN, AVAL.GLUC),
-        (AVAL.INSULIN * AVAL.GLUC) / 22.5,
-        NA_real_
-      ),
+      AVAL = AVAL.INSULIN * AVAL.GLUC / 22.5,
       PARAMCD = "HOMAIR",
       PARAM = "Homeostasis Model Assessment - Insulin Resistance",
       PARAMN = 10
@@ -275,7 +266,7 @@ dataset_vignette(
 )
 ```
 
-### Fatty Liver Index (FLI)
+### Derive FLI score {#derive_fli}
 
 To obtain the FLI score parameter, we'll utilize triglycerides, GGT, BMI, and waist circumference. Note that this derivation requires merging data from the ADVS dataset (BMI and Waist Circumference), as demonstrated in the previous section. FLI is provided here as an example; users can derive other metabolic scores like HSI, NAFLD, and others using the same logic and required input variables.
 
@@ -286,14 +277,10 @@ adlb <- adlb %>%
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, BMI, WSTCIR, !!!adsl_vars),
     parameters = c("TRIG", "GGT"),
     set_values_to = exprs(
-      AVAL = if_else(
-        complete.cases(AVAL.TRIG, BMI, AVAL.GGT, WSTCIR),
-        {
-          lambda <- 0.953 * log(AVAL.TRIG) + 0.139 * BMI + 0.718 * log(AVAL.GGT) + 0.053 * WSTCIR - 15.745
-          (exp(lambda) / (1 + exp(lambda))) * 100
-        },
-        NA_real_
-      ),
+      AVAL = {
+        lambda <- 0.953 * log(AVAL.TRIG) + 0.139 * BMI + 0.718 * log(AVAL.GGT) + 0.053 * WSTCIR - 15.745
+        (exp(lambda) / (1 + exp(lambda))) * 100
+      },
       PARAMCD = "FLI",
       PARAM = "Fatty Liver Index",
       PARAMN = 11
