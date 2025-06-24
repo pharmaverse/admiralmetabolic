@@ -3,6 +3,7 @@
 ## Documentation
 
 - Updated installation instructions. (#88)
+- Vignette "Creating a Metabolic ADLB ADaM". (#102)
 
 ## Various
 
