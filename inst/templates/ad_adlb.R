@@ -103,7 +103,7 @@ adlb <- adlb %>%
       str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     )
-)
+  )
 
 # Derive results ----
 # See the "Derive Results (AVAL, AVALC)" vignette section for more information:
