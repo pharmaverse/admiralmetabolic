@@ -5,6 +5,9 @@
 - Updated installation instructions. (#88)
 - Vignette "Creating a Metabolic ADLB ADaM". (#102)
 
+## Template programs
+- ADLB template scripts `ad_adlb.R` which creates a ADLB Dataset. (#108)
+
 ## Various
 
 - Moved test data `vs_metabolic`, `qs_metabolic` and `dm_metabolic` from {admiralmetabolic} to {pharmaversesdtm}. (#95)
