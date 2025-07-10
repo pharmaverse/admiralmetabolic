@@ -2,7 +2,7 @@
 #
 # Label: Laboratory Analysis dataset for metabolic trials
 #
-# Input: adsl_metabolic, lb_metabolic, admiralmetabolic_advs
+# Input: lb_metabolic, admiralmetabolic_adsl, admiralmetabolic_advs
 
 # Attach/load required packages ----
 library(admiral)
