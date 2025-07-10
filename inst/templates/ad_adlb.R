@@ -62,9 +62,7 @@ param_lookup <- tribble(
   "TRIG", "TRIG", "Triglycerides (mg/dL)", 9
 )
 
-# Add parameter (PARAMCD) info to enable later ADLB derivations. Additional
-# parameter information will be merged again, after all AVDS derivations are
-# completed.
+# Add parameter (PARAMCD, PARAM, PARAMN) info to enable later ADLB derivations.
 
 # See function documentation for `derive_vars_merged_lookup()`:
 # (https://pharmaverse.github.io/admiral/reference/derive_vars_merged_lookup.html)
