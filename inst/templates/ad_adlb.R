@@ -9,6 +9,7 @@ library(admiral)
 library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr)
+library(tibble)
 library(stringr)
 
 # Define project options/variables ----
