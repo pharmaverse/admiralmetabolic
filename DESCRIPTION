@@ -52,7 +52,7 @@ Suggests:
     htmltools,
     knitr,
     methods,
-    pharmaversesdtm (>= 1.0.0),
+    pharmaversesdtm (>= 1.3.0),
     rmarkdown,
     testthat (>= 3.0.0),
     tibble,
