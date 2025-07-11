@@ -1,6 +1,9 @@
 # Name: ADLB
 #
 # Label: Laboratory Analysis dataset for metabolic trials
+# 
+# Description: This template focuses on metabolic specific derivations. For additional 
+# often found in `ADLB` view the `admiral` template by running `admiral::use_ad_template("adlb")`. 
 #
 # Input: lb_metabolic, admiralmetabolic_adsl, admiralmetabolic_advs
 
