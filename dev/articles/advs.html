@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9007</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9008</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,10 +91,10 @@
 </h2>
 <p>This article describes creating a vital signs ADaM for metabolic
 clinical trials.</p>
-<p>We advise you first consult the <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+<p>We advise you first consult the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a>. The programming workflow around
 creating the general set-up of an <code>ADVS</code> using
-<a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> functions is the same. In this vignette, we focus
+<a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> functions is the same. In this vignette, we focus
 on the most common endpoints and their derivations mainly found in
 metabolic trials to avoid repeating information and maintaining the same
 content in two places. As such, the code in this vignette is not
@@ -105,7 +105,7 @@ to view the full workflow.</p>
 </h3>
 <p>The examples of this vignette require the following packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiralmetabolic/">admiralmetabolic</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
@@ -143,17 +143,17 @@ to view the full workflow.</p>
 <code>ADVS</code> should be loaded into the global environment. Reading
 data will usually be a company specific process, however, for the
 purpose of this vignette, we will use example data from
-<a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a> and <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a>. We will
+<a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a> and <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>. We will
 utilize <code>DM</code>, <code>VS</code> and <code>ADSL</code> for the
 basis of <code>ADVS</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_metabolic</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/dm_metabolic.html" class="external-link">dm_metabolic</a></span></span>
 <span><span class="va">vs_metabolic</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/vs_metabolic.html" class="external-link">vs_metabolic</a></span></span>
-<span><span class="va">admiral_adsl</span> <span class="op">&lt;-</span> <span class="fu">admiral</span><span class="fu">::</span><span class="va"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/admiral_adsl.html">admiral_adsl</a></span></span>
+<span><span class="va">admiral_adsl</span> <span class="op">&lt;-</span> <span class="fu">admiral</span><span class="fu">::</span><span class="va"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/admiral_adsl.html">admiral_adsl</a></span></span>
 <span></span>
-<span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">dm_metabolic</span><span class="op">)</span></span>
-<span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">vs_metabolic</span><span class="op">)</span></span>
-<span><span class="va">admiral_adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">admiral_adsl</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">dm_metabolic</span><span class="op">)</span></span>
+<span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">vs_metabolic</span><span class="op">)</span></span>
+<span><span class="va">admiral_adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">admiral_adsl</span><span class="op">)</span></span></code></pre></div>
 <p>Within this vignette, <code>DM</code> is used as the basis for
 <code>ADSL</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -166,7 +166,7 @@ basis of <code>ADVS</code>.</p>
 source data and derive the usual <code>ADVS</code> analysis variables.
 Note that only the sections required for this vignette are covered in
 the following steps. To get a detailed guidance on all the steps, refer
-the <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a>.</p>
 </div>
 <div class="section level3">
@@ -196,7 +196,7 @@ body measurements, such as <code>BMI</code>, <code>HIPCIR</code>, and
 <p>This lookup may now be joined to the source data and this is how the
 parameters will look like:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/derive_vars_merged_lookup.html">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_merged_lookup.html">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
 <span>  <span class="va">advs</span>,</span>
 <span>  dataset_add <span class="op">=</span> <span class="va">param_lookup</span>,</span>
 <span>  new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span>, <span class="va">PARAM</span>, <span class="va">PARAMN</span>, <span class="va">PARCAT1</span>, <span class="va">PARCAT1N</span><span class="op">)</span>,</span>
@@ -223,7 +223,7 @@ done to ensure that the <code>BMI</code> is calculated consistently
 across all subjects and visits.</p>
 <p>In this step, we create parameter Body Mass Index (<code>BMI</code>)
 for the <code>ADVS</code> domain using the
-<code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/derive_param_bmi.html">derive_param_bmi()</a></code> function. Note that only variables
+<code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_param_bmi.html">derive_param_bmi()</a></code> function. Note that only variables
 specified in the <code>by_vars</code> argument will be populated in the
 newly created records. Also note that if height is collected only once
 for a subject use <code>constant_by_vars</code> to specify the function
@@ -234,10 +234,10 @@ calculated for visits where both are collected.</p>
 <span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="va">advs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">VSTESTCD</span> <span class="op">!=</span> <span class="st">"BMI"</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">VSTESTCD</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Re-calculate BMI</span></span>
-<span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/derive_param_bmi.html">derive_param_bmi</a></span><span class="op">(</span></span>
+<span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_param_bmi.html">derive_param_bmi</a></span><span class="op">(</span></span>
 <span>  <span class="va">advs</span>,</span>
 <span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">adsl_vars</span>, <span class="va">VISIT</span>, <span class="va">VISITNUM</span>, <span class="va">ADT</span>, <span class="va">ADY</span>, <span class="va">VSTPT</span>, <span class="va">VSTPTNUM</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
@@ -264,7 +264,7 @@ can be used to derive the waist-hip ratio.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="va">advs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/derive_param_waisthip.html">derive_param_waisthip</a></span><span class="op">(</span></span>
-<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>, <span class="va">VISIT</span>, <span class="va">VISITNUM</span><span class="op">)</span>,</span>
+<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>, <span class="va">VISIT</span>, <span class="va">VISITNUM</span><span class="op">)</span>,</span>
 <span>    wstcir_code <span class="op">=</span> <span class="st">"WSTCIR"</span>,</span>
 <span>    hipcir_code <span class="op">=</span> <span class="st">"HIPCIR"</span>,</span>
 <span>    set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
@@ -293,13 +293,13 @@ at a certain visit, is a common endpoint in metabolic trials. To
 accommodate these criteria, we will derive relevant criterion variables
 such as <code>CRITy</code>, <code>CRITyFL</code>, and
 <code>CRITyFLN</code>, with the necessary functions provided by
-<a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> outlined below.</p>
+<a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> outlined below.</p>
 <div class="section level4">
 <h4 id="derive-categorization-variables-avalcaty-basecaty">Derive Categorization Variables (<code>AVALCATy</code>,
 <code>BASECATy</code>)<a class="anchor" aria-label="anchor" href="#derive-categorization-variables-avalcaty-basecaty"></a>
 </h4>
 <p>For deriving categorization variables (<code>AVALCATy</code>,
-<code>BASECATy</code>) <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> provides <a href="https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html" class="external-link"><code>derive_vars_cat()</code></a>
+<code>BASECATy</code>) <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> provides <a href="https://pharmaverse.github.io/admiral/dev/reference/derive_vars_cat.html" class="external-link"><code>derive_vars_cat()</code></a>
 (see documentation of the function for details).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avalcat_lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
@@ -315,7 +315,7 @@ such as <code>CRITy</code>, <code>CRITyFL</code>, and
 <span></span>
 <span><span class="co"># Derive BMI class (AVALCAT1, AVALCA1N)</span></span>
 <span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="va">advs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/derive_vars_cat.html">derive_vars_cat</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_cat.html">derive_vars_cat</a></span><span class="op">(</span></span>
 <span>    definition <span class="op">=</span> <span class="va">avalcat_lookup</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -324,13 +324,13 @@ such as <code>CRITy</code>, <code>CRITyFL</code>, and
 <code>BASECATy</code>/ <code>BASECAyN</code> variables.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="va">advs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/derive_var_base.html">derive_var_base</a></span><span class="op">(</span></span>
-<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>, <span class="va">PARAMCD</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_var_base.html">derive_var_base</a></span><span class="op">(</span></span>
+<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>, <span class="va">PARAMCD</span><span class="op">)</span>,</span>
 <span>    source_var <span class="op">=</span> <span class="va">AVALCAT1</span>,</span>
 <span>    new_var <span class="op">=</span> <span class="va">BASECAT1</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/derive_var_base.html">derive_var_base</a></span><span class="op">(</span></span>
-<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>, <span class="va">PARAMCD</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_var_base.html">derive_var_base</a></span><span class="op">(</span></span>
+<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>, <span class="va">PARAMCD</span><span class="op">)</span>,</span>
 <span>    source_var <span class="op">=</span> <span class="va">AVALCA1N</span>,</span>
 <span>    new_var <span class="op">=</span> <span class="va">BASECA1N</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -342,7 +342,7 @@ such as <code>CRITy</code>, <code>CRITyFL</code>, and
 <code>CRITyFL</code>, <code>CRITyFN</code>)<a class="anchor" aria-label="anchor" href="#crit_vars"></a>
 </h4>
 <p>For deriving criterion variables (<code>CRITy</code>,
-<code>CRITyFL</code>, <code>CRITyFN</code>) <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a>
+<code>CRITyFL</code>, <code>CRITyFN</code>) <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>
 provides <a href="https://pharmaverse.github.io/admiral/dev/reference/derive_vars_crit_flag.html" class="external-link"><code>derive_vars_crit_flag()</code></a>.
 It ensures that they are derived in an ADaM-compliant way (see
 documentation of the function for details).</p>
@@ -353,9 +353,9 @@ based on percentage change in weight reduction from baseline is derived.
 Additional criterion flags can be added as needed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">advs</span> <span class="op">&lt;-</span> <span class="va">advs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
 <span>    derivation <span class="op">=</span> <span class="va">derive_vars_crit_flag</span>,</span>
-<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>      condition <span class="op">=</span> <span class="va">PCHG</span> <span class="op">&lt;=</span> <span class="op">-</span><span class="fl">5</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"WEIGHT"</span>,</span>
 <span>      description <span class="op">=</span> <span class="st">"Achievement of &gt;= 5% weight reduction from baseline"</span>,</span>
 <span>      crit_nr <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -364,9 +364,9 @@ Additional criterion flags can be added as needed.</p>
 <span>    <span class="op">)</span>,</span>
 <span>    filter <span class="op">=</span> <span class="va">VISITNUM</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"WEIGHT"</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
 <span>    derivation <span class="op">=</span> <span class="va">derive_vars_crit_flag</span>,</span>
-<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>      condition <span class="op">=</span> <span class="va">PCHG</span> <span class="op">&lt;=</span> <span class="op">-</span><span class="fl">10</span> <span class="op">&amp;</span> <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"WEIGHT"</span>,</span>
 <span>      description <span class="op">=</span> <span class="st">"Achievement of &gt;= 10% weight reduction from baseline"</span>,</span>
 <span>      crit_nr <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -382,7 +382,7 @@ Additional criterion flags can be added as needed.</p>
 <div class="section level3">
 <h3 id="advs_end">Remaining ADVS Set-up<a class="anchor" aria-label="anchor" href="#advs_end"></a>
 </h3>
-<p>The <a href="https://pharmaverse.github.io/admiral/cran-release/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+<p>The <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a> covers all the steps that are not shown
 here, such as merging the parameter-level values, timing variables, and
 analysis flags.</p>
