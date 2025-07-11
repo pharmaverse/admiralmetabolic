@@ -47,6 +47,8 @@ navbar:
         href: articles/advs.html
       - text: Creating a Control of Eating Questionnaire ADaM
         href: articles/adcoeq.html
+      - text: Creating a Metabolic ADLB ADaM
+        href: articles/adlb.html
     history:
       icon: fa-history
       href: articles/website-versions.html

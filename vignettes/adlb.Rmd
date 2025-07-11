@@ -37,7 +37,6 @@ library(admiralmetabolic)
 library(pharmaversesdtm)
 library(dplyr)
 library(stringr)
-library(tidyr)
 ```
 
 # Programming Workflow
