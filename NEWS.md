@@ -1,4 +1,4 @@
-# admiralmetabolic 0.1.0.9012
+# admiralmetabolic 0.2.0
 
 ## New features
 
