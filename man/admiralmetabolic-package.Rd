@@ -35,6 +35,7 @@ Authors:
   \item Sonali Das \email{sxd@novonordisk.com}
   \item Olga Starostecka \email{olga.starostecka@boehringer-ingelheim.com}
   \item Vang Le-Quy \email{vqul@novonordisk.com} (\href{https://orcid.org/0000-0003-2035-8619}{ORCID})
+  \item Keita Takahashi \email{keita.takahashi.4.biz@gmail.com} (\href{https://orcid.org/0009-0004-9847-5115}{ORCID})
 }
 
 }

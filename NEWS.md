@@ -30,6 +30,7 @@
 
 - Added `advs` as a dataset. (#113)
 
+- Updated contributer list. (#122)
 
 </details>
 
