@@ -1,4 +1,4 @@
-# admiralmetabolic (development version)
+# admiralmetabolic 0.1.0
 
 ## Documentation
 
@@ -7,6 +7,7 @@
 - Changed from using `admiral::admiral_adsl` to `admiralmetabolic::admiralmetabolic_adsl` in vignettes. (#123)
 
 ## Template programs
+
 - ADLB template scripts `ad_adlb.R` which creates a ADLB Dataset. (#108)
 - Changed from using `admiral::admiral_adsl` to `admiralmetabolic::admiralmetabolic_adsl` in template programs. (#123)
 
@@ -30,7 +31,7 @@
 
 - Added `advs` as a dataset. (#113)
 
-- Updated contributer list. (#122)
+- Updated contributor list. (#122)
 
 </details>
 
