@@ -49,6 +49,7 @@ library(dplyr)
 # Programming Workflow
 
 -   [Read in Data](#readdata)
+-   [Derive Core ADLB Variables](#derive_core)
 -   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
 -   [Derive Metabolic Parameters](#derive_param)
     -   [Derive BMI](#bmi)
@@ -64,28 +65,20 @@ library(dplyr)
 To start, all data frames needed for the creation of `ADVS` should be
 loaded into the global environment. Reading data will usually be a
 company specific process, however, for the purpose of this vignette, we
-will use example data from `{pharmaversesdtm}` and `{admiral}`. We will
+will use example data from `{pharmaversesdtm}` and `{admiralmetabolic}`. We will
 utilize `DM`, `VS` and `ADSL` for the basis of `ADVS`.
 
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- pharmaversesdtm::dm_metabolic
 vs_metabolic <- pharmaversesdtm::vs_metabolic
-admiral_adsl <- admiral::admiral_adsl
+admiralmetabolic_adsl <- admiralmetabolic::admiralmetabolic_adsl
 
 dm <- convert_blanks_to_na(dm_metabolic)
 vs <- convert_blanks_to_na(vs_metabolic)
-admiral_adsl <- convert_blanks_to_na(admiral_adsl)
+adsl <- convert_blanks_to_na(admiralmetabolic_adsl)
 ```
 
-Within this vignette, `DM` is used as the basis for `ADSL`:
-
-```{r eval=TRUE}
-# Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset
-adsl <- dm %>%
-  select(-DOMAIN) %>%
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
-  left_join(admiral_adsl %>% select(USUBJID, TRTSDT, TRTEDT), by = "USUBJID")
-```
+## Derive Core ADVS Variables {#derive_core}
 
 The following steps are to merge `ADSL` variables with the source data
 and derive the usual `ADVS` analysis variables. Note that only the
@@ -94,7 +87,7 @@ To get a detailed guidance on all the steps, refer the `{admiral}`
 [Creating a BDS Finding ADaM
 vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
 
-```{r, eval=TRUE, include=FALSE}
+```{r, eval=TRUE}
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 
 advs <- derive_vars_merged(
@@ -105,8 +98,7 @@ advs <- derive_vars_merged(
 )
 
 advs <- derive_vars_dt(advs, new_vars_prefix = "A", dtc = VSDTC)
-advs <-
-  derive_vars_dy(advs, reference_date = TRTSDT, source_vars = exprs(ADT))
+advs <- derive_vars_dy(advs, reference_date = TRTSDT, source_vars = exprs(ADT))
 ```
 
 ## Create `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` variables {#paramcd}
