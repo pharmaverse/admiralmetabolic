@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9010</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9011</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,36 +42,37 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="admiralmetabolic-development-version">admiralmetabolic (development version)<a class="anchor" aria-label="anchor" href="#admiralmetabolic-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="admiralmetabolic-010">admiralmetabolic 0.1.0<a class="anchor" aria-label="anchor" href="#admiralmetabolic-010"></a></h2><p class="text-muted">CRAN release: 2025-01-20</p>
 <div class="section level3">
-<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
-<ul><li>Updated installation instructions. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/88" class="external-link">#88</a>)</li>
-<li>Vignette “Creating a Metabolic ADLB ADaM”. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/102" class="external-link">#102</a>)</li>
-<li>Changed from using <code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/admiral_adsl.html">admiral::admiral_adsl</a></code> to <code><a href="../reference/admiralmetabolic_adsl.html">admiralmetabolic::admiralmetabolic_adsl</a></code> in vignettes. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/123" class="external-link">#123</a>)</li>
+<h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
+<ul><li>New vignette on “Creating a Metabolic ADLB ADaM”. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/102" class="external-link">#102</a>)</li>
+<li>New ADLB template (<code>ad_adlb.R</code>) for creating metabolic specific ADLB dataset. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/108" class="external-link">#108</a>)</li>
+<li>A SDTM dataset for metabolic specific laboratory measurements (<code>lb_metabolic</code>) in {pharmaversesdtm}. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/94" class="external-link">#94</a>)</li>
+<li>A ADSL dataset for metabolic specific variables (<code>adsl_metabolic</code>). (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/73" class="external-link">#73</a> &amp; <a href="https://github.com/pharmaverse/admiralmetabolic/issues/116" class="external-link">#116</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="template-programs-development-version">Template programs<a class="anchor" aria-label="anchor" href="#template-programs-development-version"></a></h3>
-<ul><li>ADLB template scripts <code>ad_adlb.R</code> which creates a ADLB Dataset. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/108" class="external-link">#108</a>)</li>
-<li>Changed from using <code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/admiral_adsl.html">admiral::admiral_adsl</a></code> to <code><a href="../reference/admiralmetabolic_adsl.html">admiralmetabolic::admiralmetabolic_adsl</a></code> in template programs. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/123" class="external-link">#123</a>)</li>
+<h3 id="documentation-0-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-0"></a></h3>
+<ul><li>Updated installation instructions to install from CRAN. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/88" class="external-link">#88</a>)</li>
+<li>Changed vignettes to use <code><a href="../reference/admiralmetabolic_adsl.html">admiralmetabolic::admiralmetabolic_adsl</a></code> instead of <code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/admiral_adsl.html">admiral::admiral_adsl</a></code>. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/123" class="external-link">#123</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="various-development-version">Various<a class="anchor" aria-label="anchor" href="#various-development-version"></a></h3>
+<h3 id="template-programs-0-1-0">Template programs<a class="anchor" aria-label="anchor" href="#template-programs-0-1-0"></a></h3>
+<ul><li>Changed template programs to use <code><a href="../reference/admiralmetabolic_adsl.html">admiralmetabolic::admiralmetabolic_adsl</a></code> instead of <code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/admiral_adsl.html">admiral::admiral_adsl</a></code>. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/123" class="external-link">#123</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="various-0-1-0">Various<a class="anchor" aria-label="anchor" href="#various-0-1-0"></a></h3>
 <ul><li>Moved test data <code>vs_metabolic</code>, <code>qs_metabolic</code> and <code>dm_metabolic</code> from {admiralmetabolic} to {pharmaversesdtm}. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/95" class="external-link">#95</a>)</li>
-</ul></div>
-<div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>A new SDTM dataset for metabolic specific laboratory measurements (<code>lb_metabolic</code>) in {pharmaversesdtm}. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/94" class="external-link">#94</a>)</li>
-<li>A new ADSL dataset for metabolic specific variables (<code>adsl_metabolic</code>). (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/73" class="external-link">#73</a> &amp; <a href="https://github.com/pharmaverse/admiralmetabolic/issues/116" class="external-link">#116</a>)</li>
 </ul><details><summary>
 Developer Notes
 </summary><ul><li><p>Activated automatic version bumping CICD workflow. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/98" class="external-link">#98</a>)</p></li>
 <li><p>Added pharmaverse, CRAN and Test Coverage badges to home page. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/97" class="external-link">#97</a>)</p></li>
 <li><p>Added initial package scope to home page. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/101" class="external-link">#101</a>)</p></li>
 <li><p>Added <code>advs</code> as a dataset. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/113" class="external-link">#113</a>)</p></li>
+<li><p>Updated contributor list. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/122" class="external-link">#122</a>)</p></li>
 </ul></details></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="admiralmetabolic-010">admiralmetabolic 0.1.0<a class="anchor" aria-label="anchor" href="#admiralmetabolic-010"></a></h2><p class="text-muted">CRAN release: 2025-01-20</p>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="admiralmetabolic-010-1">admiralmetabolic 0.1.0<a class="anchor" aria-label="anchor" href="#admiralmetabolic-010-1"></a></h2><p class="text-muted">CRAN release: 2025-01-20</p>
 <ul><li>Initial package release mainly focused on obesity therapeutic area.</li>
 </ul><div class="section level3">
 <h3 id="functions-0-1-0">Functions<a class="anchor" aria-label="anchor" href="#functions-0-1-0"></a></h3>
@@ -79,12 +80,12 @@ Developer Notes
 <li>The function <code><a href="../reference/derive_param_waisthgt.html">derive_param_waisthgt()</a></code> for deriving Waist to Height Ratio. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/33" class="external-link">#33</a> &amp; <a href="https://github.com/pharmaverse/admiralmetabolic/issues/52" class="external-link">#52</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="template-programs-0-1-0">Template programs<a class="anchor" aria-label="anchor" href="#template-programs-0-1-0"></a></h3>
+<h3 id="template-programs-0-1-0-1">Template programs<a class="anchor" aria-label="anchor" href="#template-programs-0-1-0-1"></a></h3>
 <ul><li>ADVS template scripts <code>ad_advs.R</code> which creates a Vital Sign Analysis Dataset with metabolic specific derivations. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/35" class="external-link">#35</a>)</li>
 <li>ADCOEQ template scripts <code>ad_adcoeq.R</code> which creates a Control of Eating Questionnaires Analysis Dataset. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/41" class="external-link">#41</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-0-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-0"></a></h3>
+<h3 id="documentation-0-1-0-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-0-1"></a></h3>
 <ul><li>Vignette “Creating a Metabolic ADVS ADaM”. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/28" class="external-link">#28</a>)</li>
 <li>Vignette “Creating a Control of Eating Questionnaire ADaM”. (<a href="https://github.com/pharmaverse/admiralmetabolic/issues/53" class="external-link">#53</a>)</li>
 </ul></div>
@@ -94,7 +95,7 @@ Developer Notes
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Anders Askeland, Andrii Yurovskyi, Kathrin Flunkert, Edoardo Mancini, Shunsuke Goto, Siddhesh Pujari, Sonali Das, Olga Starostecka, Vang Le-Quy.</p>
+  <p>Developed by Anders Askeland, Andrii Yurovskyi, Kathrin Flunkert, Edoardo Mancini, Shunsuke Goto, Siddhesh Pujari, Sonali Das, Olga Starostecka, Vang Le-Quy, Keita Takahashi.</p>
 </div>
 
 <div class="pkgdown-footer-right">
