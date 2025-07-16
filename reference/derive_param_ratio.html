@@ -13,7 +13,7 @@ Note: This is a wrapper function for the more generic admiral::derive_param_comp
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@ Note: This is a wrapper function for the more generic admiral::derive_param_comp
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-user-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">User Guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-user-guides"><li><a class="dropdown-item" href="../articles/advs.html">Creating a Metabolic ADVS</a></li>
     <li><a class="dropdown-item" href="../articles/adcoeq.html">Creating a Control of Eating Questionnaire ADaM</a></li>
+    <li><a class="dropdown-item" href="../articles/adlb.html">Creating a Metabolic ADLB ADaM</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -51,7 +52,7 @@ Note: This is a wrapper function for the more generic admiral::derive_param_comp
     <p>Adds a record for a generic Ratio parameter using two existing parameter
 (numerator and denominator) each by group (e.g., subject and visit) where the source parameters
 are available.</p>
-<p><strong>Note:</strong> This is a wrapper function for the more generic <code><a href="https://pharmaverse.github.io/admiral/reference/derive_param_computed.html" class="external-link">admiral::derive_param_computed()</a></code>.</p>
+<p><strong>Note:</strong> This is a wrapper function for the more generic <code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_param_computed.html">admiral::derive_param_computed()</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -86,11 +87,9 @@ specified by <code>numerator_code</code> and <code>denominator_code</code>.</p><
 
 <dt id="arg-by-vars">by_vars<a class="anchor" aria-label="anchor" href="#arg-by-vars"></a></dt>
 <dd><p>Grouping variables</p>
-<p>For each group defined by <code>by_vars</code> an observation is added to the output
-dataset. Only variables specified in <code>by_vars</code> will be populated
-in the newly created records.</p>
-<p><em>Permitted Values</em>: list of variables created by <code>exprs()</code>
-e.g. <code>exprs(USUBJID, VISIT)</code></p></dd>
+<p>Grouping variables uniquely identifying a set of records for which
+<code>new_vars</code> are to be calculated.</p>
+<p><em>Permitted Values:</em> list of variables created by exprs()</p></dd>
 
 
 <dt id="arg-numerator-code">numerator_code<a class="anchor" aria-label="anchor" href="#arg-numerator-code"></a></dt>
@@ -195,7 +194,7 @@ $$RATIO = \frac{NUMERATOR}{DENOMINATOR}$$</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Anders Askeland, Andrii Yurovskyi, Kathrin Flunkert, Edoardo Mancini, Shunsuke Goto, Siddhesh Pujari, Sonali Das, Olga Starostecka, Vang Le-Quy.</p>
+  <p>Developed by Anders Askeland, Andrii Yurovskyi, Kathrin Flunkert, Edoardo Mancini, Shunsuke Goto, Siddhesh Pujari, Sonali Das, Olga Starostecka, Vang Le-Quy, Keita Takahashi.</p>
 </div>
 
 <div class="pkgdown-footer-right">
