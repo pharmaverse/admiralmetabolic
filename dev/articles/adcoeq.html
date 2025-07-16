@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9009</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9010</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,6 +130,7 @@ format as input unless otherwise specified.</em></p>
 </h2>
 <ul>
 <li><a href="#readdata">Read in Data</a></li>
+<li><a href="#derive_core">Derive Core ADLB Variables</a></li>
 <li><a href="#original_items">Original items</a></li>
 <li><a href="#subscales">Derive the four Subscales</a></li>
 <li><a href="#adcoeq_end">Remaining ADCOEQ Set-up</a></li>
@@ -141,28 +142,35 @@ format as input unless otherwise specified.</em></p>
 should be loaded into the global environment. Reading data will usually
 be a company specific process, however, for the purpose of this
 vignette, we will use example data from <a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a>
-and <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>. We will utilize <code>DM</code>,
+and <a href="https://pharmaverse.github.io/admiralmetabolic/">admiralmetabolic</a>. We will utilize <code>DM</code>,
 <code>QS</code> and <code>ADSL</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm_metabolic</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/dm_metabolic.html" class="external-link">dm_metabolic</a></span></span>
 <span><span class="va">qs_metabolic</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/qs_metabolic.html" class="external-link">qs_metabolic</a></span></span>
-<span><span class="va">admiral_adsl</span> <span class="op">&lt;-</span> <span class="fu">admiral</span><span class="fu">::</span><span class="va"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/admiral_adsl.html">admiral_adsl</a></span></span>
+<span><span class="va">admiralmetabolic_adsl</span> <span class="op">&lt;-</span> <span class="fu">admiralmetabolic</span><span class="fu">::</span><span class="va"><a href="../reference/admiralmetabolic_adsl.html">admiralmetabolic_adsl</a></span></span>
 <span></span>
 <span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">dm_metabolic</span><span class="op">)</span></span>
 <span><span class="va">qs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">qs_metabolic</span><span class="op">)</span></span>
-<span><span class="va">admiral_adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">admiral_adsl</span><span class="op">)</span></span></code></pre></div>
-<p>Within this vignette, <code>DM</code> is used as the basis for
-<code>ADSL</code>:</p>
+<span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">admiralmetabolic_adsl</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="derive_core">Derive Core ADVS Variables<a class="anchor" aria-label="anchor" href="#derive_core"></a>
+</h3>
+<p>The following steps are to merge <code>ADSL</code> variables with the
+source data and derive the usual <code>ADCOEQ</code> analysis variables.
+Note that only the sections required for this vignette are covered in
+the following steps. To get a detailed guidance on all the steps, refer
+the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+a BDS Finding ADaM vignette</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset</span></span>
-<span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="va">dm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">DOMAIN</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>TRT01P <span class="op">=</span> <span class="va">ARM</span>, TRT01A <span class="op">=</span> <span class="va">ACTARM</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
-<span>    dataset_add <span class="op">=</span> <span class="va">admiral_adsl</span>,</span>
-<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span>
-<span>    new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">TRTSDT</span>, <span class="va">TRTEDT</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">adsl_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">TRTSDT</span>, <span class="va">TRTEDT</span>, <span class="va">TRT01P</span>, <span class="va">TRT01A</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
+<span>  <span class="va">qs</span>,</span>
+<span>  dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
+<span>  new_vars <span class="op">=</span> <span class="va">adsl_vars</span>,</span>
+<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="original_items">Original Items<a class="anchor" aria-label="anchor" href="#original_items"></a>
@@ -171,13 +179,7 @@ and <a href="https://pharmaverse.github.io/admiral/" class="external-link">admir
 can be handled in the same way as in an <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">{admiral}
 BDS finding ADaM</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adcoeq1</span> <span class="op">&lt;-</span> <span class="va">qs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="co"># Add ADSL variables</span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
-<span>    dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
-<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span>,</span>
-<span>    new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">TRTSDT</span>, <span class="va">TRTEDT</span>, <span class="va">TRT01P</span>, <span class="va">TRT01A</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="va">adcoeq</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Add analysis parameter variables</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    PARAMCD <span class="op">=</span> <span class="va">QSTESTCD</span>,</span>
@@ -212,7 +214,7 @@ original scores indicate anxiety.</p>
 it is recommended to keep the original <code>QSSTRESN</code> values in
 the ADaM dataset for traceability.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adcoeq2</span> <span class="op">&lt;-</span> <span class="va">adcoeq1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="va">adcoeq</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Add analysis value variables</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    AVAL <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"COEQ06"</span>, <span class="fl">100</span> <span class="op">-</span> <span class="va">QSSTRESN</span>, <span class="va">QSSTRESN</span><span class="op">)</span>,</span>
@@ -243,7 +245,7 @@ items/questions.</p>
 <p>These parameters can be derived by
 <code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_summary_records.html">derive_summary_records()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adcoeq3</span> <span class="op">&lt;-</span> <span class="va">adcoeq2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="va">adcoeq</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/call_derivation.html">call_derivation</a></span><span class="op">(</span></span>
 <span>    derivation <span class="op">=</span> <span class="va">derive_summary_records</span>,</span>
 <span>    variable_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -280,7 +282,7 @@ items/questions.</p>
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    dataset_add <span class="op">=</span> <span class="va">adcoeq2</span>,</span>
+<span>    dataset_add <span class="op">=</span> <span class="va">adcoeq</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">AVISIT</span>, <span class="va">AVISITN</span>, <span class="va">ADT</span>, <span class="va">ADY</span>, <span class="va">PARCAT1</span>, <span class="va">TRTSDT</span>, <span class="va">TRTEDT</span>, <span class="va">TRT01P</span>, <span class="va">TRT01A</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div id="htmlwidget-36aa3d2a04d42bbc2145" style="width:auto;height:auto;" class="datatables html-widget"></div>
