@@ -49,36 +49,43 @@ library(stringr)
 # Programming Workflow
 
 -   [Read in Data](#readdata)
+-   [Derive Core ADLB Variables](#derive_core)
 -   [Original items](#original_items)
 -   [Derive the four Subscales](#subscales)
 -   [Remaining ADCOEQ Set-up](#adcoeq_end)
 
 ## Read in Data {#readdata}
 
-To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiral}`. We will utilize `DM`, `QS` and `ADSL`.
+To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiralmetabolic}`. We will utilize `DM`, `QS` and `ADSL`.
 
 ```{r, message=FALSE, warning=FALSE}
 dm_metabolic <- pharmaversesdtm::dm_metabolic
 qs_metabolic <- pharmaversesdtm::qs_metabolic
-admiral_adsl <- admiral::admiral_adsl
+admiralmetabolic_adsl <- admiralmetabolic::admiralmetabolic_adsl
 
 dm <- convert_blanks_to_na(dm_metabolic)
 qs <- convert_blanks_to_na(qs_metabolic)
-admiral_adsl <- convert_blanks_to_na(admiral_adsl)
+adsl <- convert_blanks_to_na(admiralmetabolic_adsl)
 ```
 
-Within this vignette, `DM` is used as the basis for `ADSL`:
+## Derive Core ADVS Variables {#derive_core}
 
-```{r eval=TRUE}
-# Retrieve required variables from admiral ADSL for this vignette that are not present in DM dataset
-adsl <- dm %>%
-  select(-DOMAIN) %>%
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
-  derive_vars_merged(
-    dataset_add = admiral_adsl,
-    by_vars = exprs(USUBJID),
-    new_vars = exprs(TRTSDT, TRTEDT)
-  )
+The following steps are to merge `ADSL` variables with the source data
+and derive the usual `ADCOEQ` analysis variables. Note that only the
+sections required for this vignette are covered in the following steps.
+To get a detailed guidance on all the steps, refer the `{admiral}`
+[Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+
+```{r, eval=TRUE}
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
+
+adcoeq <- derive_vars_merged(
+  qs,
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = exprs(STUDYID, USUBJID)
+)
 ```
 
 ## Original Items {#original_items}
@@ -86,13 +93,7 @@ adsl <- dm %>%
 The original items, i.e. the answers to the questionnaire questions, can be handled in the same way as in an [{admiral} BDS finding ADaM](https://pharmaverse.github.io/admiral/articles/bds_finding.html). 
 
 ```{r eval=TRUE}
-adcoeq1 <- qs %>%
-  # Add ADSL variables
-  derive_vars_merged(
-    dataset_add = adsl,
-    by_vars = exprs(STUDYID, USUBJID),
-    new_vars = exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
-  ) %>%
+adcoeq <- adcoeq %>%
   # Add analysis parameter variables
   mutate(
     PARAMCD = QSTESTCD,
@@ -119,7 +120,7 @@ adcoeq1 <- qs %>%
 
 ```{r echo=FALSE}
 dataset_vignette(
-  arrange(adcoeq1, USUBJID, PARCAT1, ADY, PARAMCD),
+  arrange(adcoeq, USUBJID, PARCAT1, ADY, PARAMCD),
   display_vars = exprs(USUBJID, PARAMCD, PARAM, PARCAT1, QSSTRESN, ADY, AVISIT)
 )
 ```
@@ -129,7 +130,7 @@ The analysis values (`AVAL` and `AVALC`) for most original items are set directl
 In cases where `QSSTRESN` values require transformation, it is recommended to keep the original `QSSTRESN` values in the ADaM dataset for traceability.
 
 ```{r eval=TRUE}
-adcoeq2 <- adcoeq1 %>%
+adcoeq <- adcoeq %>%
   # Add analysis value variables
   mutate(
     AVAL = if_else(PARAMCD == "COEQ06", 100 - QSSTRESN, QSSTRESN),
@@ -139,7 +140,7 @@ adcoeq2 <- adcoeq1 %>%
 
 ```{r echo=FALSE}
 dataset_vignette(
-  arrange(adcoeq2, USUBJID, PARCAT1, ADY, PARAMCD),
+  arrange(adcoeq, USUBJID, PARCAT1, ADY, PARAMCD),
   display_vars = exprs(USUBJID, PARAMCD, PARAM, PARCAT1, QSSTRESN, ADY, AVISIT, AVALC, AVAL),
   filter = PARAMCD %in% c("COEQ01", "COEQ02", "COEQ03", "COEQ04", "COEQ05", "COEQ06", "COEQ07", "COEQ08", "COEQ09", "COEQ20")
 )
@@ -164,7 +165,7 @@ The subscales are defined as follows:
 These parameters can be derived by `derive_summary_records()`:
 
 ```{r eval=TRUE}
-adcoeq3 <- adcoeq2 %>%
+adcoeq <- adcoeq %>%
   call_derivation(
     derivation = derive_summary_records,
     variable_params = list(
@@ -201,14 +202,14 @@ adcoeq3 <- adcoeq2 %>%
         )
       )
     ),
-    dataset_add = adcoeq2,
+    dataset_add = adcoeq,
     by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A)
   )
 ```
 
 ```{r echo=FALSE}
 dataset_vignette(
-  arrange(adcoeq3, USUBJID, ADY, PARAMCD),
+  arrange(adcoeq, USUBJID, ADY, PARAMCD),
   display_vars = exprs(USUBJID, PARAMCD, PARAM, AVAL, ADY, AVISIT),
   filter = PARAMCD %in% c("COEQCRCO", "COEQCRSW", "COEQCRSA", "COEQPOMO")
 )

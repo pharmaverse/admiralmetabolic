@@ -4,9 +4,11 @@
 
 - Updated installation instructions. (#88)
 - Vignette "Creating a Metabolic ADLB ADaM". (#102)
+- Changed from using `admiral::admiral_adsl` to `admiralmetabolic::admiralmetabolic_adsl` in vignettes. (#123)
 
 ## Template programs
 - ADLB template scripts `ad_adlb.R` which creates a ADLB Dataset. (#108)
+- Changed from using `admiral::admiral_adsl` to `admiralmetabolic::admiralmetabolic_adsl` in template programs. (#123)
 
 ## Various
 

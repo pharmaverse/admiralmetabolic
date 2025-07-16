@@ -27,7 +27,7 @@ adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
 
 # Read data
 vs_metabolic <- pharmaversesdtm::vs_metabolic
-adsl <- admiral::admiral_adsl
+adsl <- admiralmetabolic::admiralmetabolic_adsl
 
 # Convert SAS missing character values to NA
 advs <- vs_metabolic %>%
