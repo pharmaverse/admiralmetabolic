@@ -19,3 +19,4 @@
 ^\.devcontainer$
 ^data-raw$
 ^doc$
+^cran-comments\.md$
