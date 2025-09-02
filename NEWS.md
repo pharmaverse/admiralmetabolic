@@ -1,4 +1,4 @@
-# admiralmetabolic 0.2.1
+# admiralmetabolic (development version)
 
 ## Bug fixes
 
