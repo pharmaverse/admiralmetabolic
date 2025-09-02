@@ -1,3 +1,9 @@
+# admiralmetabolic 0.2.1
+
+## Bug fixes
+
+- Changed template save directory. (#129)
+
 # admiralmetabolic 0.2.0
 
 ## New features
