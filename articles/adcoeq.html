@@ -148,9 +148,9 @@ and <a href="https://pharmaverse.github.io/admiralmetabolic/">admiralmetabolic</
 <span><span class="va">qs_metabolic</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/qs_metabolic.html" class="external-link">qs_metabolic</a></span></span>
 <span><span class="va">admiralmetabolic_adsl</span> <span class="op">&lt;-</span> <span class="fu">admiralmetabolic</span><span class="fu">::</span><span class="va"><a href="../reference/admiralmetabolic_adsl.html">admiralmetabolic_adsl</a></span></span>
 <span></span>
-<span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">dm_metabolic</span><span class="op">)</span></span>
-<span><span class="va">qs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">qs_metabolic</span><span class="op">)</span></span>
-<span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">admiralmetabolic_adsl</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">dm_metabolic</span><span class="op">)</span></span>
+<span><span class="va">qs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">qs_metabolic</span><span class="op">)</span></span>
+<span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">admiralmetabolic_adsl</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="derive_core">Derive Core ADVS Variables<a class="anchor" aria-label="anchor" href="#derive_core"></a>
@@ -164,7 +164,7 @@ a BDS Finding ADaM vignette</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">TRTSDT</span>, <span class="va">TRTEDT</span>, <span class="va">TRT01P</span>, <span class="va">TRT01A</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
+<span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
 <span>  <span class="va">qs</span>,</span>
 <span>  dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
 <span>  new_vars <span class="op">=</span> <span class="va">adsl_vars</span>,</span>
@@ -186,8 +186,8 @@ BDS finding ADaM</a>.</p>
 <span>    PARCAT1 <span class="op">=</span> <span class="va">QSCAT</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Add timing variables</span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_dt.html">derive_vars_dt</a></span><span class="op">(</span>new_vars_prefix <span class="op">=</span> <span class="st">"A"</span>, dtc <span class="op">=</span> <span class="va">QSDTC</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_vars_dy.html">derive_vars_dy</a></span><span class="op">(</span>reference_date <span class="op">=</span> <span class="va">TRTSDT</span>, source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_vars_dt.html">derive_vars_dt</a></span><span class="op">(</span>new_vars_prefix <span class="op">=</span> <span class="st">"A"</span>, dtc <span class="op">=</span> <span class="va">QSDTC</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_vars_dy.html">derive_vars_dy</a></span><span class="op">(</span>reference_date <span class="op">=</span> <span class="va">TRTSDT</span>, source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    AVISIT <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">VISIT</span><span class="op">)</span> <span class="op">~</span> <span class="cn">NA_character_</span>,</span>
@@ -242,13 +242,13 @@ items/questions.</p>
 (reversed).</p></li>
 </ul>
 <p>These parameters can be derived by
-<code><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/derive_summary_records.html">derive_summary_records()</a></code>:</p>
+<code><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_summary_records.html">derive_summary_records()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adcoeq</span> <span class="op">&lt;-</span> <span class="va">adcoeq</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/call_derivation.html">call_derivation</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/call_derivation.html">call_derivation</a></span><span class="op">(</span></span>
 <span>    derivation <span class="op">=</span> <span class="va">derive_summary_records</span>,</span>
 <span>    variable_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>        filter_add <span class="op">=</span> <span class="va">PARAMCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COEQ09"</span>, <span class="st">"COEQ10"</span>, <span class="st">"COEQ11"</span>, <span class="st">"COEQ12"</span>, <span class="st">"COEQ19"</span><span class="op">)</span>,</span>
 <span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
 <span>          AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">AVAL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -256,7 +256,7 @@ items/questions.</p>
 <span>          PARAM <span class="op">=</span> <span class="st">"COEQ - Craving Control"</span></span>
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>        filter_add <span class="op">=</span> <span class="va">PARAMCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COEQ03"</span>, <span class="st">"COEQ13"</span>, <span class="st">"COEQ14"</span>, <span class="st">"COEQ15"</span><span class="op">)</span>,</span>
 <span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
 <span>          AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">AVAL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -264,7 +264,7 @@ items/questions.</p>
 <span>          PARAM <span class="op">=</span> <span class="st">"COEQ - Craving for Sweet"</span></span>
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>        filter_add <span class="op">=</span> <span class="va">PARAMCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COEQ04"</span>, <span class="st">"COEQ16"</span>, <span class="st">"COEQ17"</span>, <span class="st">"COEQ18"</span><span class="op">)</span>,</span>
 <span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
 <span>          AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">AVAL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -272,7 +272,7 @@ items/questions.</p>
 <span>          PARAM <span class="op">=</span> <span class="st">"COEQ - Craving for Savoury"</span></span>
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>        filter_add <span class="op">=</span> <span class="va">PARAMCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"COEQ05"</span>, <span class="st">"COEQ07"</span>, <span class="st">"COEQ08"</span>, <span class="st">"COEQ06"</span><span class="op">)</span>,</span>
 <span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
 <span>          AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">AVAL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
