@@ -130,43 +130,40 @@
 #' library(rlang)
 #'
 #' adlb <- tribble(
-#'   ~STUDYID,  ~USUBJID,  ~PARAMCD, ~AVISIT,    ~AVISITN, ~AVAL, ~AVALU,
+#'   ~STUDYID, ~USUBJID, ~PARAMCD, ~AVISIT, ~AVISITN, ~AVAL, ~AVALU,
 #'
 #'   # Subject 1 - From Normoglycemic at BL to Prediabetic at Week 4 onwards
 #'
-#'   "STUDY01", "SUBJ001", "HBA1C",  "BASELINE",  0,         5.4, "%",
-#'   "STUDY01", "SUBJ001", "HBA1C",  "WEEK 4",    4,         5.8, "%",
-#'   "STUDY01", "SUBJ001", "HBA1C",  "WEEK 8",    8,         6.1, "%",
-#'   "STUDY01", "SUBJ001", "HBA1C",  "WEEK 12",  12,         6.4, "%",
-#'
-#'   "STUDY01", "SUBJ001", "FPG",    "BASELINE",  0,        90,   "mg/dL",
-#'   "STUDY01", "SUBJ001", "FPG",    "WEEK 4",    4,       110,   "mg/dL",
-#'   "STUDY01", "SUBJ001", "FPG",    "WEEK 8",    8,       115,   "mg/dL",
-#'   "STUDY01", "SUBJ001", "FPG",    "WEEK 12",  12,       120,   "mg/dL",
+#'   "STUDY01", "SUBJ001", "HBA1C", "BASELINE", 0, 5.4, "%",
+#'   "STUDY01", "SUBJ001", "HBA1C", "WEEK 4", 4, 5.8, "%",
+#'   "STUDY01", "SUBJ001", "HBA1C", "WEEK 8", 8, 6.1, "%",
+#'   "STUDY01", "SUBJ001", "HBA1C", "WEEK 12", 12, 6.4, "%",
+#'   "STUDY01", "SUBJ001", "FPG", "BASELINE", 0, 90, "mg/dL",
+#'   "STUDY01", "SUBJ001", "FPG", "WEEK 4", 4, 110, "mg/dL",
+#'   "STUDY01", "SUBJ001", "FPG", "WEEK 8", 8, 115, "mg/dL",
+#'   "STUDY01", "SUBJ001", "FPG", "WEEK 12", 12, 120, "mg/dL",
 #'
 #'   # Subject 2 - From Normoglycemic at BL to Diabetic at Week 12
 #'
-#'   "STUDY01", "SUBJ002", "HBA1C",  "BASELINE",  0,         5.2, "%",
-#'   "STUDY01", "SUBJ002", "HBA1C",  "WEEK 4",    4,         5.6, "%",
-#'   "STUDY01", "SUBJ002", "HBA1C",  "WEEK 8",    8,         6.4, "%",
-#'   "STUDY01", "SUBJ002", "HBA1C",  "WEEK 12",  12,         7.0, "%",
-#'
-#'   "STUDY01", "SUBJ002", "FPG",    "BASELINE",  0,        88,   "mg/dL",
-#'   "STUDY01", "SUBJ002", "FPG",    "WEEK 4",    4,       100,   "mg/dL",
-#'   "STUDY01", "SUBJ002", "FPG",    "WEEK 8",    8,       120,   "mg/dL",
-#'   "STUDY01", "SUBJ002", "FPG",    "WEEK 12",  12,       130,   "mg/dL",
+#'   "STUDY01", "SUBJ002", "HBA1C", "BASELINE", 0, 5.2, "%",
+#'   "STUDY01", "SUBJ002", "HBA1C", "WEEK 4", 4, 5.6, "%",
+#'   "STUDY01", "SUBJ002", "HBA1C", "WEEK 8", 8, 6.4, "%",
+#'   "STUDY01", "SUBJ002", "HBA1C", "WEEK 12", 12, 7.0, "%",
+#'   "STUDY01", "SUBJ002", "FPG", "BASELINE", 0, 88, "mg/dL",
+#'   "STUDY01", "SUBJ002", "FPG", "WEEK 4", 4, 100, "mg/dL",
+#'   "STUDY01", "SUBJ002", "FPG", "WEEK 8", 8, 120, "mg/dL",
+#'   "STUDY01", "SUBJ002", "FPG", "WEEK 12", 12, 130, "mg/dL",
 #'
 #'   # Subject 3 - From Prediabetic at BL to Diabetic at Week 8 onwards
 #'
-#'   "STUDY01", "SUBJ003", "HBA1C",  "BASELINE",  0,         6.0, "%",
-#'   "STUDY01", "SUBJ003", "HBA1C",  "WEEK 4",    4,         6.2, "%",
-#'   "STUDY01", "SUBJ003", "HBA1C",  "WEEK 8",    8,         6.7, "%",
-#'   "STUDY01", "SUBJ003", "HBA1C",  "WEEK 12",  12,         7.2, "%",
-#'
-#'   "STUDY01", "SUBJ003", "FPG",    "BASELINE",  0,       105,   "mg/dL",
-#'   "STUDY01", "SUBJ003", "FPG",    "WEEK 4",    4,       112,   "mg/dL",
-#'   "STUDY01", "SUBJ003", "FPG",    "WEEK 8",    8,       130,   "mg/dL",
-#'   "STUDY01", "SUBJ003", "FPG",    "WEEK 12",  12,       145,   "mg/dL"
+#'   "STUDY01", "SUBJ003", "HBA1C", "BASELINE", 0, 6.0, "%",
+#'   "STUDY01", "SUBJ003", "HBA1C", "WEEK 4", 4, 6.2, "%",
+#'   "STUDY01", "SUBJ003", "HBA1C", "WEEK 8", 8, 6.7, "%",
+#'   "STUDY01", "SUBJ003", "HBA1C", "WEEK 12", 12, 7.2, "%",
+#'   "STUDY01", "SUBJ003", "FPG", "BASELINE", 0, 105, "mg/dL",
+#'   "STUDY01", "SUBJ003", "FPG", "WEEK 4", 4, 112, "mg/dL",
+#'   "STUDY01", "SUBJ003", "FPG", "WEEK 8", 8, 130, "mg/dL",
+#'   "STUDY01", "SUBJ003", "FPG", "WEEK 12", 12, 145, "mg/dL"
 #' )
 #'
 #' derive_param_glycstt(
@@ -180,7 +177,6 @@
 #'   fpg_code = "FPG",
 #'   get_unit_expr = AVALU
 #' )
-
 derive_param_glycstt <- function(dataset,
                                  filter = NULL,
                                  by_vars,
@@ -197,7 +193,6 @@ derive_param_glycstt <- function(dataset,
                                    !!hba1c_code := c("mmol/mol" = 48, "%" = 6.5),
                                    !!fpg_code := c("mmol/L" = 7, "mg/dL" = 126)
                                  )) {
-
   # Assertions ----
 
   assert_vars(by_vars)
@@ -248,7 +243,6 @@ derive_param_glycstt <- function(dataset,
                                 arg_name = rlang::caller_arg(thresholds),
                                 class = "assert_thresholds",
                                 call = parent.frame()) {
-
     assert_list_of(
       thresholds, "numeric",
       named = TRUE,
@@ -270,7 +264,6 @@ derive_param_glycstt <- function(dataset,
     }
 
     for (param in names(thresholds)) {
-
       if (is.null(names(thresholds[[param]]))) {
         next
       }
@@ -316,16 +309,15 @@ derive_param_glycstt <- function(dataset,
       set_values_to = exprs(
         AVALC = case_when(
           (
-            !!sym(paste0("AVAL.", hba1c_code)) >= !!sym(paste0("PRED_THRESHOLD.", hba1c_code))
-            | !!sym(paste0("AVAL.", fpg_code)) >= !!sym(paste0("PRED_THRESHOLD.", fpg_code))
+            !!sym(paste0("AVAL.", hba1c_code)) >= !!sym(paste0("PRED_THRESHOLD.", hba1c_code)) |
+              !!sym(paste0("AVAL.", fpg_code)) >= !!sym(paste0("PRED_THRESHOLD.", fpg_code))
           )
           ~ "PREDIABETIC",
           (
-            !!sym(paste0("AVAL.", hba1c_code)) < !!sym(paste0("PRED_THRESHOLD.", hba1c_code))
-            | !!sym(paste0("AVAL.", fpg_code)) < !!sym(paste0("PRED_THRESHOLD.", fpg_code))
+            !!sym(paste0("AVAL.", hba1c_code)) < !!sym(paste0("PRED_THRESHOLD.", hba1c_code)) |
+              !!sym(paste0("AVAL.", fpg_code)) < !!sym(paste0("PRED_THRESHOLD.", fpg_code))
           )
           ~ "NORMOGLYCEMIC",
-
           .default = "UNKNOWN"
         ),
         !!!set_values_to
@@ -353,8 +345,8 @@ derive_param_glycstt <- function(dataset,
       # Change PARAMCD values for convenience
       PARAMCD = case_match(
         PARAMCD,
-        {{ hba1c_code }} ~ 'HBA1C',
-        {{ fpg_code }} ~ 'FPG'
+        {{ hba1c_code }} ~ "HBA1C",
+        {{ fpg_code }} ~ "FPG"
       )
     ) %>%
     # Transpose the results and thresholds to a wide structure
@@ -376,19 +368,19 @@ derive_param_glycstt <- function(dataset,
       order = order,
       filter_join = (
         # Check only consecutive results
-        TMP_OBS_NR == TMP_OBS_NR.join + 1
-        & (
-          # Both HbA1c and FPG are above the threshold at the same time point
-          HBA1C.AVAL >= HBA1C.D_THRESHOLD & FPG.AVAL >= FPG.D_THRESHOLD
-          # Or there are 2 consecutive HbA1c above the threshold
-          | HBA1C.AVAL >= HBA1C.D_THRESHOLD & HBA1C.AVAL.join >= HBA1C.D_THRESHOLD
-          # Or there are 2 consecutive FPG above the threshold
-          | FPG.AVAL >= FPG.D_THRESHOLD & FPG.AVAL.join >= FPG.D_THRESHOLD
-          # Or there is HbA1C following by FPG, both above the threshold
-          | HBA1C.AVAL >= HBA1C.D_THRESHOLD & FPG.AVAL.join >= FPG.D_THRESHOLD
-          # Or there is FPG following by HbA1C, both above the threshold
-          | FPG.AVAL >= FPG.D_THRESHOLD & HBA1C.AVAL.join >= HBA1C.D_THRESHOLD
-        )
+        TMP_OBS_NR == TMP_OBS_NR.join + 1 &
+          (
+            # Both HbA1c and FPG are above the threshold at the same time point
+            HBA1C.AVAL >= HBA1C.D_THRESHOLD & FPG.AVAL >= FPG.D_THRESHOLD
+            # Or there are 2 consecutive HbA1c above the threshold
+            | HBA1C.AVAL >= HBA1C.D_THRESHOLD & HBA1C.AVAL.join >= HBA1C.D_THRESHOLD
+            # Or there are 2 consecutive FPG above the threshold
+            | FPG.AVAL >= FPG.D_THRESHOLD & FPG.AVAL.join >= FPG.D_THRESHOLD
+            # Or there is HbA1C following by FPG, both above the threshold
+            | HBA1C.AVAL >= HBA1C.D_THRESHOLD & FPG.AVAL.join >= FPG.D_THRESHOLD
+            # Or there is FPG following by HbA1C, both above the threshold
+            | FPG.AVAL >= FPG.D_THRESHOLD & HBA1C.AVAL.join >= HBA1C.D_THRESHOLD
+          )
       )
     )
 
