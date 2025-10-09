@@ -384,7 +384,7 @@ derive_param_glycstt <- function(dataset,
       )
     )
 
-  # Adjust initially derived parameter, now assigning DIABETIC status where criteria have been met ----
+  # Adjust initially derived parameter assigning DIABETIC status where criteria have been met ----
 
   dataset <- dataset %>%
     restrict_derivation(
