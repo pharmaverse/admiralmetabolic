@@ -3,15 +3,16 @@
 #' @importFrom admiraldev assert_numeric_vector assert_character_scalar assert_logical_scalar
 #'             assert_data_frame assert_vars assert_varval_list assert_filter_cond
 #'             assert_param_does_not_exist assert_expr expect_dfs_equal assert_character_vector
-#'             assert_unit
-#' @importFrom admiral derive_param_computed
+#'             assert_unit assert_expr_list assert_list_of expr_c extract_vars vars2chr
+#' @importFrom admiral get_admiral_option derive_vars_merged derive_param_computed
+#'             derive_var_joined_exist_flag restrict_derivation params
 #' @importFrom cli cli_abort cli_alert_info
 #' @importFrom dplyr arrange bind_rows case_when desc ends_with filter full_join group_by
 #'             if_else mutate mutate_at mutate_if n pull rename rename_at row_number select slice
-#'             starts_with transmute ungroup vars n_distinct union distinct
+#'             starts_with transmute ungroup vars n_distinct union distinct case_match
 #'             summarise_at summarise coalesce bind_cols na_if tibble tribble
 #' @importFrom magrittr %>%
-#' @importFrom purrr discard_at
+#' @importFrom purrr discard_at map2_dbl pluck
 #' @importFrom rlang := abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enexprs enquo eval_bare eval_tidy expr
 #'             exprs expr_interp expr_label f_lhs f_rhs inform
