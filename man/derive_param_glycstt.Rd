@@ -27,21 +27,32 @@ The variables specified by the \code{by_vars} argument are expected to be in the
 
 The variable specified by \code{by_vars} and \code{order} as well as \code{PARAMCD} must be
 a unique key of the input dataset after restricting it by the filter condition
-(\code{filter} argument) and to the parameters specified by \code{hba1c_code} and \code{fpg_code}.}
+(\code{filter} argument) and to the parameters specified by \code{hba1c_code} and \code{fpg_code}.
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{filter}{Filter condition
 
 The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
-into account.}
+into account.
+
+\describe{
+\item{Permitted values}{an unquoted condition, e.g., \code{AVISIT == "BASELINE"}}
+\item{Default value}{\code{NULL}}
+}}
 
 \item{by_vars}{Grouping variables
 
 Only variables specified in \code{by_vars} will be populated
 in the newly created records.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}
-e.g. \code{exprs(USUBJID, VISIT)}}
+\describe{
+\item{Permitted values}{list of variables created by \code{exprs()}, e.g., \code{exprs(USUBJID, VISIT)}}
+\item{Default value}{none}
+}}
 
 \item{order}{Sort order
 
@@ -52,28 +63,54 @@ If an expression is named, e.g., \code{exprs(LBDT = convert_dtc_to_dt(LBDTC), LB
 a corresponding variable (\code{LBDT}) is added to the additional dataset is used
 for sorting. The variable is not included in the output dataset.
 
-For handling of \code{NA}s in sorting variables see \href{../articles/generic.html#sort_order}{Sort Order}.}
+For handling of \code{NA}s in sorting variables see the "Sort Order" section in \code{vignette("generic")}.
+
+\describe{
+\item{Permitted values}{list of variables created by \code{exprs()}, e.g., \code{exprs(USUBJID, VISIT)}}
+\item{Default value}{none}
+}}
 
 \item{set_values_to}{Variables to be set
 
 The specified variables are set to the specified values for the new
 observations. For example \code{exprs(PARAMCD = "GLYCSTT")} defines the parameter code
-for the new parameter.}
+for the new parameter.
+
+\describe{
+\item{Permitted values}{List of variable-value pairs}
+\item{Default value}{\code{exprs(PARAMCD = "GLYCSTT")}}
+}}
 
 \item{hba1c_code}{HbA1c parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
-as the HbA1c. It is expected that HbA1c is measured in mmol/mol or \%.}
+as the HbA1c. It is expected that HbA1c is measured in mmol/mol or \%.
+
+\describe{
+\item{Permitted values}{character value}
+\item{Default value}{\code{"HBA1CHGB"}}
+}}
 
 \item{fpg_code}{Fasting Plasma Glucose parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
 as the Fasting Plasma Glucose. It is expected that Fasting Plasma Glucose
-is measured in mmol/L or mg/dL.}
+is measured in mmol/L or mg/dL.
+
+\describe{
+\item{Permitted values}{character value}
+\item{Default value}{\code{"GLUC"}}
+}}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
-The result is used to check the units of the input parameters.}
+The result is used to check the units of the input parameters.
+
+\describe{
+\item{Permitted values}{An expression which is evaluable in the input dataset
+and results in a character value}
+\item{Default value}{none}
+}}
 
 \item{prediabetic_thresholds, diabetic_thresholds}{Criteria for prediabetic and diabetic statuses
 
@@ -111,7 +148,12 @@ diabetic_thresholds = list(
 }\if{html}{\out{</div>}}
 
 where \code{xx.x} is a numeric threshold and names of the elements must match
-\code{hba1c_code} and \code{fpg_code}.}
+\code{hba1c_code} and \code{fpg_code}.
+
+\describe{
+\item{Permitted values}{List of parameter-value pairs}
+\item{Default value}{\code{NULL}}
+}}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only
