@@ -35,8 +35,8 @@
 #'   consecutive results fulfilling the criteria to confirm a DIABETIC status.
 #'
 #'   If an expression is named, e.g., `exprs(LBDT = convert_dtc_to_dt(LBDTC), LBSEQ)`,
-#'   a corresponding variable (`LBDT`) is added to the additional dataset is used
-#'   for sorting. The variable is not included in the output dataset.
+#'   a corresponding variable (`LBDT`) is added to the additional dataset and used
+#'   for sorting. This variable is not included in the output dataset.
 #'
 #'   `r admiral:::roxygen_order_na_handling()`
 #'
