@@ -16,7 +16,8 @@ derive_param_glycstt(
   prediabetic_thresholds = rlang::list2(`:=`(!!hba1c_code, c(`mmol/mol` = 39, `\%` =
     5.7)), `:=`(!!fpg_code, c(`mmol/L` = 5.6, `mg/dL` = 100))),
   diabetic_thresholds = rlang::list2(`:=`(!!hba1c_code, c(`mmol/mol` = 48, `\%` = 6.5)),
-    `:=`(!!fpg_code, c(`mmol/L` = 7, `mg/dL` = 126)))
+    `:=`(!!fpg_code, c(`mmol/L` = 7, `mg/dL` = 126))),
+  subject_keys = get_admiral_option("subject_keys")
 )
 }
 \arguments{
@@ -60,8 +61,8 @@ The observations are ordered by the specified order while looking for
 consecutive results fulfilling the criteria to confirm a DIABETIC status.
 
 If an expression is named, e.g., \code{exprs(LBDT = convert_dtc_to_dt(LBDTC), LBSEQ)},
-a corresponding variable (\code{LBDT}) is added to the additional dataset is used
-for sorting. The variable is not included in the output dataset.
+a corresponding variable (\code{LBDT}) is added to the additional dataset and used
+for sorting. This variable is not included in the output dataset.
 
 For handling of \code{NA}s in sorting variables see the "Sort Order" section in \code{vignette("generic")}.
 
@@ -153,6 +154,15 @@ where \code{xx.x} is a numeric threshold and names of the elements must match
 \describe{
 \item{Permitted values}{List of parameter-value pairs}
 \item{Default value}{\code{NULL}}
+}}
+
+\item{subject_keys}{Variables to uniquely identify a subject
+
+A list of expressions where the expressions are symbols as returned by
+\code{exprs()} is expected.
+
+\describe{
+\item{Default value}{\code{get_admiral_option("subject_keys")}}
 }}
 }
 \value{

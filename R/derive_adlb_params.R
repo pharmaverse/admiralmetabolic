@@ -108,6 +108,11 @@
 #'
 #' @permitted List of parameter-value pairs
 #'
+#' @param subject_keys Variables to uniquely identify a subject
+#'
+#'   A list of expressions where the expressions are symbols as returned by
+#'   `exprs()` is expected.
+#'
 #' @details
 #' Implementation is based on ADA 2024.
 #'
