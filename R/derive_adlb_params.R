@@ -299,8 +299,10 @@ derive_param_glycstt <- function(dataset,
       # Map `prediabetic_thresholds` into a variable
       PRED_THRESHOLD = purrr::map2_dbl(
         PARAMCD, !!get_unit_expr,
-        ~ purrr::pluck(prediabetic_thresholds, .x, .y) %||%
-          purrr::pluck(prediabetic_thresholds, .x, .default = NA_real_)
+        \(x, y) {
+          purrr::pluck(prediabetic_thresholds, x, y) %||%
+            purrr::pluck(prediabetic_thresholds, x, .default = NA_real_)
+        }
       )
     ) %>%
     derive_param_computed(
@@ -339,8 +341,10 @@ derive_param_glycstt <- function(dataset,
       # Map `diabetic_thresholds` into a variable
       D_THRESHOLD = purrr::map2_dbl(
         PARAMCD, !!get_unit_expr,
-        ~ purrr::pluck(diabetic_thresholds, .x, .y) %||%
-          purrr::pluck(diabetic_thresholds, .x, .default = NA_real_)
+        \(x, y) {
+          purrr::pluck(diabetic_thresholds, .x, .y) %||%
+            purrr::pluck(diabetic_thresholds, .x, .default = NA_real_)
+        }
       ),
       # Change PARAMCD values for convenience
       PARAMCD = case_match(
