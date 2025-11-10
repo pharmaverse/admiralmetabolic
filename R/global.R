@@ -140,5 +140,15 @@ globalVariables(c(
   "TERM_UPPER",
   "atoxgr_criteria_ctcv4",
   "DTYPE",
-  "where" # this entry should be moved to @importFrom tidyselect once we use tidyselect 1.2.0
+  "where", # this entry should be moved to @importFrom tidyselect once we use tidyselect 1.2.0
+  "PRED_THRESHOLD",
+  "DIABETES_CONFIRMED",
+  "TMP_OBS_NR",
+  "HBA1C.AVAL",
+  "FPG.AVAL",
+  "TMP_OBS_NR.join",
+  "HBA1C.D_THRESHOLD",
+  "FPG.D_THRESHOLD",
+  "HBA1C.AVAL.join",
+  "FPG.AVAL.join"
 ))

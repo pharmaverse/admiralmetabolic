@@ -26,26 +26,42 @@ The variables specified by the \code{by_vars} argument are expected to be in the
 
 The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of the input dataset
 after restricting it by the filter condition (\code{filter} argument) and to the parameters
-specified by \code{numerator_code} and \code{denominator_code}.}
+specified by \code{numerator_code} and \code{denominator_code}.
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{by_vars}{Grouping variables
 
 Grouping variables uniquely identifying a set of records for which
 \code{new_vars} are to be calculated.
 
-\emph{Permitted Values:} list of variables created by exprs()}
+\emph{Permitted Values:} list of variables created by exprs()
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{numerator_code}{Numerator parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered as the numerator.
 
-\emph{Permitted Values:} character value}
+\emph{Permitted Values:} character value
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{denominator_code}{Denominator parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered as the denominator.
 
-\emph{Permitted Values:} character value}
+\emph{Permitted Values:} character value
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{set_values_to}{Variables to be set
 
@@ -53,7 +69,11 @@ The specified variables are set to the specified values for the new
 observations. For example \code{exprs(PARAMCD = "RATIO")} defines the parameter code
 for the new parameter.
 
-\emph{Permitted Values:} List of variable-value pairs}
+\emph{Permitted Values:} List of variable-value pairs
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{constant_numerator}{Is numerator parameter constant?
 
@@ -63,7 +83,11 @@ if Height to Weight Ratio should be derived and height is measured only once whi
 Weight is measured at each visit. Height could be specified in the \code{numerator_code}
 argument and \code{constant_numerator} is to be set to \code{TRUE}.
 
-\emph{Permitted Values:} logical scalar}
+\emph{Permitted Values:} logical scalar
+
+\describe{
+\item{Default value}{\code{FALSE}}
+}}
 
 \item{constant_denominator}{Is denominator parameter constant?
 
@@ -73,7 +97,11 @@ if Waist to Height Ratio should be derived and height is measured only once
 while Waist Circumference is measured at each visit. Height could be specified in
 the \code{denominator_code} argument and \code{constant_denominator} is to be set to \code{TRUE}.
 
-\emph{Permitted Values:} logical scalar}
+\emph{Permitted Values:} logical scalar
+
+\describe{
+\item{Default value}{\code{FALSE}}
+}}
 
 \item{filter}{Filter condition
 
@@ -81,7 +109,11 @@ The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.
 
-\emph{Permitted Values:} a condition}
+\emph{Permitted Values:} a condition
+
+\describe{
+\item{Default value}{\code{NULL}}
+}}
 
 \item{constant_by_vars}{By variables for when numerator and/or denominator is constant
 
@@ -94,7 +126,11 @@ This will produce a generic Ratio parameter at all visits where numerator and/or
 is measured. Otherwise it will only be calculated at visits with both numerator and denominator
 parameters collected.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}, e.g. \code{exprs(USUBJID, VISIT)}}
+\emph{Permitted Values}: list of variables created by \code{exprs()}, e.g. \code{exprs(USUBJID, VISIT)}
+
+\describe{
+\item{Default value}{\code{NULL}}
+}}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
@@ -111,13 +147,21 @@ conversion will be performed in order to uniform the values before calculating t
 \if{html}{\out{<br/>}}\emph{in} is defined as 2.54 cm
 \if{html}{\out{<br/>}}\emph{ft} is defined as 30.48 cm
 
-\emph{Permitted Values:} A variable of the input dataset or a function call}
+\emph{Permitted Values:} A variable of the input dataset or a function call
+
+\describe{
+\item{Default value}{\code{NULL}}
+}}
 
 \item{unit_conversion}{Enable/Disable unit conversion
 
 Unit conversion is disabled by default. Ignored if \code{get_unit_expr} is \code{NULL}.
 
-\emph{Permitted Values:} logical scalar}
+\emph{Permitted Values:} logical scalar
+
+\describe{
+\item{Default value}{\code{FALSE}}
+}}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only

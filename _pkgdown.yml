@@ -25,6 +25,11 @@ reference:
 - contents:
   - has_keyword("der_prm_advs")
 
+- subtitle: ADLB-specific
+  desc: Parameter Derivation Functions helpful for building the ADLB dataset
+- contents:
+  - has_keyword("der_prm_adlb")
+
 - title: Example Datasets
 - contents:
   - has_keyword('datasets')

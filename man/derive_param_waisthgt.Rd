@@ -23,27 +23,43 @@ The variables specified by the \code{by_vars} argument are expected to be in the
 
 The variable specified by \code{by_vars} and \code{PARAMCD} must be a unique key of the input dataset
 after restricting it by the filter condition (\code{filter} argument) and to the parameters
-specified by \code{wstcir_code} and \code{height_code}.}
+specified by \code{wstcir_code} and \code{height_code}.
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{by_vars}{Grouping variables
 
 Grouping variables uniquely identifying a set of records for which
 \code{new_vars} are to be calculated.
 
-\emph{Permitted Values:} list of variables created by exprs()}
+\emph{Permitted Values:} list of variables created by exprs()
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{wstcir_code}{Waist Circumference parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered
 as the Waist Circumference.
 
-\emph{Permitted Values:} character value}
+\emph{Permitted Values:} character value
+
+\describe{
+\item{Default value}{\code{"WSTCIR"}}
+}}
 
 \item{height_code}{Height parameter code
 
 The observations where \code{PARAMCD} equals the specified value are considered as the Height.
 
-\emph{Permitted Values:} character value}
+\emph{Permitted Values:} character value
+
+\describe{
+\item{Default value}{\code{"HEIGHT"}}
+}}
 
 \item{set_values_to}{Variables to be set
 
@@ -51,7 +67,11 @@ The specified variables are set to the specified values for the new
 observations. For example \code{exprs(PARAMCD = "RATIO")} defines the parameter code
 for the new parameter.
 
-\emph{Permitted Values:} List of variable-value pairs}
+\emph{Permitted Values:} List of variable-value pairs
+
+\describe{
+\item{Default value}{none}
+}}
 
 \item{filter}{Filter condition
 
@@ -59,7 +79,11 @@ The specified condition is applied to the input dataset before deriving the
 new parameter, i.e., only observations fulfilling the condition are taken
 into account.
 
-\emph{Permitted Values:} a condition}
+\emph{Permitted Values:} a condition
+
+\describe{
+\item{Default value}{\code{NULL}}
+}}
 
 \item{constant_by_vars}{By variables for when Height is constant
 
@@ -72,7 +96,11 @@ This will produce Waist to Height Ratio at all visits where Waist Circumference 
 Otherwise it will only be calculated at visits with both Height and Waist Circumference
 collected.
 
-\emph{Permitted Values}: list of variables created by \code{exprs()}, e.g. \code{exprs(USUBJID, VISIT)}}
+\emph{Permitted Values}: list of variables created by \code{exprs()}, e.g. \code{exprs(USUBJID, VISIT)}
+
+\describe{
+\item{Default value}{\code{NULL}}
+}}
 
 \item{get_unit_expr}{An expression providing the unit of the parameter
 
@@ -89,7 +117,11 @@ conversion will be performed in order to uniform the values before calculating t
 \if{html}{\out{<br/>}}\emph{in} is defined as 2.54 cm
 \if{html}{\out{<br/>}}\emph{ft} is defined as 30.48 cm
 
-\emph{Permitted Values:} A variable of the input dataset or a function call}
+\emph{Permitted Values:} A variable of the input dataset or a function call
+
+\describe{
+\item{Default value}{\code{NULL}}
+}}
 }
 \value{
 The input dataset with the new parameter added. Note, a variable will only
