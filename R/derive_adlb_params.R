@@ -192,8 +192,12 @@ derive_param_glycstt <- function(dataset,
                                  diabetic_thresholds = rlang::list2(
                                    !!hba1c_code := c("mmol/mol" = 48, "%" = 6.5),
                                    !!fpg_code := c("mmol/L" = 7, "mg/dL" = 126)
-                                 )) {
+                                 ),
+                                 subject_keys = get_admiral_option("subject_keys")) {
   # Assertions ----
+
+  assert_vars(subject_keys)
+  assert_data_frame(dataset, required_vars = subject_keys)
 
   assert_vars(by_vars)
   assert_expr_list(order)
@@ -342,8 +346,8 @@ derive_param_glycstt <- function(dataset,
       D_THRESHOLD = purrr::map2_dbl(
         PARAMCD, !!get_unit_expr,
         \(x, y) {
-          purrr::pluck(diabetic_thresholds, .x, .y) %||%
-            purrr::pluck(diabetic_thresholds, .x, .default = NA_real_)
+          purrr::pluck(diabetic_thresholds, x, y) %||%
+            purrr::pluck(diabetic_thresholds, x, .default = NA_real_)
         }
       ),
       # Change PARAMCD values for convenience
@@ -364,7 +368,7 @@ derive_param_glycstt <- function(dataset,
     derive_var_joined_exist_flag(
       dataset = .,
       dataset_add = .,
-      by_vars = get_admiral_option("subject_keys"),
+      by_vars = subject_keys,
       new_var = DIABETES_CONFIRMED,
       tmp_obs_nr_var = TMP_OBS_NR,
       join_vars = exprs(HBA1C.AVAL, FPG.AVAL),
