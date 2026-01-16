@@ -26,7 +26,7 @@ be able to use `{admiralmetabolic}`.
 # Derivations
 
 The most important functions in `{admiralmetabolic}` are the
-[derivations](../reference/00Index.html). Again these follow the same
+[derivations](../reference). Again these follow the same
 conventions as `{admiral}` but are focused to metabolism-specific needs.
 
 # Creating ADaM Datasets

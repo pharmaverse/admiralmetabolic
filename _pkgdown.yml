@@ -39,7 +39,7 @@ navbar:
       href: articles/admiralmetabolic.html
     reference:
       text: Reference
-      href: reference/00Index.html
+      href: reference/index.html
     articles:
       text: User Guides
       menu:
