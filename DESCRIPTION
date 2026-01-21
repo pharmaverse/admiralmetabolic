@@ -38,7 +38,7 @@ Depends:
     R (>= 4.1)
 Imports:
     admiral (>= 1.1.1),
-    admiraldev (>= 1.2.0),
+    admiraldev (>= 1.4.0),
     cli (>= 3.6.2),
     dplyr (>= 0.8.4),
     lifecycle (>= 0.1.0),
