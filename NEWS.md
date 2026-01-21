@@ -4,6 +4,11 @@
 
 - Changed template save directory. (#129)
 
+## Various
+
+- Updated to use new lintr. (#133)
+- Fixes CRAN warning. (#138)
+
 # admiralmetabolic 0.2.0
 
 ## New features
