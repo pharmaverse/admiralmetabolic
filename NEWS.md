@@ -4,6 +4,10 @@
 
 - Changed template save directory. (#129)
 
+## Documentation
+
+- Added kapa.ai widget. (#137)
+
 # admiralmetabolic 0.2.0
 
 ## New features
