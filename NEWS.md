@@ -4,6 +4,10 @@
 
 - Changed template save directory. (#129)
 
+## Documentation
+
+- A link to the [{admiral} ecosystem](https://pharmaverse.org/e2eclinical/adam/) page was added to the README sidebar and main text. (#136)
+
 # admiralmetabolic 0.2.0
 
 ## New features

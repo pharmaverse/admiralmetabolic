@@ -14,6 +14,11 @@ repo:
 news:
   cran_dates: true
 
+home:
+  links:
+  - text: 🌍 {admiral} ecosystem 🌍
+    href: https://pharmaverse.org/e2eclinical/adam/
+
 development:
   mode: auto
 
