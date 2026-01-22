@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralmetabolic
 Title: Metabolism Extension Package for ADaM in 'R' Asset Library
-Version: 0.2.0.9004
+Version: 0.2.0.9005
 Authors@R: c(
     person("Anders", "Askeland", , "iakd@novonordisk.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2996-129X")),
@@ -38,7 +38,7 @@ Depends:
     R (>= 4.1)
 Imports:
     admiral (>= 1.1.1),
-    admiraldev (>= 1.2.0),
+    admiraldev (>= 1.4.0),
     cli (>= 3.6.2),
     dplyr (>= 0.8.4),
     lifecycle (>= 0.1.0),
