@@ -6,7 +6,7 @@
 
 ## Various
 
-- Updated to use new lintr. (#133)
+- Updated `{lintr}` configurations to use central configurations from `{admiraldev}`. (#133)
 - Fixes CRAN warning. (#138)
 
 # admiralmetabolic 0.2.0
