@@ -4,6 +4,11 @@
 
 - Changed template save directory. (#129)
 
+
+## Documentation
+
+- The “Ask AI” widget was added to the bottom right of each page. It enables users to ask questions about [admiralmetabolic](https://pharmaverse.github.io/admiralmetabolic/) and the rest of the [admiral](https://pharmaverse.github.io/admiral/) ecosystem and receive answers from an LLM. It is trained on the documentation of all [admiral](https://pharmaverse.github.io/admiral/) packages and provided by [kapa.ai](https://docs.kapa.ai/kapa-for-open-source). (#137)
+
 ## Various
 
 <details>
