@@ -8,6 +8,17 @@
 
 - A link to the [{admiral} ecosystem](https://pharmaverse.org/e2eclinical/adam/) page was added to the README sidebar and main text. (#136)
 
+
+## Various
+
+<details>
+<summary>Developer Notes</summary>
+
+- Updated `{lintr}` configurations to use central configurations from `{admiraldev}`. (#133)
+- Fixes CRAN warning. (#138)
+
+</details>
+
 # admiralmetabolic 0.2.0
 
 ## New features
