@@ -17,7 +17,7 @@ Note: This is a wrapper function for the more generic admiral::derive_param_comp
 
     <a class="navbar-brand me-2" href="../index.html">admiralmetabolic</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9005</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,7 +130,7 @@ to the other parameters using the specified variables.</p>
 This will produce Waist to Height Ratio at all visits where Waist Circumference is measured.
 Otherwise it will only be calculated at visits with both Height and Waist Circumference
 collected.</p>
-<p><em>Permitted Values</em>: list of variables created by <code><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs()</a></code>, e.g. <code>exprs(USUBJID, VISIT)</code></p></dd>
+<p><em>Permitted Values</em>: list of variables created by <code><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs()</a></code>, e.g. <code>exprs(USUBJID, VISIT)</code></p></dd>
 
 
 <dt id="arg-get-unit-expr">get_unit_expr<a class="anchor" aria-label="anchor" href="#arg-get-unit-expr"></a></dt>
@@ -186,14 +186,14 @@ $$WAISTHGT = \frac{WSTCIR}{HEIGHT}$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">derive_param_waisthgt</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">advs</span>,</span></span>
-<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  wstcir_code <span class="op">=</span> <span class="st">"WSTCIR"</span>,</span></span>
 <span class="r-in"><span>  height_code <span class="op">=</span> <span class="st">"HEIGHT"</span>,</span></span>
-<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    PARAMCD <span class="op">=</span> <span class="st">"WAISTHGT"</span>,</span></span>
 <span class="r-in"><span>    PARAM <span class="op">=</span> <span class="st">"Waist to Height Ratio"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  constant_by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  constant_by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  get_unit_expr <span class="op">=</span> <span class="fu">admiral</span><span class="fu">::</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/extract_unit.html">extract_unit</a></span><span class="op">(</span><span class="va">PARAM</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14 × 6</span></span>
@@ -219,14 +219,14 @@ $$WAISTHGT = \frac{WSTCIR}{HEIGHT}$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">derive_param_waisthgt</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">advs</span>,</span></span>
-<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  wstcir_code <span class="op">=</span> <span class="st">"WSTCIR"</span>,</span></span>
 <span class="r-in"><span>  height_code <span class="op">=</span> <span class="st">"HEIGHT"</span>,</span></span>
-<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    PARAMCD <span class="op">=</span> <span class="st">"WAISTHGT"</span>,</span></span>
 <span class="r-in"><span>    PARAM <span class="op">=</span> <span class="st">"Waist to Height Ratio"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  constant_by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  constant_by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  get_unit_expr <span class="op">=</span> <span class="fu">admiral</span><span class="fu">::</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/extract_unit.html">extract_unit</a></span><span class="op">(</span><span class="va">PARAM</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  filter <span class="op">=</span> <span class="va">VISIT</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCREENING"</span>, <span class="st">"WEEK 3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -267,10 +267,10 @@ $$WAISTHGT = \frac{WSTCIR}{HEIGHT}$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">derive_param_waisthgt</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">advs</span>,</span></span>
-<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  wstcir_code <span class="op">=</span> <span class="st">"WSTCIR"</span>,</span></span>
 <span class="r-in"><span>  height_code <span class="op">=</span> <span class="st">"HEIGHT"</span>,</span></span>
-<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    PARAMCD <span class="op">=</span> <span class="st">"WAISTHGT"</span>,</span></span>
 <span class="r-in"><span>    PARAM <span class="op">=</span> <span class="st">"Waist to Height Ratio"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
@@ -315,14 +315,14 @@ $$WAISTHGT = \frac{WSTCIR}{HEIGHT}$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">derive_param_waisthgt</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">advs</span>,</span></span>
-<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">VISIT</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  wstcir_code <span class="op">=</span> <span class="st">"WSTCIR"</span>,</span></span>
 <span class="r-in"><span>  height_code <span class="op">=</span> <span class="st">"HEIGHT"</span>,</span></span>
-<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  set_values_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    PARAMCD <span class="op">=</span> <span class="st">"WAISTHGT"</span>,</span></span>
 <span class="r-in"><span>    PARAM <span class="op">=</span> <span class="st">"Waist to Height Ratio"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  constant_by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  constant_by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rlang/man/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  get_unit_expr <span class="op">=</span> <span class="fu">admiral</span><span class="fu">::</span><span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/extract_unit.html">extract_unit</a></span><span class="op">(</span><span class="va">PARAM</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Unit conversion performed for <span style="color: #0000BB;">"HEIGHT"</span>. Values converted from <span style="color: #0000BB;">"cm"</span> to <span style="color: #0000BB;">"in"</span>.</span>
