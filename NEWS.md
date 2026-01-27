@@ -1,4 +1,4 @@
-# admiralmetabolic (development version)
+# admiralmetabolic 0.3.0
 
 ## Bug fixes
 
@@ -15,7 +15,7 @@
 <summary>Developer Notes</summary>
 
 - Updated `{lintr}` configurations to use central configurations from `{admiraldev}`. (#133)
-- Fixes CRAN warning. (#138)
+- Fixes CRAN issue related to usage of relative paths. (#138)
 
 </details>
 
