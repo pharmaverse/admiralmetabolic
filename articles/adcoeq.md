@@ -1,0 +1,227 @@
+# Creating a Control of Eating Questionnaire ADaM
+
+## License
+
+Note that University of Leeds are the copyright holders of the Control
+of Eating Questionnaire (CoEQ) and the test data included within
+[admiralmetabolic](https://pharmaverse.github.io/admiralmetabolic/) as
+well as the ADCOEQ code are for not-for-profit use only within
+[admiralmetabolic](https://pharmaverse.github.io/admiralmetabolic/) and
+pharmaverse-related examples/documentation. Any persons or companies
+wanting to use the CoEQ should request a license to do so from the
+following
+[link](https://licensing.leeds.ac.uk/product/control-of-eating-questionnaire-coeq).
+
+## Introduction
+
+This article describes creating a Control of Eating Questionnaire ADaM
+for clinical trials.
+
+We advise you first consult the
+[admiral](https://pharmaverse.github.io/admiral/) [Creating
+Questionnaire ADaMs
+vignette](https://pharmaverse.github.io/admiral/articles/questionnaires.html).
+The programming workflow around creating the general set-up of an `ADQS`
+using [admiral](https://pharmaverse.github.io/admiral/) functions is the
+same. In this vignette, we focus on the Control of Eating Questionnaire
+and avoid repeating information and maintaining the same content in two
+places. As such, the code in this vignette is not completely executable;
+we recommend consulting the ADQS template script to view the full
+workflow.
+
+**Note**: *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+### Required Packages
+
+The examples of this vignette require the following packages.
+
+``` r
+library(admiral)
+library(admiralmetabolic)
+library(pharmaversesdtm)
+library(dplyr)
+library(stringr)
+```
+
+## Programming Workflow
+
+- [Read in Data](#readdata)
+- [Derive Core ADLB Variables](#derive_core)
+- [Original items](#original_items)
+- [Derive the four Subscales](#subscales)
+- [Remaining ADCOEQ Set-up](#adcoeq_end)
+
+### Read in Data
+
+To start, all data frames needed for the creation of the ADaM dataset
+should be loaded into the global environment. Reading data will usually
+be a company specific process, however, for the purpose of this
+vignette, we will use example data from
+[pharmaversesdtm](https://pharmaverse.github.io/pharmaversesdtm/) and
+[admiralmetabolic](https://pharmaverse.github.io/admiralmetabolic/). We
+will utilize `DM`, `QS` and `ADSL`.
+
+``` r
+dm_metabolic <- pharmaversesdtm::dm_metabolic
+qs_metabolic <- pharmaversesdtm::qs_metabolic
+admiralmetabolic_adsl <- admiralmetabolic::admiralmetabolic_adsl
+
+dm <- convert_blanks_to_na(dm_metabolic)
+qs <- convert_blanks_to_na(qs_metabolic)
+adsl <- convert_blanks_to_na(admiralmetabolic_adsl)
+```
+
+### Derive Core ADVS Variables
+
+The following steps are to merge `ADSL` variables with the source data
+and derive the usual `ADCOEQ` analysis variables. Note that only the
+sections required for this vignette are covered in the following steps.
+To get a detailed guidance on all the steps, refer the
+[admiral](https://pharmaverse.github.io/admiral/) [Creating a BDS
+Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+
+``` r
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01P, TRT01A)
+
+adcoeq <- derive_vars_merged(
+  qs,
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+### Original Items
+
+The original items, i.e. the answers to the questionnaire questions, can
+be handled in the same way as in an [{admiral} BDS finding
+ADaM](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+
+``` r
+adcoeq <- adcoeq %>%
+  # Add analysis parameter variables
+  mutate(
+    PARAMCD = QSTESTCD,
+    PARAM = QSTEST,
+    PARCAT1 = QSCAT
+  ) %>%
+  # Add timing variables
+  derive_vars_dt(new_vars_prefix = "A", dtc = QSDTC) %>%
+  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
+  mutate(
+    AVISIT = case_when(
+      is.na(VISIT) ~ NA_character_,
+      str_detect(VISIT, "UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
+      TRUE ~ str_to_title(VISIT)
+    ),
+    AVISITN = case_when(
+      AVISIT == "Baseline" ~ 0,
+      str_detect(AVISIT, "Screen") ~ -1,
+      str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
+      TRUE ~ NA_integer_
+    )
+  )
+```
+
+The analysis values (`AVAL` and `AVALC`) for most original items are set
+directly from `QSSTRESN` and `QSORRES`, respectively. However, CoEQ item
+6 (`COEQ06`) requires a manual transformation, where we invert the
+original scores. This transformation is performed because CoEQ item 6 is
+used in calculating the subscale for “Positive Mood,” where its original
+scores indicate anxiety.
+
+In cases where `QSSTRESN` values require transformation, it is
+recommended to keep the original `QSSTRESN` values in the ADaM dataset
+for traceability.
+
+``` r
+adcoeq <- adcoeq %>%
+  # Add analysis value variables
+  mutate(
+    AVAL = if_else(PARAMCD == "COEQ06", 100 - QSSTRESN, QSSTRESN),
+    AVALC = if_else(PARAMCD == "COEQ20", QSORRES, NA_character_)
+  )
+```
+
+For deriving visits based on time-windows, see
+[admiral](https://pharmaverse.github.io/admiral/) [Visit and Period
+Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
+
+### Derive the four Subscales
+
+For the Control of Eating Questionnaire, four subscales are derived.
+These subscales are derived as the mean across a subset of the various
+items/questions.
+
+The subscales are defined as follows:
+
+- Craving Control: Calculate mean of items 9, 10, 11, 12 and 19.
+
+- Craving for Sweet: Calculate mean of items 3, 13, 14 and 15.
+
+- Craving for Savoury: Calculate mean of items 4, 16, 17 and 18.
+
+- Positive Mood: Calculate mean of items 5, 7, 8 and 6 (reversed).
+
+These parameters can be derived by
+[`derive_summary_records()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_summary_records.html):
+
+``` r
+adcoeq <- adcoeq %>%
+  call_derivation(
+    derivation = derive_summary_records,
+    variable_params = list(
+      params(
+        filter_add = PARAMCD %in% c("COEQ09", "COEQ10", "COEQ11", "COEQ12", "COEQ19"),
+        set_values_to = exprs(
+          AVAL = mean(AVAL, na.rm = TRUE),
+          PARAMCD = "COEQCRCO",
+          PARAM = "COEQ - Craving Control"
+        )
+      ),
+      params(
+        filter_add = PARAMCD %in% c("COEQ03", "COEQ13", "COEQ14", "COEQ15"),
+        set_values_to = exprs(
+          AVAL = mean(AVAL, na.rm = TRUE),
+          PARAMCD = "COEQCRSW",
+          PARAM = "COEQ - Craving for Sweet"
+        )
+      ),
+      params(
+        filter_add = PARAMCD %in% c("COEQ04", "COEQ16", "COEQ17", "COEQ18"),
+        set_values_to = exprs(
+          AVAL = mean(AVAL, na.rm = TRUE),
+          PARAMCD = "COEQCRSA",
+          PARAM = "COEQ - Craving for Savoury"
+        )
+      ),
+      params(
+        filter_add = PARAMCD %in% c("COEQ05", "COEQ07", "COEQ08", "COEQ06"),
+        set_values_to = exprs(
+          AVAL = mean(AVAL, na.rm = TRUE),
+          PARAMCD = "COEQPOMO",
+          PARAM = "COEQ - Positive Mood"
+        )
+      )
+    ),
+    dataset_add = adcoeq,
+    by_vars = exprs(STUDYID, USUBJID, AVISIT, AVISITN, ADT, ADY, PARCAT1, TRTSDT, TRTEDT, TRT01P, TRT01A)
+  )
+```
+
+### Remaining ADCOEQ Set-up
+
+The [admiral](https://pharmaverse.github.io/admiral/) [Creating
+Questionnaire ADaMs
+vignette](https://pharmaverse.github.io/admiral/articles/questionnaires.html)
+describes further steps, including, how to calculate the change from
+baseline variables, and how to add parameters for questionnaire
+completion.
+
+## Example Scripts
+
+| ADaM   | Sample Code                                                                                         |
+|--------|-----------------------------------------------------------------------------------------------------|
+| ADCOEQ | [ad_adcoeq.R](https://github.com/pharmaverse/admiralmetabolic/blob/main/inst/templates/ad_adcoeq.R) |
