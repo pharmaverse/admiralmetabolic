@@ -1,4 +1,4 @@
-# admiralmetabolic 0.3.0
+# admiralmetabolic 0.3.0.9000
 
 ## Bug fixes
 
