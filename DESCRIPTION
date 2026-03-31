@@ -51,6 +51,7 @@ Imports:
 Suggests:
     diffdf,
     DT,
+    here,
     htmltools,
     knitr,
     methods,
@@ -67,3 +68,4 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Config/Needs/website: rmarkdown

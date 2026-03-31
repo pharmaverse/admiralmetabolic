@@ -21,3 +21,4 @@
 ^doc$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^vignettes/articles$
