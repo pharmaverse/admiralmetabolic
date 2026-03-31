@@ -8,6 +8,8 @@
 
 - A link to the [{admiral} ecosystem](https://pharmaverse.org/e2eclinical/adam/) page was added to the README sidebar and main text. (#136)
 - The “Ask AI” widget was added to the bottom right of each page. It enables users to ask questions about [admiralmetabolic](https://pharmaverse.github.io/admiralmetabolic/) and the rest of the [admiral](https://pharmaverse.github.io/admiral/) ecosystem and receive answers from an LLM. It is trained on the documentation of all [admiral](https://pharmaverse.github.io/admiral/) packages and provided by [kapa.ai](https://docs.kapa.ai/kapa-for-open-source). (#137)
+- A new vignette "Explore ADaM Templates" was added to the "Get Started" menu.
+It displays the `{admiralmetabolic}` templates. (#146)
 
 ## Various
 
