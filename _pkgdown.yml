@@ -3,9 +3,11 @@ url: https://pharmaverse.github.io/admiralmetabolic
 template:
   bootstrap: 5
   math-rendering: mathjax
+  light-switch: true
   params:
     bootswatch: flatly
   includes:
+    css: pkgdown/extra.css
     in_header: |
       <script
       async
@@ -56,7 +58,7 @@ reference:
 navbar:
   structure:
     left: [getstarted, reference, articles, news]
-    right: [search, slack, history, newissue, github]
+    right: [search, slack, history, newissue, github, lightswitch]
   components:
     getstarted:
       text: Get Started
